@@ -1,0 +1,83 @@
+<div class="container-fluid">
+    <div class="content-wrapper">	
+		<div class="item-container">	
+			<div class="container">	
+				<div class="col-md-12">
+					<div class="product col-md-5 service-image-left" style="height:100%;">
+						<center>
+							<%= image_tag @item.imageUrl, :class => "item-display" %><%# adding main product photo %>
+						</center>
+					</div>
+
+					<div class="col-md-7">
+						<div class="product-title">
+							<%= simple_format(@item.productTitle) %>
+						</div>
+
+						<div class="product-rating">
+							<%= render "rating", :reviews => @ali_reviews %>
+						</div>
+
+						<hr>
+						<div class="product-price"><%= @item.salePrice %> / <%= @item.packageType %></div>
+						<div class="product-stock">In Stock</div>
+						<hr>
+						
+						<%= link_to @item.promotionUrl do %>
+						<div class="btn-group cart">
+							<%= link_to @item.promotionUrl do %>
+								<button type="button" class="btn btn-success">
+									Buy Now
+								</button>
+							<% end %>
+						</div>
+						<% end %>
+						<div class="btn-group wishlist">
+							<button type="button" class="btn btn-danger">
+								Add To Cart
+							</button>
+						</div>
+					</div>
+				</div>
+					
+				
+			</div> 
+		</div>
+		<div class="container-fluid">		
+			<div class="col-md-12 product-info">
+					<ul id="myTab" class="nav nav-tabs nav_tabs">
+						
+						<li class="active"><a href="#product-info" data-toggle="tab">PRODUCT INFO</a></li>
+						<li><a href="#reviews" data-toggle="tab">REVIEWS</a></li>
+						
+					</ul>
+				<div id="myTabContent" class="tab-content">
+						<div class="tab-pane fade in active" id="product-info">
+						 
+							<section class="container product-info text-center">
+								<%= print_multiline(@item.productDescription) %>
+							</section>
+										  
+						</div>
+					
+						<div class="tab-pane fade" id="reviews">
+							<% if @review == nil %>
+								<%= render "call_to_action" %>
+							<% else %>
+
+							<% end %>
+							<% i = 0 %><%# for making every review unique - without it javascript can't work %>
+							<% @ali_reviews.each do |review| %>
+								<%= render "aliexpress_reviews", :review => review, :i => i %><%# sending item, i and user info to partial %>
+								<% i = i + 1 %>
+							<% end %>
+						</div>
+				</div>
+
+				<hr>
+			</div>
+		</div>
+	</div>
+</div>
+
+<%= render "best_items" %>

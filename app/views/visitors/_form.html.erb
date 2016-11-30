@@ -1,0 +1,53 @@
+<%= form_tag api_items_list_path do |f| %>
+
+<%= @config %>
+
+	<div class="form-group">
+		<%= label :category, "Which category do you want to search?" %>
+		<%= select :category, "fields", Category.all.collect {|p| [ p.name, p.id ] }, {prompt: "Select Fields"}, {:multiple => true, :size => 10} %>
+	</div>
+	
+	<div class="form-group">
+		<%= label :fields, "Keywords to find, spearate by comma:" %>
+		<%= text_field_tag :keywords %>
+	</div>
+	
+	<div class="form-group">
+		<%= label :sort, "Sort by:" %>
+		<%= check_box :sort, "commissionRateUp" "" %><label for="sort_commissionRateUp">Commision Rate Up</label>
+	</div>
+	
+	<div class="form-group">
+		<%= label :hot_products, "Only hot products?" %>
+		<%= check_box :hot_products, "yes" "no" %><label for="hot_products_yesno">Hot</label>
+	</div>
+	
+	<div class="form-group">
+		<%= label :min_seller_rating, "Min seller rating:" %>
+		<input type="range" name="min_seller_rating" value= "0" id="min_seller_rating" min="0" max="1000" oninput="minsellerRating()" step="5">
+		<p id="min_rating">0</p>
+	</div>
+	
+	<div class="form-group">
+		<%= label :min_seller_rating, "Max seller rating:" %>
+		<input type="range" name="max_seller_rating" value="1000" id="max_seller_rating" min="0" max="1000" oninput="maxsellerRating()" step="5">
+		<p id="max_rating">1000</p>
+	</div>
+	
+	<div class="form-group">
+		<%= label :api_call, "Api Call Method" %>
+		<%= button_tag 'Submit', type: 'submit' %>
+	</div>
+	
+<% end %>
+
+<script type="text/javascript">
+function minsellerRating() {
+	a = document.getElementById("min_seller_rating").value
+	document.getElementById("min_rating").innerHTML = a
+}
+function maxsellerRating() {
+	a = document.getElementById("max_seller_rating").value
+	document.getElementById("max_rating").innerHTML = a
+}
+</script>

@@ -1,0 +1,31 @@
+<div class="container">
+    <div class="row">
+		<% @reviews.each do |review| %>
+			<div class="col-sm-4 col-md-4">
+				<div class="review-card">
+					<div class="review-card-img-content">
+						<%= image_tag review.cover.url(:hmedium), :class => "img-responsive" %>
+						<span class="review-card-title">
+							<b><%= review.title %> </b>
+						</span>
+					</div>
+					<div class="content">
+						<div class="author">
+							By <b>Golab</b> |
+							<%= review.updated_at %>
+						</div>
+						<div>
+							<%= review.short_description %>
+							<%= link_to 'Show', review %>
+							<%= link_to 'Edit', edit_review_path(review) %>
+							<%= link_to 'Destroy', review, method: :delete, data: { confirm: 'Are you sure?' } %>
+						</div>
+						<div>
+							<%= link_to "Read More", review_path(review), :class => "btn btn-primary btn-sm" %>
+						</div>
+					</div>
+				</div>
+			</div>
+		<% end %>
+    </div>
+</div>

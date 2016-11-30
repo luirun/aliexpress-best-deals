@@ -1,0 +1,15 @@
+<div class="col-md-12">
+Sort by:
+	<%= form_tag(request.original_url, method: "get") do %>
+		Price:
+		<%= text_field_tag :price_min, nil, placeholder: "min"  %>
+		-
+		<%= text_field_tag :price_max, nil, placeholder: "max" %>
+
+		Discount:
+		<%= radio_button(:discount, :discount, 1) %><%= label :discount, "discount_1" do %>UP<% end %>
+		<%= radio_button(:discount, :discount, 0) %><%= label :discount, "discount_0" do %>DOWN<% end %>
+
+		<%= submit_tag %>
+	<% end %>
+</div>

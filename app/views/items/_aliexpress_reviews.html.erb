@@ -1,0 +1,143 @@
+<% if review.review_content.length <= 1 %>
+
+<% else %>
+    <link href="http://fontawesome.io/assets/font-awesome/css/font-awesome.css" rel="stylesheet" media="screen">
+    <div class="container">
+        <div class="row user-menu-container square">
+            <div class="col-md-7 user-details">
+                <div class="row coralbg white">
+                    <div class="col-md-6 no-pad">
+                        <div class="user-pad">
+                            <h3><%= review.username %></h3>
+                            <h4 class="white"><i class="fa fa-flag"></i> <%= review.user_country %></h4>
+                            <h4 class="white"><i class="fa fa-calendar"></i> <%= review.review_date %></h4>
+                        </div>
+                    </div>
+                    <div class="col-md-6 no-pad">
+                        <div class="user-image">
+                            <img src="https://farm7.staticflickr.com/6163/6195546981_200e87ddaf_b.jpg" class="img-responsive thumbnail">
+                        </div>
+                    </div>
+                </div>
+                <div class="row overview">
+                    <div class="col-md-12 user-pad text-center">
+                        <b>Review:</b> <%= review.review_content %>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-1 user-menu-btns">
+                <div class="btn-group-vertical square" id="responsive<%= i %>">
+                    <a href="#" class="btn btn-block btn-default active">
+                      <i class="fa fa-camera fa-3x"></i>
+                    </a>
+                    <a href="#" class="btn btn-default">
+                      <i class="fa fa-handshake-o fa-3x"></i>
+                    </a>
+                    <a href="#" class="btn btn-default">
+                      <i class="fa fa-paper-plane fa-3x"></i>
+                    </a>
+                    <a href="#" class="btn btn-default">
+                      <i class="fa fa-envelope-o fa-3x"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-4 user-menu user-pad <%= i %>">
+                <div class="user-menu-content active img">
+                    <ul class="user-menu-list">
+                        <% if review.review_photos.length > 10 %>
+                            <%= render "photo_carousel", :photos => review.review_photos, :a => i %>
+                        <% else %>
+                            <h2>Photos:</h2>
+                            <h3>No photos in this review <i class="fa fa-folder-open"></i></h3>
+                        <% end %>
+                    </ul>
+                </div>
+                <div class="user-menu-content">
+                    <h3>
+                        You may also like:
+                    </h3>
+                    <ul class="user-menu-list">
+                        <% best_items = Item.where(:is_hot => "y").limit(2) %>
+                        <% best_items.each do |item| %>
+                            <li>
+                                <h4>
+                                    <%= image_tag item.imageUrl, :style => "width:100px;height:75px;" %> 
+                                    <small class="coral"><strong><%= item.salePrice %></strong> <i class="fa fa-clock-o" style="text-decoration:line-through;"><%= item.originalPrice %></i></small>
+                                </h4>
+                            </li>
+                        <% end %>
+                    </ul>
+                </div>
+                <div class="user-menu-content">
+                    <h3>
+                        Popular Reviews:
+                    </h3>
+                    <div class="row">
+                        <% @reviews.each do |review| %>
+                            <div class="col-md-6">
+                                <div class="view">
+                                    <div class="caption">
+                                        <p><%= review.author %></p>
+                                        <%= link_to review, :rel => "tooltip", :title => "View" do %><span class="fa fa-search fa-2x"></span><% end %>
+                                    </div>
+                                    <%= image_tag review.cover.url, :class => "img-responsive" %>
+                                </div>
+                                <div class="info">
+                                    <p class="small" style="text-overflow: ellipsis"><%= review.title %></p>
+                                    <p class="small coral text-right"><i class="fa fa-clock-o"></i> <%= distance_of_time_in_words(review.created_at, 0.1.minutes.from_now)%> ago</small>
+                                </div>
+                                <div class="stats turqbg">
+                                    <span class="fa fa-heart-o"> <strong><%= rand(21..147) %></strong></span>
+                                    <span class="fa fa-eye pull-right"> <strong><%= rand(147..1555) %></strong></span>
+                                </div>
+                            </div>
+                        <% end %>
+                    </div>
+                </div>
+                <div class="user-menu-content">
+                    <h2 class="text-center">
+                        START SHARING
+                    </h2>
+                    <center><i class="fa fa-cloud-upload fa-4x"></i></center>
+                    <div class="share-links">
+                        <center><button type="button" class="btn btn-lg btn-labeled btn-success" href="#" style="margin-bottom: 15px;">
+                                <span class="btn-label"><i class="fa fa-bell-o"></i></span>A FINISHED PROJECT
+                        </button></center>
+                        <center><button type="button" class="btn btn-lg btn-labeled btn-warning" href="#">
+                                <span class="btn-label"><i class="fa fa-bell-o"></i></span>A WORK IN PROGRESS
+                        </button></center>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+    $(document).ready(function() {
+        var $btnSets = $('#responsive<%= i %>'),
+        $btnLinks = $btnSets.find('a');
+     
+        $btnLinks.click(function(e) {
+            e.preventDefault();
+            $(this).siblings('a.active').removeClass("active");
+            $(this).addClass("active");
+            var index = $(this).index();
+            $("div.user-menu.<%= i %>>div.user-menu-content").removeClass("active");
+            $("div.user-menu.<%= i %>>div.user-menu-content").eq(index).addClass("active");
+        });
+    });
+
+    $( document ).ready(function() {
+        $("[rel='tooltip']").tooltip();    
+     
+        $('.view').hover(
+            function(){
+                $(this).find('.caption').slideDown(250); //.fadeIn(250)
+            },
+            function(){
+                $(this).find('.caption').slideUp(250); //.fadeOut(205)
+            }
+        ); 
+    });
+    </script>
+<% end %>

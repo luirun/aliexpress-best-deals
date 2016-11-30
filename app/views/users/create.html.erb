@@ -1,0 +1,17 @@
+<%= simple_form_for(@users, url: users_create_path) do |form| %>
+<%= form.error_notification %>
+<%= form.input :email %>
+<%= form.input :login %>
+
+<%= form.label :password %>
+<%= form.password_field :password %>
+
+<%= form.label :password_confirmation %>
+<%= form.password_field :password_confirmation %>
+
+<%= form.input :imie %>
+<%= form.input :nazwisko %>
+<%= form.button :submit, 'Zarejestruj się!', class: 'submit' %>
+<% end %>
+
+<%= link_to "Zaloguj się", {controller: "sessions", action: "new"}, class: "button" %>

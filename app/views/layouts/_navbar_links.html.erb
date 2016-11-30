@@ -1,0 +1,6 @@
+<% if current_user == nil %>
+	<li><%= link_to "Login", "#", {"data-toggle" => "modal", "data-target" => "#login-modal"} %></li>
+<% else %>
+	<li><%= link_to "Profile", user_profile_path %></li>
+	<li><%= link_to "Logout", {controller: "sessions", action: "destroy"} %></li>
+<% end %>
