@@ -14,7 +14,7 @@
 ActiveRecord::Schema.define(version: 20161114181042) do
 
   create_table "ali_reviews", force: :cascade do |t|
-    t.text     "productId",       limit: 65535
+    t.string   "productId",       limit: 45
     t.text     "username",        limit: 65535
     t.text     "user_country",    limit: 65535
     t.integer  "user_order_rate", limit: 4
@@ -24,13 +24,15 @@ ActiveRecord::Schema.define(version: 20161114181042) do
     t.text     "review_photos",   limit: 65535
     t.datetime "created_at",                    null: false
     t.datetime "updated_at",                    null: false
+    t.string   "is_empty",        limit: 3
   end
 
   create_table "categories", force: :cascade do |t|
-    t.text     "name",       limit: 65535
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.text   "name", limit: 65535
+    t.string "icon", limit: 45
   end
+
+  add_index "categories", ["id"], name: "id_UNIQUE", unique: true, using: :btree
 
   create_table "comments", force: :cascade do |t|
     t.integer  "author",             limit: 4
@@ -75,11 +77,14 @@ ActiveRecord::Schema.define(version: 20161114181042) do
   create_table "items", force: :cascade do |t|
     t.string   "productId",            limit: 45
     t.text     "productTitle",         limit: 65535
+    t.text     "productDescription",   limit: 65535
     t.text     "productUrl",           limit: 65535
     t.text     "promotionUrl",         limit: 65535
     t.text     "imageUrl",             limit: 65535
     t.string   "originalPrice",        limit: 45
-    t.string   "salePrice",            limit: 45
+    t.float    "salePrice",            limit: 24
+    t.text     "storeName",            limit: 65535
+    t.text     "storeUrl",             limit: 65535
     t.float    "discount",             limit: 24
     t.integer  "lotNum",               limit: 4
     t.string   "thirtydaysCommission", limit: 45
@@ -96,11 +101,8 @@ ActiveRecord::Schema.define(version: 20161114181042) do
     t.integer  "subcategory",          limit: 4
     t.integer  "sub_subcategory",      limit: 4
     t.string   "is_hot",               limit: 3
+    t.string   "is_approved",          limit: 3
   end
-
-  add_index "items", ["category"], name: "index2", using: :btree
-  add_index "items", ["sub_subcategory"], name: "item_sub_subcategory_idx", using: :btree
-  add_index "items", ["subcategory"], name: "item_subcategory_idx", using: :btree
 
   create_table "reviews", force: :cascade do |t|
     t.text     "title",              limit: 65535
@@ -119,22 +121,9 @@ ActiveRecord::Schema.define(version: 20161114181042) do
   end
 
   create_table "subcategories", force: :cascade do |t|
-    t.integer  "parent",     limit: 4
-    t.text     "name",       limit: 65535
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.integer "parent", limit: 4
+    t.text    "name",   limit: 65535
   end
-
-  add_index "subcategories", ["parent"], name: "subcategory_category_idx", using: :btree
-
-  create_table "subsubcategories", force: :cascade do |t|
-    t.integer  "parent",     limit: 4
-    t.text     "name",       limit: 65535
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
-  end
-
-  add_index "subsubcategories", ["parent"], name: "subsubcategory_subcategory_idx", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.text     "nickname",            limit: 65535
@@ -152,9 +141,4 @@ ActiveRecord::Schema.define(version: 20161114181042) do
     t.datetime "avatar_updated_at"
   end
 
-  add_foreign_key "items", "categories", column: "category", name: "item_category"
-  add_foreign_key "items", "subcategories", column: "subcategory", name: "item_subcategory"
-  add_foreign_key "items", "subsubcategories", column: "sub_subcategory", name: "item_sub_subcategory"
-  add_foreign_key "subcategories", "categories", column: "parent", name: "subcategory_category"
-  add_foreign_key "subsubcategories", "subcategories", column: "parent", name: "subsubcategory_subcategory"
 end
