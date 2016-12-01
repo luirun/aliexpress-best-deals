@@ -14,13 +14,23 @@ Rails.application.routes.draw do
 	resources :categories
 	resources :subcategories
 	resources :subsubcategories
+
+  #review routes
+  get "review/:reviewTitle" => "reviews#show", as: "review"
 	resources :reviews
+
+
+  #users routes
 	resources :users
   
+  #items routes
+  get "product/:productTitle" => "items#show", as: "item"
 	resources :items do
 		collection { post :import }
 	end
-	
+	   
+
+     #various routes
     	get "get_subcategories/:category_id" => "items#get_subcategory"
       get "aliapi/form" => "visitors#search_items", as: "api_items_search"
     	post "item_list" => "visitors#list_items", as: "api_items_list"
@@ -29,13 +39,15 @@ Rails.application.routes.draw do
       post "hot_products" => "items#save_hot_products", as: "api_save_hot_products"
       get "auto_save_hot_products" => "items#auto_hot_products", as: "api_auto_save_hot_products"
 
-      get "search/:keyword" => "reviews#search_review", as: "search_keyword"
-      get "search/author/:keyword" => "reviews#search_user", as: "search_user"
-      get "category/:name/:p" => "categories#search", as: "search_in_category"
-      get "category/:name" => "categories#search", as: "redirect_to_search_in_category"
+      
 
-      get "search" => "items#search", as: "search_item"
-      get "search/:name/:p" => "items#search", as: "search_item_details"
+      #search routes
+      get "category/:name" => "categories#search", as: "redirect_to_search_in_category" #redirect category
+      get "category/:name/:p" => "search#search_category", as: "search_category_items" #show category
+      get "search" => "search#search_item", as: "redirect_to_search_items" #redirect items
+      get "search/:name/:p" => "search#search_item", as: "search_item" #show items
+      get "search/keyword=:keyword" => "search#search_keyword", as: "search_keyword"
+      get "search/author=:author" => "search#search_author", as: "search_author"
 
 
       #search items routing

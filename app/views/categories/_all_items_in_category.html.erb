@@ -20,7 +20,7 @@
 					<div class="item-sp item-lg">
 						<span itemscope="" itemtype="http://schema.org/Product">
 							
-							<%= link_to item_path(item.id), :itemprop => "url" do %>
+							<%= link_to item_path(item.productTitle), :itemprop => "url" do %>
 					
 							<div class="thumb vertical-alignment-helper">
 								
@@ -59,7 +59,7 @@
 				
 					<div class="item-sp item-sm">
 						<span itemscope="" itemtype="http://schema.org/Product">
-							<%= link_to item_path(item.id), :itemprop => "url" do %>
+							<%= link_to item_path(item.productTitle), :itemprop => "url" do %>
 
 								<div class="thumb vertical-alignment-helper">
 									<div class="vertical-align-center vertical-align-top">
@@ -105,10 +105,10 @@
 			<% if i == params[:p].to_i %>
 				<b><%= i %></b>
 			<% else %>
-				<% if params[:controller] == "items" %>
-					<%= link_to i, "#{search_item_details_path(params[:name], i)}" %>
+				<% if params[:action] == "search_item" %>
+					<%= link_to i, "#{search_item_path(params[:name], i)}" %>
 				<% else %>
-					<%= link_to i, "#{search_in_category_path(params[:name], i)}?price_min=#{params[:price_min]}&price_max=#{params[:price_max]}&sort=#{params[:sort]}" %>
+					<%= link_to i, "#{search_category_items_path(params[:name], i)}?price_min=#{params[:price_min]}&price_max=#{params[:price_max]}&sort=#{params[:sort]}" %>
 				<% end %>
 			<% end %>
 		<% end %>

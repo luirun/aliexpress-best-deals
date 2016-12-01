@@ -20,7 +20,7 @@
 </head>
 <body>
 	<%= render "layouts/navbar" %>
-  <%= render "users/login_modal" %>
+  <%= render "sessions/login_modal" %>
   <div class="container">
     <% flash.each do |name, msg| %>
       <%= content_tag :div, class: "alert alert-#{ name == :error ? "danger" : "success" } alert-dismissable", role: "alert" do %>

@@ -15,7 +15,7 @@
 						</div>
 
 						<div class="product-rating">
-							<%= render "rating", :reviews => @ali_reviews %>
+							<%= render "/items/show/rating", :reviews => @ali_reviews %>
 						</div>
 
 						<hr>
@@ -62,13 +62,13 @@
 					
 						<div class="tab-pane fade" id="reviews">
 							<% if @review == nil %>
-								<%= render "call_to_action" %>
+								<%= render "/items/show/call_to_action" %>
 							<% else %>
 
 							<% end %>
 							<% i = 0 %><%# for making every review unique - without it javascript can't work %>
 							<% @ali_reviews.each do |review| %>
-								<%= render "aliexpress_reviews", :review => review, :i => i %><%# sending item, i and user info to partial %>
+								<%= render "/items/show/aliexpress_reviews", :review => review, :i => i %><%# sending item, i and user info to partial %>
 								<% i = i + 1 %>
 							<% end %>
 						</div>

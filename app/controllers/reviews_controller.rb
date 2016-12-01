@@ -6,7 +6,7 @@ class ReviewsController < ApplicationController
   def index
     @reviews = Review.all
 
-        #META
+    #META
     set_meta_tags title: "Product Reviews"
     set_meta_tags description: "What is worth to buy from china? We are testing everything for you!"
     set_meta_tags keywords: "aliexpress,reviews,review,product,shopping,shop"
@@ -79,7 +79,7 @@ class ReviewsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_review
-      @review = Review.find(params[:id])
+      @review = Review.where(:title => params[:reviewTitle]).first
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

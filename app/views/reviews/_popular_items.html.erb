@@ -13,7 +13,7 @@
 					<div class="caption-text text-center">
 						<h3 style="border-top:2px solid white; border-bottom:2px solid white; padding:10px; overflow:hidden; height:150px;"><%= simple_format(item.productTitle) %></h3>
 						<p></p>
-						<%= link_to item_path(item), :class => "btn btn-default" do %>
+						<%= link_to item_path(item.productTitle), :class => "btn btn-default" do %>
 							<i class="fa fa-plus"></i> More</span>
 						<% end %>
 					</div>

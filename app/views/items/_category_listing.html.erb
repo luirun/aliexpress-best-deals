@@ -7,7 +7,7 @@
                     <div class="process">
                         <div class="process-row">
                              <div class="process-step">
-                                <%= link_to search_in_category_path(category.name,1), :class => "btn btn-default btn-circle category-listing-link" do %><i class="<%= category.icon %> fa-3x"></i><% end %>
+                                <%= link_to search_category_items_path(category.name,1), :class => "btn btn-default btn-circle category-listing-link" do %><i class="<%= category.icon %> fa-3x"></i><% end %>
                                 <p><%= category.name %></p>
                             </div>
                         </div>

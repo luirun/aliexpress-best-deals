@@ -13,9 +13,9 @@ default: &default
   adapter: mysql2
   encoding: utf8
   pool: 5
-  username: root
-  password: zaqzaq
-  host: localhost
+  username: home
+  password: JASIU12db
+  host: 193.70.114.252
 
 development:
   <<: *default

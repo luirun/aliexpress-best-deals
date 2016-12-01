@@ -1,4 +1,5 @@
 class VisitorsController < ApplicationController
+	before_action :is_admin, only: [:search_items]
   
 	def index
 		@items = Item.all.order("id desc")

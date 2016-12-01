@@ -1,5 +1,6 @@
 class ItemsController < ApplicationController
   before_action :set_item, only: [:show, :edit, :update, :destroy]
+  before_action :is_admin, only: [:save_hot_products, :auto_hot_products]
 
   # GET /items
   # GET /items.json
@@ -28,7 +29,7 @@ class ItemsController < ApplicationController
     end
 
     @ali_reviews = AliReview.where(:productId => @item.productId, :is_empty => "n")
-    @reviews = Review.all
+    @reviews = Review.all.limit(2)
     @best_items = Item.where(:is_hot => "y").limit(8) #limit%4=0!!
 
     #META
@@ -109,17 +110,10 @@ class ItemsController < ApplicationController
       end
   end
 
-  def search
-    if params[:p] == nil
-      redirect_to search_item_details_path(params[:name], 1)
-    end
-    @items = Item.where("productTitle like '%#{params[:name]}%'")
-  end
-
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_item
-      @item = Item.find(params[:id])
+      @item = Item.where(:productTitle => params[:productTitle]).first
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

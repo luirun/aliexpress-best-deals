@@ -12,7 +12,8 @@
                 <h1><%= @review.title %></h1>
                 <p class="lead">
 					<i class="fa fa-user"></i>
-					by <%= link_to User.find(@review.author).nickname, search_user_path(@review.author) %>
+                    <% $user = User.find(@review.author) %>
+					by <%= link_to $user.nickname, search_author_path($user.nickname) %>
                 </p>
                 <hr>
                 <p><i class="fa fa-calendar"></i> Posted on <%= @review.created_at %></p>

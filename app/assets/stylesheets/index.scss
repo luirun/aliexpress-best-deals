@@ -14,8 +14,9 @@
 				float:left;
 
 				h4 {
-					height:100px;
+					height:calc(150px * 0.7);
 					overflow: hidden;
+					margin:0px;
 				}
 
 				.stars {
@@ -28,6 +29,7 @@
 
 				.img-responsive {
 					height:300px;
+					width:100%;
 				}
 			}
 		}
@@ -64,11 +66,11 @@
 				}
 
 				h4 {
-					height:98px;
+					height:70%;
 					width:calc(100% - 100px);
 					float:left;
 					overflow: hidden;
-					margin-top:0px;
+					margin:0px;
 				}
 			}
 
@@ -81,7 +83,7 @@
 		//VALUES FOR BOTH
 		.price {
 			float:left;
-			height:40px;
+			height:30%;
 			width:calc(100% - 100px);
 		}
 
@@ -99,11 +101,4 @@
 			font-weight:600;
 			text-decoration:none;
 		}
-
-	
-	//SMALLER SCREENS
-		@media(max-width:790px){
-			.row {width:95%; margin-left:20px;}
-			.img-responsive {width:100%;}
-			}
 }

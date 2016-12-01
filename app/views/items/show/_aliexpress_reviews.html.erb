@@ -45,7 +45,7 @@
                 <div class="user-menu-content active img">
                     <ul class="user-menu-list">
                         <% if review.review_photos.length > 10 %>
-                            <%= render "photo_carousel", :photos => review.review_photos, :a => i %>
+                            <%= render "/items/show/photo_carousel", :photos => review.review_photos, :a => i %>
                         <% else %>
                             <h2>Photos:</h2>
                             <h3>No photos in this review <i class="fa fa-folder-open"></i></h3>
@@ -61,8 +61,10 @@
                         <% best_items.each do |item| %>
                             <li>
                                 <h4>
-                                    <%= image_tag item.imageUrl, :style => "width:100px;height:75px;" %> 
-                                    <small class="coral"><strong><%= item.salePrice %></strong> <i class="fa fa-clock-o" style="text-decoration:line-through;"><%= item.originalPrice %></i></small>
+                                    <%= link_to item_path(item.productTitle) do %>
+                                        <%= image_tag item.imageUrl, :style => "width:140px;height:90px;" %> 
+                                        <small class="coral"><strong>ONLY <%= item.salePrice %> USD!</strong></small>
+                                    <% end %>
                                 </h4>
                             </li>
                         <% end %>
@@ -78,7 +80,7 @@
                                 <div class="view">
                                     <div class="caption">
                                         <p><%= review.author %></p>
-                                        <%= link_to review, :rel => "tooltip", :title => "View" do %><span class="fa fa-search fa-2x"></span><% end %>
+                                        <%= link_to review_path(review.title), :rel => "tooltip", :title => "View" do %><span class="fa fa-search fa-2x"></span><% end %>
                                     </div>
                                     <%= image_tag review.cover.url, :class => "img-responsive" %>
                                 </div>
