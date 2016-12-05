@@ -13,12 +13,10 @@ class AliCrawler
 				
 				if params[:sort][:commissionRateUp].to_s == "1"
 					sort = "commissionRateUp"
-					puts "sprawdzone"
 				end
 				
 				if params[:hot_products][:yesno].to_s == "1"
 					hot_products = "true"
-					puts "sprawdzonex2"
 				end
 				
 				url = "https://gw.api.alibaba.com/openapi/param2/2/portals.open/api.listPromotionProduct/#{AliConfig.new.api_key}?fields=#{fields}&keywords=#{params[:keywords]}&categoryId=#{params[:category][:fields][1]}&pageNo=5&pageSize=40&sort=#{sort}&startCreditScore=#{params[:min_seller_rating]}&endCreditScore=#{params[:max_seller_rating]}&highQualityItems=#{hot_products}"
@@ -85,7 +83,6 @@ class AliCrawler
 			end
 			
 			def get_promotion_links(product_urls)
-				puts product_urls.class
 
 				if product_urls.class == String #checking that we sent to method many urls or just one
 					urls = product_urls
@@ -104,15 +101,12 @@ class AliCrawler
 
 			def get_hot_products(currency, categories, language)
 
-				
-
 				url = "http://gw.api.alibaba.com/openapi/param2/2/portals.open/api.listHotProducts/#{AliConfig.new.api_key}?localCurrency=#{currency}&categoryId=#{categories}&language=#{language}"
 				make_call(url)
 				
 			end
 			
 			def make_call(url)
-				puts url
 				response = RestClient.get(url)
 				
 				
@@ -120,7 +114,6 @@ class AliCrawler
 					puts "Error!"
 				else
 					result = JSON.parse(response)
-					puts result
 					
 					if result['errorCode'] != 20010000
 						puts "error!"

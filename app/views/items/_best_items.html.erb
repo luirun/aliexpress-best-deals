@@ -1,13 +1,13 @@
 <% $hot=0 %>
 
 <div class="container">
-	<div class="col-xs-12">		
+	<div class="col-md-12 col-xs-12">		
 		<div class="carousel slide best" id="myCarousel">
 			<div class="carousel-inner">
 				<div class="item active">
                     <ul class="thumbnails">
 						<% @best_items.each do |item| %>
-							<li class="col-sm-3">
+							<li class="col-md-3 col-xs-6">
 								<div class="fff">
 									<div class="thumbnail">
 										<%= link_to item_path(item.productTitle) do %><%= image_tag item.imageUrl %><% end %>

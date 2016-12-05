@@ -32,6 +32,7 @@
 @import "review_show.scss";
 @import "product/category_listing.scss";
 @import "product/search_box.scss";
+@import "ads.scss";
 
 
 .colorgraph {
@@ -46,7 +47,5 @@
 }
 
 .container {
-	padding-left:5px;
-	padding-right:5px;
 	max-width:100%;
 }

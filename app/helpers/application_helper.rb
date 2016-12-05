@@ -7,6 +7,7 @@ module ApplicationHelper
 	def is_admin
 		if current_user == nil
 				flash[:notice] = "You must login to access this page!"
+				session[:return_to] = request.fullpath
 				redirect_to login_path
 		else
 			if current_user.is_admin != "y"

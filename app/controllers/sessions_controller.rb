@@ -1,7 +1,7 @@
 class SessionsController < ApplicationController
 
   def new
-  
+  	
   end
   
 	def create
@@ -10,10 +10,10 @@ class SessionsController < ApplicationController
 				session[:id] = user.id
 				log_in user
 				flash[:notice] = "Welcome back #{user.name} #{user.surname}!"
-				redirect_to root_path
+				redirect_to session[:return_to]
 			else
 				flash[:alert] = 'Invalid email/password combination'
-				redirect_to root_path
+				redirect_to session[:return_to]
 			end
 	end
 	

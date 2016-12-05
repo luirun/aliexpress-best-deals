@@ -7,6 +7,8 @@ class Item < ActiveRecord::Base
 			a = i['30daysCommission']
 			i = i.except('30daysCommission')
 			item = Item.new(i)
+			item.salePrice = item.salePrice.slice(4..12)
+			item.originalPrice = item.salePrice.slice(4.12)
 			item.thirtydaysCommission = a
 			item.is_approved = "n"
 			item.category = categoryId
@@ -79,6 +81,8 @@ class Item < ActiveRecord::Base
 				promotion_link = AliCrawler.new.get_promotion_links(i["productUrl"]) #getting promotion url from aliexpress
 				promotion_link = promotion_link["result"]["promotionUrls"] #shortening our hash a little
 				item = Item.new(i)  #making new instance in Hot Products table
+				item.salePrice = i["salePrice"].slice(4..12)
+				item.originalPrice = i["originalPrice"].slice(4..12)
 				item.promotionUrl = promotion_link[0]["promotionUrl"] #saving promotion url to record
 				item.thirtydaysCommission = a #adding 30 days commission to record
 				item.category = categoryId

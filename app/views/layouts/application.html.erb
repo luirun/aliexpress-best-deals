@@ -21,6 +21,18 @@
 <body>
 	<%= render "layouts/navbar" %>
   <%= render "sessions/login_modal" %>
+  <div class="ad-container">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+      <!-- alibestdeal-top -->
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-6222054838117933"
+           data-ad-slot="7055539506"
+           data-ad-format="auto"></ins>
+      <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+  </div>
   <div class="container">
     <% flash.each do |name, msg| %>
       <%= content_tag :div, class: "alert alert-#{ name == :error ? "danger" : "success" } alert-dismissable", role: "alert" do %>
@@ -30,6 +42,19 @@
     <% end %>
 
     <%= yield %>
+  </div>
+
+  <div class="ad-container">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- alibestdeal-bottom -->
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-6222054838117933"
+         data-ad-slot="8532272706"
+         data-ad-format="auto"></ins>
+    <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
   </div>
 </body>
 </html>

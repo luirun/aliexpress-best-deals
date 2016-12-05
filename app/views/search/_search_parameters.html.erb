@@ -1,15 +1,20 @@
 <div class="col-md-12">
-Sort by:
+<b>Sort by:</b>
+	<div class="form-group">
 	<%= form_tag(request.original_url, method: "get") do %>
-		Price:
-		<%= text_field_tag :price_min, nil, placeholder: "min"  %>
-		-
-		<%= text_field_tag :price_max, nil, placeholder: "max" %>
+    	<div class="input-group">
+        	<div class="input-group-addon"><i class="fa fa-dollar fa-2x"></i></div>
+             	<%= text_field_tag :price_min, nil, placeholder: "Minimal Price", class: "form-control"  %>
+             	<%= text_field_tag :price_max, nil, placeholder: "Maximum Price", class: "form-control" %>
+            </div>
+        
 
-		Discount:
-		<%= radio_button(:discount, :discount, 1) %><%= label :discount, "discount_1" do %>UP<% end %>
-		<%= radio_button(:discount, :discount, 0) %><%= label :discount, "discount_0" do %>DOWN<% end %>
+			<b>Sort by discount:</b>
+			<%= radio_button_tag(:discount, :discountup, 1) %><%= label :discount, "discountup" do %>UP<% end %>
+			<%= radio_button_tag(:discount, :discountdown, 0) %><%= label :discount, "discountdown" do %>DOWN<% end %>
 
-		<%= submit_tag %>
+			<%= submit_tag "Filter", class: "btn btn-primary btn-sm" %>
+		</div>
 	<% end %>
+	</div>
 </div>

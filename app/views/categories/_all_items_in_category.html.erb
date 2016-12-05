@@ -98,22 +98,27 @@
 				</div><!-- /.row -->
 			<% end %>
 	<% end %>
+</div>
 
 
-	<div class="col-md-12 text-center">
-		<% for i in 1..(@items.length/16.to_f).ceil do %>
-			<% if i == params[:p].to_i %>
-				<b><%= i %></b>
-			<% else %>
-				<% if params[:action] == "search_item" %>
-					<%= link_to i, "#{search_item_path(params[:name], i)}" %>
+
+	<div class="row">
+		<div class="col-md-12 text-center">
+			<ul class="pagination">
+			<% for i in 1..(@items.length/16.to_f).ceil do %>
+				<% if i == params[:p].to_i %>
+					<li class="disabled"><%= link_to i, "", :style => "background-color:#3498db;", :disabled =>"disabled" %></li>
 				<% else %>
-					<%= link_to i, "#{search_category_items_path(params[:name], i)}?price_min=#{params[:price_min]}&price_max=#{params[:price_max]}&sort=#{params[:sort]}" %>
+					<% if params[:action] == "search_item" %>
+						<li><%= link_to i, "#{search_item_path(params[:name], i)}" %></li>
+					<% else %>
+						 <li><%= link_to i, "#{search_category_items_path(params[:name], i)}?price_min=#{params[:price_min]}&price_max=#{params[:price_max]}&sort=#{params[:sort]}" %></li>
+					<% end %>
 				<% end %>
 			<% end %>
-		<% end %>
+			</ul>
+		</div>
 	</div>
 
 	<%= render "items/search_box" %>
 <% end %>
-</div>
