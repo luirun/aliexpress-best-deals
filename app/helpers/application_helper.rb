@@ -1,5 +1,9 @@
 module ApplicationHelper
 
+	if session[:return_to] == nil
+		session[:return_to] = root_url
+	end
+
 	def print_multiline(field)
 	  field.gsub("\r\n","<br/>").html_safe
 	end
