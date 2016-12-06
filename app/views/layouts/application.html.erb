@@ -1,3 +1,7 @@
+<% if session[:return_to] == nil %>
+  <% session[:return_to] = root_url %>
+<% end %>
+
 <!DOCTYPE html>
 <html>
 <head>
