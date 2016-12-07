@@ -110,6 +110,10 @@ class ItemsController < ApplicationController
       end
   end
 
+  def clear_expired_items
+    items = Item.clear_expired_items()
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_item

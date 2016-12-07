@@ -6,7 +6,7 @@
 <div class="container">
 <div class="row">
     <div class="col-sm-3">
-        <a href="mail-compose.html" class="btn btn-danger btn-block btn-compose-email">Compose Email</a>
+        <%= link_to new_review_path, :class => "btn btn-danger btn-block btn-compose-email" do %>Write own product review!<% end %>
         <ul class="nav nav-pills nav-stacked nav-email shadow mb-20">
             <li class="active">
                 <a href="#mail-inbox.html">

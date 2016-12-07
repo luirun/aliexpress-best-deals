@@ -13,26 +13,44 @@
  *
  */
 
+//General styles
 @import "bootstrap";
 @import "font-awesome-sprockets";
 @import "font-awesome";
-@import "index.scss";
-@import "_review_cards.scss";
-@import "_best_items.scss";
-@import "_comment.scss";
-@import "_modal_login.scss";
-@import "profile.scss";
-@import "show_item.scss";
-@import "_aliexpress_reviews.scss";
-@import "item_description.scss";
-@import "_call_to_action.scss";
-@import "_rating.scss";
-@import "navbar.scss";
-@import "_recent_reviews.scss";
-@import "review_show.scss";
-@import "product/category_listing.scss";
-@import "product/search_box.scss";
-@import "ads.scss";
+
+//App layout styles
+@import "layout/_modal_login.scss";
+@import "layout/ads.scss";
+@import "layout/navbar.scss";
+
+
+//Item styles
+@import "items/_aliexpress_reviews.scss";
+@import "items/_call_to_action.scss";
+@import "items/category_listing.scss";
+@import "items/_rating.scss";
+@import "items/item_description.scss";
+@import "items/product_list.scss";
+@import "items/show_item.scss";
+
+//Review styles
+@import "reviews/_comment.scss";
+@import "reviews/_recent_reviews.scss";
+@import "reviews/_review_cards.scss";
+@import "reviews/review_show.scss";
+
+//User styles
+@import "users/profile.scss";
+
+//Search styles
+@import "search/search_box.scss";
+
+//Partial styles
+@import "partials/_best_items.scss";
+
+
+//404 error style
+@import "error404.scss";
 
 
 .colorgraph {

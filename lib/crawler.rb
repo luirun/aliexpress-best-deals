@@ -20,6 +20,7 @@ class AliCrawler
 				end
 				
 				url = "https://gw.api.alibaba.com/openapi/param2/2/portals.open/api.listPromotionProduct/#{AliConfig.new.api_key}?fields=#{fields}&keywords=#{params[:keywords]}&categoryId=#{params[:category][:fields][1]}&pageNo=5&pageSize=40&sort=#{sort}&startCreditScore=#{params[:min_seller_rating]}&endCreditScore=#{params[:max_seller_rating]}&highQualityItems=#{hot_products}"
+				puts url
 				
 				make_call(url)
 				

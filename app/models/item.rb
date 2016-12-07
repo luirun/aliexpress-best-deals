@@ -4,15 +4,20 @@ class Item < ActiveRecord::Base
 		puts items
 
 		items.each do |i|
-			a = i['30daysCommission']
-			i = i.except('30daysCommission')
-			item = Item.new(i)
-			item.salePrice = item.salePrice.slice(4..12)
-			item.originalPrice = item.salePrice.slice(4.12)
-			item.thirtydaysCommission = a
-			item.is_approved = "n"
-			item.category = categoryId
-			item.save
+			id_exist = Item.where(:productId => i["productId"]).first
+			if id_exist == nil
+				puts "Product Already Exists"
+			else
+				a = i['30daysCommission']
+				i = i.except('30daysCommission')
+				item = Item.new(i)
+				item.salePrice = i["salePrice"].slice(4..12)
+				item.originalPrice = i["originalPrice"].slice(4..12)
+				item.thirtydaysCommission = a
+				item.is_approved = "n"
+				item.category = categoryId
+				item.save
+			end
 		end
 	end
 
@@ -75,20 +80,25 @@ class Item < ActiveRecord::Base
 			if details["result"] == nil
 				puts "cisza nocna"
 			else
-				details = details["result"]
-				a = details["30daysCommission"]
-				i = details.except('30daysCommission')
-				promotion_link = AliCrawler.new.get_promotion_links(i["productUrl"]) #getting promotion url from aliexpress
-				promotion_link = promotion_link["result"]["promotionUrls"] #shortening our hash a little
-				item = Item.new(i)  #making new instance in Hot Products table
-				item.salePrice = i["salePrice"].slice(4..12)
-				item.originalPrice = i["originalPrice"].slice(4..12)
-				item.promotionUrl = promotion_link[0]["promotionUrl"] #saving promotion url to record
-				item.thirtydaysCommission = a #adding 30 days commission to record
-				item.category = categoryId
-				item.is_hot = "y"
-				item.is_approved = "y"
-				item.save
+				id_exist = Item.where(:productId => i["productId"]).first
+				if id_exist != nil
+					puts "Product Already Exists"
+				else
+					details = details["result"]
+					a = details["30daysCommission"]
+					i = details.except('30daysCommission')
+					promotion_link = AliCrawler.new.get_promotion_links(i["productUrl"]) #getting promotion url from aliexpress
+					promotion_link = promotion_link["result"]["promotionUrls"] #shortening our hash a little
+					item = Item.new(i)  #making new instance in Hot Products table
+					item.salePrice = i["salePrice"].slice(4..12)
+					item.originalPrice = i["originalPrice"].slice(4..12)
+					item.promotionUrl = promotion_link[0]["promotionUrl"] #saving promotion url to record
+					item.thirtydaysCommission = a #adding 30 days commission to record
+					item.category = categoryId
+					item.is_hot = "y"
+					item.is_approved = "y"
+					item.save
+				end
 			end
 		end
 	end
@@ -114,6 +124,10 @@ class Item < ActiveRecord::Base
 			item.save
 		end
 
+	end
+
+	def self.clear_expired_items
+		items = Item.where("validTime < #{Time.now.strftime("%Y-%d-%m").to_s}").destroy_all
 	end
 
 end

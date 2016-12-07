@@ -51,7 +51,10 @@ Rails.application.routes.draw do
 
 
       #search items routing
+      get "clear_expired_items" => "items#clear_expired_items"
 
+      #404 erorrs
+      get "*path" => "visitors#error404", as: "error"
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

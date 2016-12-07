@@ -81,6 +81,8 @@ GEM
     ffi (1.9.14-x86-mingw32)
     font-awesome-sass (4.6.2)
       sass (>= 3.2)
+    gaffe (1.2.0)
+      rails (>= 4.0.0)
     globalid (0.3.7)
       activesupport (>= 4.1.0)
     http-cookie (1.0.3)
@@ -208,6 +210,7 @@ DEPENDENCIES
   coffee-rails (~> 4.1.0)
   easy_translate
   font-awesome-sass
+  gaffe
   jbuilder (~> 2.0)
   jquery-rails
   meta-tags

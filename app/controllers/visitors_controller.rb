@@ -34,5 +34,12 @@ class VisitorsController < ApplicationController
 	def hot_products
 
 	end
+
+	def error404
+		#META
+    	set_meta_tags title: "404 Page not found!"
+   	 	set_meta_tags description: "This page doesnt exist! But you may back to our home page and discover our website!"
+    	set_meta_tags keywords: "aliexpress,deal,review,error,page,404"
+	end
 		
 end

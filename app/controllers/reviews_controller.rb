@@ -40,7 +40,7 @@ class ReviewsController < ApplicationController
   # POST /reviews.json
   def create
     @review = Review.new(review_params)
-
+    @review.author = current_user.id
     respond_to do |format|
       if @review.save
         format.html { redirect_to new_review_path, notice: 'Subsubcategory was successfully created.' }

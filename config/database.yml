@@ -47,8 +47,3 @@ test:
 #   production:
 #     url: <%= ENV['DATABASE_URL'] %>
 #
-production:
-  <<: *default
-  database: aliexpress_production
-  username: aliexpress
-  password: <%= ENV['ALIEXPRESS_DATABASE_PASSWORD'] %>

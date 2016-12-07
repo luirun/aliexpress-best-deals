@@ -76,3 +76,6 @@ gem 'font-awesome-sass'
 
 #meta tags
 gem 'meta-tags'
+
+#error pages
+gem 'gaffe'
