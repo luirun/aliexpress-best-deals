@@ -16,9 +16,12 @@
 						</div>
 						<div>
 							<%= review.short_description %>
-							<%= link_to 'Show', review %>
-							<%= link_to 'Edit', edit_review_path(review) %>
-							<%= link_to 'Destroy', review, method: :delete, data: { confirm: 'Are you sure?' } %>
+							<% if current_user != nil %>
+								<% if current_user.is_admin == "y" || current_user == @review.author %>
+									<%= link_to 'Edit', edit_review_path(review.title) %>
+									<%= link_to 'Destroy', review, method: :delete, data: { confirm: 'Are you sure?' } %>
+								<% end %>
+							<% end %>
 						</div>
 						<div>
 							<%= link_to "Read More", review_path(review.title), :class => "btn btn-primary btn-sm" %>

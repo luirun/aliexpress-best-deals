@@ -34,6 +34,19 @@ class ReviewsController < ApplicationController
 
   # GET /reviews/1/edit
   def edit
+    if current_user != nil 
+      
+      if current_user.id == @review.author || current_user.is_admin == "y"
+      else
+        redirect_to root_path
+        flash[:notice] = "You are not an author of this review and you can't edit it!"
+      end
+
+    else
+      redirect_to root_path
+       flash[:notice] = "Login to edit this review!"
+    end
+
   end
 
   # POST /reviews
@@ -43,7 +56,7 @@ class ReviewsController < ApplicationController
     @review.author = current_user.id
     respond_to do |format|
       if @review.save
-        format.html { redirect_to new_review_path, notice: 'Subsubcategory was successfully created.' }
+        format.html { redirect_to new_review_path, notice: 'Review was successfully created!' }
         format.json { render :show, status: :created, location: @review }
       else
         format.html { render :new }
@@ -55,10 +68,11 @@ class ReviewsController < ApplicationController
   # PATCH/PUT /reviews/1
   # PATCH/PUT /reviews/1.json
   def update
+    @review = Review.find(params[:id])
     respond_to do |format|
       if @review.update(review_params)
-        format.html { redirect_to @review, notice: 'Subsubcategory was successfully updated.' }
-        format.json { render :show, status: :ok, location: @review }
+        format.html { redirect_to review_path(@review.title), notice: 'Review was successfully updated!' }
+        format.json { render :show, status: :ok, location: @review.title }
       else
         format.html { render :edit }
         format.json { render json: @review.errors, status: :unprocessable_entity }

@@ -5,7 +5,7 @@ class Item < ActiveRecord::Base
 
 		items.each do |i|
 			id_exist = Item.where(:productId => i["productId"]).first
-			if id_exist == nil
+			if id_exist != nil
 				puts "Product Already Exists"
 			else
 				a = i['30daysCommission']
@@ -22,31 +22,20 @@ class Item < ActiveRecord::Base
 	end
 
 	def self.clear_unwanted_items(products)
-		a = Item.all.limit(40).order("id desc")
 
-		db_items = [] #all last 40 product id's
-		a.each do |i|
-			db_items << i.productId
-		end
-
-		form_items = [] #array with selected to save items
+		#approving all checked items
 		products.each do |p|
-			form_items << p
+			item = Item.where(:productId => p).first
+			item.is_approved = "y"
+			item.save
 		end
 
-		all = db_items - form_items #all = items without checked checkboxes
-
-		all.each do |item|
-			delted_item = Item.where(:productId => item).first
-			delted_item.delete
-		end
-
-		#approving all selected items	
-		form_items.each do |item|
-			approve_item = Item.where(:productId => item).first
-			puts "zaakceptowano"
-			approve_item.is_approved = "y"
-			approve_item.save
+		#deleting unselected items
+		a = Item.all.limit(40).order("id desc")
+		a.each do |item|
+			if item.is_approved != "y"
+				item.delete
+			end
 		end
 
 	end
