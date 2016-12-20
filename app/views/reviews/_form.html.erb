@@ -1,10 +1,10 @@
 <%= form_for(@review) do |f| %>
   <% if @review.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@post.errors.count, "error") %> prohibited this post from being saved:</h2>
+      <h2><%= pluralize(@review.errors.count, "error") %> prohibited this post from being saved:</h2>
 
       <ul>
-      <% @post.errors.full_messages.each do |message| %>
+      <% @review.errors.full_messages.each do |message| %>
         <li><%= message %></li>
       <% end %>
       </ul>
@@ -37,9 +37,70 @@
 		<%= f.label :promoted %><br>
 		<%= f.check_box :promoted, {}, "y", "n" %>
 	</div>
+
+  <div class="field">
+    <%= f.label :productId, "Choose product" %><br>
+    <% if params[:action] == "edit" %>
+      <% $value = Item.where(:productId => @review.productId).first %>
+      <%= f.text_field :productId, :class => "search-product", :value => $value.productTitle %><div class="enable">Change</div>
+    <% else %>
+      <%= f.text_field :productId, :class => "search-product" %><div class="enable">Change</div>
+    <% end %>
+  </div>
+
+  <div class="product-list">
+
+  </div>
   
   
   <div class="actions">
     <%= f.submit %>
   </div>
 <% end %>
+
+
+<script type="text/javascript">
+  $('.search-product').change(function() {
+      $title = $('.search-product').val();
+      $.ajax({
+          url: "/review/search-items/"+$title,
+          type: "GET",
+      })
+  });
+
+  $(function() {
+    $('.enable').click(function() {
+      $('.search-product').prop("readonly", false);
+      $('.search-product').css("background-color", "white");
+    });
+  });
+</script>
+
+<style>
+.product-list {
+  width:300px;
+}
+.one-item {
+  width:400px;
+  height:120px;
+  background-color:red;
+}
+
+.one-item:hover {
+  border:2px solid blue;
+}
+
+.one-item img {
+  float:left;
+  width:100px;
+  height:120px;
+}
+
+.enable {
+  color:blue;
+}
+
+.enable:hover {
+  text-decoration: underline;
+}
+</style>

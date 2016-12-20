@@ -1,5 +1,5 @@
 class ReviewsController < ApplicationController
-  before_action :set_review, only: [:show, :edit, :update, :destroy]
+  before_action :set_review, only: [:show, :edit, :update, :destroy, :create]
 
   # GET /subsubcategories
   # GET /subsubcategories.json
@@ -54,6 +54,8 @@ class ReviewsController < ApplicationController
   def create
     @review = Review.new(review_params)
     @review.author = current_user.id
+    product = Item.where(:productTitle => review_params[:productId]).first
+    @review.productId = product.productId
     respond_to do |format|
       if @review.save
         format.html { redirect_to new_review_path, notice: 'Review was successfully created!' }
@@ -69,8 +71,11 @@ class ReviewsController < ApplicationController
   # PATCH/PUT /reviews/1.json
   def update
     @review = Review.find(params[:id])
+    product = Item.where(:productTitle => review_params[:productId]).first
+    parameters = review_params
+    parameters[:productId] = product.productId
     respond_to do |format|
-      if @review.update(review_params)
+      if @review.update(parameters)
         format.html { redirect_to review_path(@review.title), notice: 'Review was successfully updated!' }
         format.json { render :show, status: :ok, location: @review.title }
       else
@@ -83,10 +88,18 @@ class ReviewsController < ApplicationController
   # DELETE /reviews/1
   # DELETE /reviews/1.json
   def destroy
+    @review = Review.find(params[:id])
     @review.destroy
     respond_to do |format|
       format.html { redirect_to reviews_url, notice: 'Review was successfully destroyed.' }
       format.json { head :no_content }
+    end
+  end
+
+  def search_items
+    @items = Item.where("productTitle like '%#{params[:name]}%'").limit(5)
+    respond_to do |format|
+      format.js   { render :layout => false }
     end
   end
 
@@ -98,6 +111,6 @@ class ReviewsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def review_params
-      params.require(:review).permit(:title, :short_description, :long_description, :keywords, :promoted, :item_id, :cover, :author)
+      params.require(:review).permit(:title, :short_description, :long_description, :keywords, :promoted, :item_id, :cover, :author, :productId)
     end
 end

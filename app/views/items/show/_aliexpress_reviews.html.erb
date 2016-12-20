@@ -57,7 +57,7 @@
                         You may also like:
                     </h3>
                     <ul class="user-menu-list">
-                        <% best_items = Item.where(:is_hot => "y").limit(2) %>
+                        <% best_items = Item.where(:is_hot => "y", :category => @item.category).limit(2) %>
                         <% best_items.each do |item| %>
                             <li>
                                 <h4>

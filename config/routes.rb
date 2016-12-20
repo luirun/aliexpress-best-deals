@@ -18,7 +18,9 @@ Rails.application.routes.draw do
   #review routes
   get "review/:reviewTitle" => "reviews#show", as: "review"
   get "review/:reviewTitle/edit" => "reviews#edit", as: "edit_review"
+  get "/review/search-items/:name" => "reviews#search_items"
   patch "review/:id" => "reviews#update"
+  delete "review/:id" => "reviews#destroy"
 	resources :reviews
 
 
