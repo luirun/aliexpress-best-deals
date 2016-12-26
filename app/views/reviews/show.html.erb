@@ -28,6 +28,39 @@
                 <hr>
                 <%= image_tag @review.cover.url, :class => "img-responsive" %>
                 <hr>
+
+                <div class="col-lg-12">
+                    <div class="col-lg-3 text-center">
+                        <h4>Price: <b><%= @review.price %> USD</b></h4>
+                    </div>
+
+                    <div class="col-lg-6 text-center">
+                        <h4>Product rating:</h4>
+                        <h4 style="display:inline-block;"><b><%= @review.rating %>/5.0</b></h4>
+                        <% for i in 0..@review.rating-1 %>
+                            <span class="fa fa-star fa-2x"></span>
+                        <% end %>
+
+                        <% if @review.rating%1 != 0 %>
+                            <span class="fa fa-star-half-o fa-2x"></span>
+                            <% for i in 0...5-(@review.rating+0.5) %>
+                                <span class="fa fa-star-o fa-2x"></span>
+                            <% end %>
+                        <% else %>
+                            <% for i in 0...5-@review.rating %>
+                                <span class="fa fa-star-o fa-2x"></span>
+                            <% end %>
+                        <% end %>
+                    </div>
+
+                    <div class="col-lg-3 text-center">
+                        <%= link_to "Buy It Now", Item.where(:productId => @review.productId).first.promotionUrl, :class => "btn btn-default btn-lg", :target => "_blank" %>
+                    </div>
+                </div>
+                <hr style="width:100%;float:left;">
+
+
+
                 <p class="lead"><%= simple_format(@review.long_description) %></p>
                 <hr>
 
@@ -59,29 +92,11 @@
         <div class="lg-md-12">
 			<%# render 6 reviews categories %>
 			<%= render "review_categories" %>
-
-            <div class="col-lg-4 col-md-6">
-                <h3>Contact:</h3>
-				<p>Have a question or feedback? Contact me!</p>
-				<p><a href="" title="Contact me!"><i class="fa fa-envelope"></i> Contact</a></p>
-            <h3>Follow:</h3>
-			
-			
-            <a href="" id="gh" target="_blank" title="Twitter"><span class="fa-stack fa-lg">
-              <i class="fa fa-square-o fa-stack-2x"></i>
-              <i class="fa fa-twitter fa-stack-1x"></i>
-            </span>
-            Twitter</a>
-            <a href=""  target="_blank" title="GitHub"><span class="fa-stack fa-lg">
-              <i class="fa fa-square-o fa-stack-2x"></i>
-              <i class="fa fa-github fa-stack-1x"></i>
-            </span>
-            GitHub</a>
                         
         </div>
 
 <div class="col-md-12 text-center">
-    <p>Copyright © Your Website | <a href="">Privacy Policy</a> | <a href="">Terms of Use</a></p>
+    <p>Copyright © AliBestDeal.com</p>
 </div>
 					
 					

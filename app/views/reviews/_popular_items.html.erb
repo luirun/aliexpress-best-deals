@@ -1,7 +1,9 @@
 <div class="well">
-    <h4><i class="fa fa-book"></i> Featured items:</h4>
-		<div class="row"> 
-		<% @popular_items.limit(5).each do |item| %>	 
+    <h4><i class="fa fa-book"></i> Featured products:</h4>
+		<div class="row">
+		<% $db_id = Item.where(:productId => @review.productId).first.id %>
+		<% @popular_items = Item.where(:is_hot => "y", :id => $db_id+2..$db_id+500).limit(5) %>
+		<% @popular_items.each do |item| %>	 
 			<div class="col-lg-12">
 				<div class="cuadro_intro_hover" style="background-color:#cccccc;">
 					<p style="text-align:center;">

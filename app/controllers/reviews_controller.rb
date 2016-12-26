@@ -18,8 +18,6 @@ class ReviewsController < ApplicationController
   	@promoted_reviews = Review.all.where.not(:id => @review.id)
   	@comment = Comment.new
   	@comments = Comment.where(:page => @review.id)
-    @popular_reviews = Review.all.limit(4)
-    @popular_items = Item.where(:is_hot => "y").limit(4)
 
     #META
     set_meta_tags title: @review.title
@@ -111,6 +109,6 @@ class ReviewsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def review_params
-      params.require(:review).permit(:title, :short_description, :long_description, :keywords, :promoted, :item_id, :cover, :author, :productId)
+      params.require(:review).permit(:title, :short_description, :long_description, :keywords, :promoted, :item_id, :cover, :author, :productId, :rating, :price)
     end
 end

@@ -15,9 +15,24 @@
     </div>
     <div id="navbar" class="navbar-collapse collapse">
     <ul class="nav navbar-nav navbar-right">
-      <li class="active"><%= link_to "Home", root_path %></li>
-      <li><%= link_to "Items", items_path %></li>
-      <li><%= link_to "Reviews", reviews_path %></li>
+
+      <% if params[:controller] == "visitors" %>
+        <li class="active"><%= link_to "Home", root_path %></li>
+      <% else %>
+        <li><%= link_to "Home", root_path %></li>
+      <% end %>
+
+      <% if params[:controller] == "items" %>
+        <li class="active"><%= link_to "Items", items_path %></li>
+      <% else %>
+        <li><%= link_to "Items", items_path %></li>
+      <% end %>
+
+      <% if params[:controller] == "reviews" %>
+        <li class="active"><%= link_to "Reviews", reviews_path %></li>
+      <% else %>
+        <li><%= link_to "Reviews", reviews_path %></li>
+      <% end %>
       <%= render "layouts/navbar_links" %>
     </ul>
     </div>

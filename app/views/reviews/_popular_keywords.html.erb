@@ -1,12 +1,14 @@
 <div class="well">
     <h4><i class="fa fa-tags"></i> Popular Tags:</h4>
     <div class="row">
-        <div class="col-lg-6">
+        <div class="col-lg-12">
             <ul class="list-unstyled">
 
-                <% @review.keywords.split(",").each do |keyword| %>
-                    <%= link_to search_keyword_path(keyword) do %>
-                        <li><span class="badge badge-info"><%= keyword %></span></li>
+                <% Review.all.order("id asc").limit(4).each do |review| %>
+                    <% review.keywords.split(",").each do |keyword| %>
+                        <%= link_to search_keyword_path(keyword) do %>
+                            <li><span class="badge badge-info" style="display:inline-block;float:left;margin:2px;"><%= keyword %></span></li>
+                        <% end %>
                     <% end %>
                 <% end %>
 

@@ -2,8 +2,6 @@ class VisitorsController < ApplicationController
 	before_action :is_admin, only: [:search_items]
   
 	def index
-		@items = Item.all.order("id desc")
-		@best_items = Item.where(:is_hot => "y").limit(8) #limit%4=0!!
 		@categories = Category.all.limit(3)
 		@recent_reviews = Review.all.limit(3)
 

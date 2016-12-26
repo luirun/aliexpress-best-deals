@@ -13,24 +13,36 @@
 
   <div class="field">
     <%= f.label :title %><br>
-    <%= f.text_area :title %>
+    <%= f.text_area :title, :class => "form-control" %>
   </div>
   <div class="field">
     <%= f.label :short_description %><br>
-    <%= f.text_area :short_description %>
+    <%= f.text_area :short_description, :class => "form-control" %>
   </div>
+
+  <div class="field">
+    <%= f.label :price, "Price in USD:" %><br>
+    <%= f.text_field :price, :class => "form-control" %>
+  </div>
+
   <div class="field">
     <%= f.label :long_description %><br>
     <%= f.cktext_area :long_description %>
   </div>
+
   <div class="field">
     <%= f.label :keywords %><br>
-    <%= f.text_area :keywords %>
+    <%= f.text_area :keywords, :class => "form-control" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :rating %><br>
+    <%= f.range_field :rating, :min => "0", :max => "5", :step => "0.5", :style => "width:50%;", :class => "form-control" %>
   </div>
   
-    <div class="field">
+  <div class="field">
 		<%= f.label :cover %><br>
-		<%= f.file_field :cover %>
+		<%= f.file_field :cover, :class => "form-control" %>
   </div>
   
 	<div class="field">

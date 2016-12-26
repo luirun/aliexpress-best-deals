@@ -6,7 +6,9 @@
 	<div class="container">
 	<% @categories.each do |category| %>
 		<h1><%= link_to category.name, search_category_items_path(category.name,1) %></h1>
-			<% @items.where(:category => category.id).limit(8).each do |item| %>
+			<% $category = Item.where(:category => category.id) %>
+			<% $rand = rand(0..$category.length-8) %>
+			<% $category[$rand...$rand+8].each do |item| %>
 
 			<% if $i%8 == 0 %>
 				<div class="row"><%# adding row at start for 8 items %>

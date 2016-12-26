@@ -1,8 +1,9 @@
 <div class="well">
     <h4><i class="fa fa-fire"></i> Popular Posts:</h4>
 	<ul>
+		<% @popular_reviews = Review.limit(4).order("id desc") %>
 		<% @popular_reviews.each do |review| %>
-			<li><%= link_to review.title, review_path(review) %></li>
+			<li><i class="fa fa-sticky-note" style="margin-right:2px;"></i><%= link_to review.title, review_path(review.title) %></li>
 		<% end %>
 	</ul>
 </div>
