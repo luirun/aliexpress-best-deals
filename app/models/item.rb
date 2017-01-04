@@ -12,6 +12,7 @@ class Item < ActiveRecord::Base
 				i = i.except('30daysCommission')
 				item = Item.new(i)
 				item.salePrice = i["salePrice"].slice(4..12)
+				item.productTitle = ActionView::Base.full_sanitizer.sanitize(i["productTitle"])
 				item.originalPrice = i["originalPrice"].slice(4..12)
 				item.thirtydaysCommission = a
 				item.is_approved = "n"
@@ -24,10 +25,14 @@ class Item < ActiveRecord::Base
 	def self.clear_unwanted_items(products)
 
 		#approving all checked items
-		products.each do |p|
-			item = Item.where(:productId => p).first
-			item.is_approved = "y"
-			item.save
+		if products == nil
+			puts "there is no products to approve"
+		else
+			products.each do |p|
+				item = Item.where(:productId => p).first
+				item.is_approved = "y"
+				item.save
+			end
 		end
 
 		#deleting unselected items

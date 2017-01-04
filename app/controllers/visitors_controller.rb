@@ -24,9 +24,10 @@ class VisitorsController < ApplicationController
 	def save_items
 		save_items = Item.clear_unwanted_items(params[:productId])
 		product_urls = Item.where(:promotionUrl => nil).select(:productUrl, :id).limit(40).order("id desc")
-		puts product_urls.class
-		promotion_urls = AliCrawler.new.get_promotion_links(product_urls)
-		Item.add_promotion_links(promotion_urls["result"]["promotionUrls"],product_urls)
+		if product_urls[0] != nil
+			promotion_urls = AliCrawler.new.get_promotion_links(product_urls)
+			Item.add_promotion_links(promotion_urls["result"]["promotionUrls"],product_urls)
+		end
 	end
 
 	def hot_products
