@@ -109,3 +109,38 @@
 			text-decoration:none;
 		}
 }
+
+
+/* load more div */
+
+.rounded-plus-container {
+	width:180px;
+	height:180px;
+	margin:auto;
+}
+
+.rounded-plus {
+	width:180px;
+	height:180px;
+	background-color:#ecf0f1;
+	border-radius:100px 100px 100px 100px;
+	margin:auto;
+	transition-duration:0.5s;
+}
+
+.rounded-plus i {
+	position:relative;
+	top:60px;
+	left:65px;
+	transition-duration:0.5s;
+}
+
+.rounded-plus:hover {
+	background-color:#bdc3c7;
+	transition-duration:0.5s;
+
+	i {
+		color:black;
+		transition-duration:0.5s;
+	}
+}

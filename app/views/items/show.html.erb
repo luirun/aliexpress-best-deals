@@ -1,3 +1,8 @@
+<% if session[:page] != nil %>
+	<%= link_to "Home", root_path %> -> <%= link_to Category.find(@item.category).name, request.referrer %> -> <%= @item.productTitle.slice(0..40) %>...
+<% else %>
+	<%= link_to "Home", root_path %> -> <%= link_to "Back", request.referrer %> -> <%= @item.productTitle.slice(0..40) %>...
+<% end %>
 <div class="container-fluid">
     <div class="content-wrapper">	
 		<div class="item-container">	

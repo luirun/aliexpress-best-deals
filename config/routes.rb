@@ -9,7 +9,9 @@ Rails.application.routes.draw do
   resources :users
   get "/profile" => "users#profile", as: "user_profile"
 	
+  #index page routing
 	root 'visitors#index'
+  get "load-category" => "visitors#new_items_append", :as => "new_items_append"
 	
 	resources :categories
 	resources :subcategories

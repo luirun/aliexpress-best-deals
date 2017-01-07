@@ -2,8 +2,8 @@ class VisitorsController < ApplicationController
 	before_action :is_admin, only: [:search_items]
   
 	def index
-		@categories = Category.all.limit(3)
 		@recent_reviews = Review.all.limit(3)
+		session[:excluded_categories] = []
 
 		#META
     	set_meta_tags title: "Home"
@@ -32,6 +32,12 @@ class VisitorsController < ApplicationController
 
 	def hot_products
 
+	end
+
+	def new_items_append
+		respond_to do |format|               
+			format.js
+		end    
 	end
 
 	def error404

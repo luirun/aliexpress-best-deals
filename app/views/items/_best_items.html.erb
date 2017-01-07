@@ -7,7 +7,7 @@
 <% $max = $max.id %>
 
 <% $random = rand($min..$max-16) %>
-<% @best_items = Item.where(:is_hot => "y", :id => $random..$random*16).limit(16) #limit%4=0!! %>
+<% @best_items = Item.where(:is_hot => "y").order("RAND()").limit(16)  #limit%4==0%>
 <div class="container">
 	<div class="col-md-12 col-xs-12">		
 		<div class="carousel slide best" id="myCarousel">
