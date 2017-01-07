@@ -1,6 +1,9 @@
+<% $i = 0 %>
 <div class="container">
-    <div class="row">
 		<% @reviews.each do |review| %>
+		<% if $i%3 == 0 %>
+   			<div class="row">
+    	<% end %>
 			<div class="col-sm-4 col-md-4">
 				<div class="review-card">
 					<div class="review-card-img-content">
@@ -29,6 +32,9 @@
 					</div>
 				</div>
 			</div>
+			<% $i +=1 %>
+			<% if $i%3 == 0 %>
+    			</div>
+    		<% end %>
 		<% end %>
-    </div>
 </div>

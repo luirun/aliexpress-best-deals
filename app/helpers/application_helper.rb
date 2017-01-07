@@ -1,7 +1,7 @@
 module ApplicationHelper
 
 	def random_colors #used to generate lines with random colors on homepage
-		colors = ["#f1c40f","#16a085","#e74c3c","#8e44ad","#34495e"]
+		colors = ["#f1c40f","#16a085","#e74c3c","#8e44ad","#34495e","#87D37C","#F89406","#F62459","#03C9A9"]
 		return colors[rand(0..colors.length-1)]
 	end
 

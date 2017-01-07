@@ -1,6 +1,7 @@
 <nav class="navbar navbar-default">
   <div class="container">
     <div class="navbar-header">
+
     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
           <ul class="nav navbar-nav">
           </ul>
@@ -14,8 +15,17 @@
       <% end %>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
-    <ul class="nav navbar-nav navbar-right">
 
+    <ul class="nav navbar-nav navbar-left">
+
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="float:left;display:block;">
+      <li style="height:40px;width:100%;">
+        <%= render "layouts/navbar_search" %>
+      </li>
+    </div>
+
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
       <% if params[:controller] == "visitors" %>
         <li class="active"><%= link_to "Home", root_path %></li>
       <% else %>

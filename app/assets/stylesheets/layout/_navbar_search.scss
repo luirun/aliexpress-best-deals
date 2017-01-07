@@ -1,0 +1,27 @@
+@media(min-width:750px) and (max-width: 988px) {
+	.nav.navbar-nav.navbar-left {
+		display:none;
+	}
+}
+
+@media(min-width:989px) {
+	.nav.navbar-nav.navbar-left {
+		margin-left:255px;
+		margin-top:7px;
+	}
+}
+.col-md-12.navbar-search .input-group-addon {
+	display:inline-block;
+	float:left;
+	height:34px;
+	width:33px;
+	padding:0px;
+}
+
+.col-md-12.navbar-search .input-group-addon .form_submit {
+	background-color:#eee;
+	border:0px solid black;
+	width:32px;
+	height:32px;
+	margin:0px;
+}
