@@ -14,7 +14,7 @@
 					</div>
 					<div class="content">
 						<div class="author">
-							By <b>Golab</b> |
+							By <b><%= User.find(review.author).nickname %></b> |
 							<%= review.updated_at %>
 						</div>
 						<div>

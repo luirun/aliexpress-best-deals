@@ -2,7 +2,7 @@ class VisitorsController < ApplicationController
 	before_action :is_admin, only: [:search_items]
   
 	def index
-		@recent_reviews = Review.all.limit(3)
+		@recent_reviews = Review.all.limit(3).order("id desc")
 		session[:excluded_categories] = []
 
 		#META

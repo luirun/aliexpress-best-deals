@@ -121,7 +121,10 @@ class Item < ActiveRecord::Base
 	end
 
 	def self.clear_expired_items
-		items = Item.where("validTime < '#{Time.now.strftime("%Y-%d-%m").to_s}'").destroy_all
+		items = Item.where("validTime < '#{Time.now.strftime("%Y-%d-%m").to_s}'")
+		items.each do |item|
+			item.archived = "y"
+		end
 	end
 
 end

@@ -100,3 +100,27 @@
     background-color: transparent;
     font-size:18px;
 }
+
+
+
+/* READ MORE DIV */
+
+.more-reviews {
+    text-transform:capitalize;
+    text-align:center;
+    font-size:1.7em;
+    padding:5px;
+    background-color:#e6e6e6;
+    border-radius:0px 0px 10px 10px;
+}
+
+.more-reviews a {
+    color:#27ae60;
+    transition-duration:0.5s;
+}
+
+.more-reviews a:hover {
+    color:#2ecc71;
+    text-decoration:none;
+    transition-duration:0.5s;
+}

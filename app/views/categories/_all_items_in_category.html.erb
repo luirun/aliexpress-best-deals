@@ -105,7 +105,20 @@
 	<div class="row">
 		<div class="col-md-12 text-center">
 			<ul class="pagination">
-			<% for i in 1..(@items.length/16.to_f).ceil do %>
+			<% if params[:p].to_i < 6 %>
+				<% $start = 1 %>
+				<% $end = params[:p].to_i + 5 %>
+			<% else %>
+				<% if params[:p].to_i+5 > (@items.length/16.0).ceil %> 
+					<% $start = params[:p].to_i - 5 %>
+					<% $end = (@items.length/16.0).ceil %>
+				<% else %>
+					<% $start = params[:p].to_i - 5 %>
+					<% $end = params[:p].to_i + 5 %>
+				<% end %>
+			<% end %>
+
+			<% for i in $start..$end do %>
 				<% if i == params[:p].to_i %>
 					<li class="disabled"><%= link_to i, "", :style => "background-color:#3498db;", :disabled =>"disabled" %></li>
 				<% else %>
