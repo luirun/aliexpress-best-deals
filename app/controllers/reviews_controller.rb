@@ -4,7 +4,7 @@ class ReviewsController < ApplicationController
   # GET /subsubcategories
   # GET /subsubcategories.json
   def index
-    @reviews = Review.all
+    @reviews = Review.all.order("id desc")
 
     #META
     set_meta_tags title: "Product Reviews"

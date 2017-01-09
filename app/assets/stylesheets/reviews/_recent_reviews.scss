@@ -26,6 +26,8 @@
     -ms-transition: all 0.4s ease;
     -o-transition: all 0.4s ease;
     transition: all 0.4s ease;
+    max-height:300px;
+    min-width:100%;
 }
 
 .card .card-image:hover img{
