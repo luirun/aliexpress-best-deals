@@ -17,7 +17,6 @@ class ItemsController < ApplicationController
   # GET /items/1
   # GET /items/1.json
   def show
-    puts @item
     if @item.productDescription == nil
       @item_details = AliCrawler.new.get_product_description(@item.productUrl) #[0] = Table of product details, [1] = product reviews, [1][:feedback] - review text, [1][:user_info] - user info in review
       @description_save = Item.save_product_description(@item_details[0], @item.id)
@@ -103,8 +102,8 @@ class ItemsController < ApplicationController
 
   #this action will take 15-20min to be done, be sure you are able to start it now!
   def auto_hot_products
-    @categories = Category.all
-      @categories.each do |category|
+        @categories = Category.all
+        @categories.each do |category|
         @items = AliCrawler.new.get_hot_products("USD", category.id, "EN")
         save_items = Item.save_hot_products(@items["result"]["products"], category.id)
       end
@@ -117,7 +116,8 @@ class ItemsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_item
-      @item = Item.where("productTitle LIKE '#{URI.decode(params[:productTitle])}%'").first
+      text = "#{URI.decode(params[:productTitle])}%"
+      @item = Item.where("productTitle LIKE ?", text).first
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
