@@ -59,7 +59,7 @@
 				
 					<div class="item-sp item-sm">
 						<span itemscope="" itemtype="http://schema.org/Product">
-							<%= link_to item_path(item.productTitle), :itemprop => "url" do %>
+							<%= link_to item_path(URI.encode(item.productTitle)), :itemprop => "url" do %>
 
 								<div class="thumb vertical-alignment-helper">
 									<div class="vertical-align-center vertical-align-top">

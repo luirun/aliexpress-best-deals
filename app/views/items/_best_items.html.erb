@@ -22,7 +22,7 @@
 									</div>
 									<div class="caption text-center">
 										<h4><%= simple_format(item.productTitle) %></h4>
-										<%= link_to item_path(item.productTitle), :class => "btn btn-success btn-sm", :style => "margin:5px;" do %>» Read More<% end %>
+										<%= link_to item_path(URI.encode(item.productTitle)), :class => "btn btn-success btn-sm", :style => "margin:5px;" do %>» Read More<% end %>
 									</div>
 								</div>
 							</li>
