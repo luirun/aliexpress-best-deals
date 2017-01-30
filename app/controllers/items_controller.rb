@@ -2,6 +2,7 @@ class ItemsController < ApplicationController
   before_action :set_item, only: [:show, :edit, :update, :destroy]
   before_action :is_admin, only: [:save_hot_products, :auto_hot_products]
 
+
   # GET /items
   # GET /items.json
   def index
@@ -100,23 +101,10 @@ class ItemsController < ApplicationController
     save_items = Item.save_hot_products(@items["result"]["products"], params[:category][:fields][1])
   end
 
-  #this action will take 15-20min to be done, be sure you are able to start it now!
-  def auto_hot_products
-        @categories = Category.all
-        @categories.each do |category|
-        @items = AliCrawler.new.get_hot_products("USD", category.id, "EN")
-        save_items = Item.save_hot_products(@items["result"]["products"], category.id)
-      end
-  end
-
-  def clear_expired_items
-    items = Item.clear_expired_items()
-  end
-
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_item
-      text = "#{URI.decode(params[:productTitle])}%"
+      text = "#{pretty_url_decode(params[:productTitle])}%"
       @item = Item.where("productTitle LIKE ?", text).first
     end
 

@@ -5,6 +5,35 @@ module ApplicationHelper
 		return colors[rand(0..colors.length-1)]
 	end
 
+	def pretty_url_encode(url)
+		first_url = url
+		for i in 0..url.length-1
+			puts url[i]
+
+			if url[i] == "-"
+				url[i] = "?"
+			end
+
+			if url[i] == " "
+				url[i] = "-"
+			end
+		end
+		return url
+	end
+
+	def pretty_url_decode(url)
+		for i in 0..url.length-1
+			if url[i] == "-"
+				url[i] = " "
+			end
+
+			if url[i] == "?"
+				url[i] = "-"
+			end
+		end
+		return url
+	end
+
 	def print_multiline(field)
 	  field.gsub("\r\n","<br/>").html_safe
 	end

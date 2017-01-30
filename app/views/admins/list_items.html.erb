@@ -1,0 +1,66 @@
+<%= form_tag api_items_save_path do |f| %>
+	
+	<div class="form-group">
+		<%= label :api_call, "Api Call Method" %>
+		<%= button_tag 'Submit', type: 'submit' %>
+	</div>
+
+<table>
+
+	<tr>
+		<td>productTitle</td>
+		<td>Image</td>
+		<td>salePrice</td>
+		<td>discount</td>>
+		<td>validTime</td>
+		<td>Approved?</td>
+		<td><%= link_to "Approve All", "#", :id => "approve_all", :remote => true %></td>
+		<td><%= link_to "Disapprove All", "#", :id => "disapprove_all", :remote => true %></td>
+	</tr>
+
+	<% @items["result"]["products"].each do |item| %>
+		<tr>
+			<td><%= simple_format(item["productTitle"]) %></td>
+			<td><%= image_tag item["imageUrl"], {:width => "250px", :height => "250px"} %></td>
+			<td><b><%= item["salePrice"] %></b></td>
+			<td><%= item["discount"] %></td>
+			<td><%= item["validTime"] %></td>
+			<td>
+				<%= label :approved, "Accept?" %>
+				<%= check_box_tag "productId[]", item["productId"], 0, :class => "checkboxes" %>
+			</td>
+		</tr>
+	<% end %>
+
+	<tr>
+		<td>productTitle</td>
+		<td>Image</td>
+		<td>salePrice</td>
+		<td>discount</td>>
+		<td>validTime</td>
+		<td>Approved?</td>
+		<td><%= link_to "Approve All", "#", :id => "approve_all", :remote => true %></td>
+		<td><%= link_to "Disapprove All", "#", :id => "disapprove_all", :remote => true %></td>
+	</tr>
+</table>
+<% end %>
+
+<div class="form-group">
+	<%= label :api_call, "Api Call Method" %>
+	<%= button_tag 'Submit', type: 'submit' %>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function () {
+	$('#approve_all').click(function (){
+		$(".checkboxes").each( function () {
+			$(this).prop('checked', true);
+   		});
+	});
+	$('#disapprove_all').click(function (){
+		$(".checkboxes").each( function () {
+			$(this).prop('checked', false);
+   		});
+	});
+});
+</script>

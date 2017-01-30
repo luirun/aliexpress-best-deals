@@ -104,7 +104,7 @@ class ReviewsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_review
-      @review = Review.where(:title => params[:reviewTitle]).first
+      @review = Review.where(:title => pretty_url_decode(params[:reviewTitle])).first
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

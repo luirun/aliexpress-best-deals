@@ -18,11 +18,11 @@
 							<li class="col-md-3 col-xs-6">
 								<div class="fff">
 									<div class="thumbnail">
-										<%= link_to item_path(item.productTitle) do %><%= image_tag item.imageUrl %><% end %>
+										<%= link_to item_path(pretty_url_encode(item.productTitle)) do %><%= image_tag item.imageUrl %><% end %>
 									</div>
 									<div class="caption text-center">
-										<h4><%= simple_format(item.productTitle) %></h4>
-										<%= link_to item_path(URI.encode(item.productTitle)), :class => "btn btn-success btn-sm", :style => "margin:5px;" do %>» Read More<% end %>
+										<h4><%= simple_format(pretty_url_decode(item.productTitle)) %></h4>
+										<%= link_to item_path(pretty_url_encode(item.productTitle)), :class => "btn btn-success btn-sm", :style => "margin:5px;" do %>» Read More<% end %>
 									</div>
 								</div>
 							</li>

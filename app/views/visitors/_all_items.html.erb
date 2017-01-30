@@ -30,7 +30,7 @@
 						<div class="item-sp item-lg">
 							<span itemscope="" itemtype="http://schema.org/Product">
 								
-								<%= link_to item_path(URI.encode(item.productTitle)), :itemprop => "url" do %>
+								<%= link_to item_path(pretty_url_encode(item.productTitle)), :itemprop => "url" do %>
 						
 								<div class="thumb vertical-alignment-helper">
 									
@@ -41,7 +41,7 @@
 								</div>
 								
 								<h4 itemprop="name">
-									<%= simple_format(item.productTitle) %>
+									<%= simple_format(pretty_url_decode(item.productTitle)) %>
 								</h4>
 								
 								<meta itemtype="http://schema.org/AggregateRating/ratingValue" content="5">
@@ -69,7 +69,7 @@
 					
 						<div class="item-sp item-sm">
 							<span itemscope="" itemtype="http://schema.org/Product">
-								<%= link_to item_path(item.productTitle), :itemprop => "url" do %>
+								<%= link_to item_path(pretty_url_encode(item.productTitle)), :itemprop => "url" do %>
 
 									<div class="thumb vertical-alignment-helper">
 										<div class="vertical-align-center vertical-align-top">
@@ -78,7 +78,7 @@
 									</div>	
 									
 									<h4 itemprop="name">
-										<%= simple_format(item.productTitle) %>
+										<%= simple_format(pretty_url_decode(item.productTitle)) %>
 									</h4>
 									
 									<meta itemtype="http://schema.org/AggregateRating/ratingValue" content="4.8">

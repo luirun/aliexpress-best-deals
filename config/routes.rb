@@ -4,15 +4,44 @@ Rails.application.routes.draw do
   post   '/login',   to: 'sessions#create'
   get '/logout', to: 'sessions#destroy'
 
+  #--------------------------------------------------------------------------------------------------
 
+  #admins routes
+  resources :admins
+  get "admin/form" => "admins#search_items", as: "api_items_search"
+  post "item_list" => "admins#list_items", as: "api_items_list"
+  post "admin/saved_items" => "admins#save_items", as: "api_items_save"
+  get "hot_products" => "items#hot_products", as: "api_hot_products"
+  post "hot_products" => "items#save_hot_products", as: "api_save_hot_products"
+  get "auto_save_hot_products" => "admins#auto_hot_products", as: "api_auto_save_hot_products"
+  post "auto_save_hot_products" => "admins#auto_hot_products", as: "api_auto_save_hot_products_post"
+  get "clear_expired_items" => "admins#clear_expired_items", as: "api_clear_expired_items"
+    #admin article manager
+    get "article_manage" => "admins#article_manager", as: "article_manager"
+
+    #admin comment manager
+    get "comments_manager" => "admins#comments_manager", as: "comments_manager"
+    post "comments_manager_update" => "admins#comments_manager_update", as: "comments_manager_update"
+
+  #-------------------------------------------------------------------------------------------------
+
+  #comments routes
   resources :comments
+
+  #-------------------------------------------------------------------------------------------------
+ 
+  #users routes
   resources :users
   get "/profile" => "users#profile", as: "user_profile"
 	
+  #-------------------------------------------------------------------------------------------------
+
   #index page routing
 	root 'visitors#index'
   get "load-category" => "visitors#new_items_append", :as => "new_items_append"
 	
+  #-------------------------------------------------------------------------------------------------
+
 	resources :categories
 	resources :subcategories
 	resources :subsubcategories
@@ -38,14 +67,6 @@ Rails.application.routes.draw do
 
      #various routes
     	get "get_subcategories/:category_id" => "items#get_subcategory"
-      get "aliapi/form" => "visitors#search_items", as: "api_items_search"
-    	post "item_list" => "visitors#list_items", as: "api_items_list"
-      post "saved_items" => "visitors#save_items", as: "api_items_save"
-      get "hot_products" => "items#hot_products", as: "api_hot_products"
-      post "hot_products" => "items#save_hot_products", as: "api_save_hot_products"
-      get "auto_save_hot_products" => "items#auto_hot_products", as: "api_auto_save_hot_products"
-
-      
 
       #search routes
       get "category/:name" => "categories#search", as: "redirect_to_search_in_category" #redirect category
@@ -56,64 +77,6 @@ Rails.application.routes.draw do
       get "search/author=:author" => "search#search_author", as: "search_author"
 
 
-      #search items routing
-      get "clear_expired_items" => "items#clear_expired_items"
-
       #404 erorrs
       get "*path" => "visitors#error404", as: "error"
-
-  # The priority is based upon order of creation: first created -> highest priority.
-  # See how all your routes lay out with "rake routes".
-
-  # You can have the root of your site routed with "root"
-  
-
-  # Example of regular route:
-  #   get 'products/:id' => 'catalog#view'
-
-  # Example of named route that can be invoked with purchase_url(id: product.id)
-  #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
-
-  # Example resource route (maps HTTP verbs to controller actions automatically):
-  #   resources :products
-
-  # Example resource route with options:
-  #   resources :products do
-  #     member do
-  #       get 'short'
-  #       post 'toggle'
-  #     end
-  #
-  #     collection do
-  #       get 'sold'
-  #     end
-  #   end
-
-  # Example resource route with sub-resources:
-  #   resources :products do
-  #     resources :comments, :sales
-  #     resource :seller
-  #   end
-
-  # Example resource route with more complex sub-resources:
-  #   resources :products do
-  #     resources :comments
-  #     resources :sales do
-  #       get 'recent', on: :collection
-  #     end
-  #   end
-
-  # Example resource route with concerns:
-  #   concern :toggleable do
-  #     post 'toggle'
-  #   end
-  #   resources :posts, concerns: :toggleable
-  #   resources :photos, concerns: :toggleable
-
-  # Example resource route within a namespace:
-  #   namespace :admin do
-  #     # Directs /admin/products/* to Admin::ProductsController
-  #     # (app/controllers/admin/products_controller.rb)
-  #     resources :products
-  #   end
 end

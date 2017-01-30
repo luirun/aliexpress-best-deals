@@ -27,7 +27,7 @@
 							<% end %>
 						</div>
 						<div>
-							<%= link_to "Read More", review_path(review.title), :class => "btn btn-primary btn-sm" %>
+							<%= link_to "Read More", review_path(pretty_url_encode(review.title)), :class => "btn btn-primary btn-sm" %>
 						</div>
 					</div>
 				</div>

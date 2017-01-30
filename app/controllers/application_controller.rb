@@ -5,9 +5,13 @@ class ApplicationController < ActionController::Base
 	include SessionsHelper
   include ApplicationHelper
 
-
+  before_action :session_return
  before_action :prepare_meta_tags, if: "request.get?"
 
+  def session_return
+    session[:return_to] = request.fullpath
+  end
+  
   def prepare_meta_tags(options={})
     site_name   = "AliBestDeal"
     image       = options[:image] || "your-default-image-url"

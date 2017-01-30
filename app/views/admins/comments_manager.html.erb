@@ -1,0 +1,27 @@
+<div class="row">
+	<%= form_tag comments_manager_update_path do |f| %>
+		<div class="form-group">
+			<%= label :api_call, "Update Comments" %>
+			<%= button_tag 'Submit', type: 'submit', :class => "btn btn-small btn-success" %>
+		</div>
+		<% $i = 0 %>
+		<% @unapproved_comments.each do |comment| %>
+			<div class="col-md-12">
+				<div class="col-md-1"><%= User.find(comment.author).nickname %></div>
+				<div class="col-md-1">
+					<% $review = Review.where(:id => comment.page).first %>
+					<% if $review.nil? %>
+						Page Delete
+					<% else %>
+						<%= link_to $review.title, review_path($review.title) %>
+					<% end %>
+				</div>
+				<div class="col-md-1"><%= comment.created_at %></div>
+				<div class="col-md-9"><%= comment.content %></div>
+				Approve Comment <%= radio_button_tag "commentId[#{$i}]", "#{comment.id}a", false, :class => "approved" %>
+				Disapprove <%= radio_button_tag "commentId[#{$i}]", "#{comment.id}n", true, :class => "disapproved" %>
+				Delete <%= radio_button_tag "commentId[#{$i}]", "#{comment.id}d", false, :class => "deleted" %>
+				<% $i += 1 %>
+			</div>
+		<% end %>
+	<% end %>
