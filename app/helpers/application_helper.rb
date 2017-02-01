@@ -8,8 +8,6 @@ module ApplicationHelper
 	def pretty_url_encode(url)
 		first_url = url
 		for i in 0..url.length-1
-			puts url[i]
-
 			if url[i] == "-"
 				url[i] = "?"
 			end

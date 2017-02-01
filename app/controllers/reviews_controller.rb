@@ -1,5 +1,5 @@
 class ReviewsController < ApplicationController
-  before_action :set_review, only: [:show, :edit, :update, :destroy, :create]
+  before_action :set_review, only: [:show, :destroy]
 
   # GET /subsubcategories
   # GET /subsubcategories.json
@@ -32,6 +32,7 @@ class ReviewsController < ApplicationController
 
   # GET /reviews/1/edit
   def edit
+    @review = Review.where(:title => params[:reviewTitle]).first
     if current_user != nil 
       
       if current_user.id == @review.author || current_user.is_admin == "y"
@@ -74,7 +75,7 @@ class ReviewsController < ApplicationController
     parameters[:productId] = product.productId
     respond_to do |format|
       if @review.update(parameters)
-        format.html { redirect_to review_path(@review.title), notice: 'Review was successfully updated!' }
+        format.html { redirect_to reviews_path, notice: 'Review was successfully updated!' }
         format.json { render :show, status: :ok, location: @review.title }
       else
         format.html { render :edit }
