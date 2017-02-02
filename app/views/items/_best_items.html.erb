@@ -1,12 +1,5 @@
 <% $hot=0 %>
 
-<% $min = Item.all.order("id asc").first %>
-<% $min = $min.id %>
-
-<% $max = Item.all.order("id desc").first %>
-<% $max = $max.id %>
-
-<% $random = rand($min..$max-16) %>
 <% @best_items = Item.where(:is_hot => "y").order("RAND()").limit(16)  #limit%4==0%>
 <div class="container">
 	<div class="col-md-12 col-xs-12">		

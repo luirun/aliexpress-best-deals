@@ -23,6 +23,9 @@ Rails.application.routes.draw do
     get "comments_manager" => "admins#comments_manager", as: "comments_manager"
     post "comments_manager_update" => "admins#comments_manager_update", as: "comments_manager_update"
 
+    #fill category from file
+    get "fill-category-from-file" => "admins#from_file", as: "from_file"
+    post "fill-category-from-file/save" => "admins#save_from_file", as: "save_from_file"
   #-------------------------------------------------------------------------------------------------
 
   #comments routes
@@ -60,6 +63,7 @@ Rails.application.routes.draw do
   
   #items routes
   get "product/:productTitle" => "items#show", as: "item"
+  delete "product/:productTitle" => "items#destroy"
 	resources :items do
 		collection { post :import }
 	end

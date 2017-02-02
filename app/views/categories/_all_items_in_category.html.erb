@@ -9,7 +9,7 @@
 <div id="all-items">
 	<div class="container">
 		<div class="col-md-12">
-			<% @items[16*(params[:p].to_i-1)...16*params[:p].to_i].each do |item| %>
+			<% @items[32*(params[:p].to_i-1)...32*params[:p].to_i].each do |item| %>
 			
 			<% if $i%8 == 0 %>
 				<div class="row"><%# adding row at start for 8 items %>
@@ -46,6 +46,11 @@
 							</div>
 							
 							<% end %><%# end of things under url %>
+							<% if current_user != nil %>
+								<% if current_user.is_admin = "y" %>
+									<%= link_to "Delete It", item_path(pretty_url_encode(item.productTitle)), :method => :delete, :target => "_blank" %>
+								<% end %>
+							<% end %>
 						</span>
 					</div>
 				</div>
@@ -78,7 +83,12 @@
 									<meta itemprop="price" content="<%= item.salePrice %>">
 									<meta itemprop="priceCurrency" content="USD">
 									<span class="small">NOW ONLY:</span>
-									<span class="big">US <%= item.salePrice %>$</span>	
+									<span class="big">US <%= item.salePrice %>$</span>								
+									<% if current_user != nil %>
+										<% if current_user.is_admin = "y" %>
+											<%= link_to "Delete It", item_path(pretty_url_encode(item.productTitle)), :method => :delete, :target => "_blank" %>
+										<% end %>
+									<% end %>
 								</div>
 								
 							<% end %>
@@ -107,15 +117,15 @@
 			<ul class="pagination">
 			<% if params[:p].to_i < 6 %>
 				<% $start = 1 %>
-				<% if (@items.length/16.0).ceil < 5 %>
+				<% if (@items.length/32.0).ceil < 5 %>
 					<% $end = (@items.length/16.0).ceil %>
 				<% else %>
 					<% $end = params[:p].to_i + 5 %>
 				<% end %>
 			<% else %>
-				<% if params[:p].to_i+5 > (@items.length/16.0).ceil %> 
+				<% if params[:p].to_i+5 > (@items.length/32.0).ceil %> 
 					<% $start = params[:p].to_i - 5 %>
-					<% $end = (@items.length/16.0).ceil %>
+					<% $end = (@items.length/32.0).ceil %>
 				<% else %>
 					<% $start = params[:p].to_i - 5 %>
 					<% $end = params[:p].to_i + 5 %>

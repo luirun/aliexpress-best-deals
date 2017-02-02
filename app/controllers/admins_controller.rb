@@ -69,4 +69,15 @@ class AdminsController < ApplicationController
     	items = Item.clear_expired_items()
   	end
 
+  	def save_from_file
+  		keywords = params[:keywords]["fields"].read
+  		category = params[:category][:fields][1]
+  		keywords = keywords.split(",")
+  		keywords.each do |keyword|
+  			@items = AliCrawler.new.search_for_items(keyword,category)
+  			save_items = Item.save_hot_products(@items["result"]["products"], category)
+  		end
+  		redirect_to admins_path
+  	end
+
 end

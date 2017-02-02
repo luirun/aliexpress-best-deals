@@ -30,7 +30,7 @@ class ItemsController < ApplicationController
 
     @ali_reviews = AliReview.where(:productId => @item.productId, :is_empty => "n")
     @product_reviews = Review.all.order("RAND()")
-    @recommended_items = Item.where(:is_hot => "y", :category => @item.category).limit((@ali_reviews.length)*2)
+    @recommended_items = Item.where(:category => @item.category).limit((@ali_reviews.length)*2)
     @best_items = Item.where(:is_hot => "y").limit(8) #limit%4=0!!
 
     #META

@@ -64,10 +64,8 @@ class Item < ActiveRecord::Base
 		item.save
 	end
 
-
-	#from old hot_products model
-
-		def self.save_hot_products(items, categoryId)
+	#method for mass saving items founded by crawler - works well for saving from file and iterating through the categories
+	def self.save_hot_products(items, categoryId)
 		items.each do |i|
 			fields = ['productId','productTitle','productUrl','imageUrl','originalPrice','salePrice','discount','evaluateScore','commission','commissionRate','30daysCommission','volume','packageType','lotNum','validTime','storeName','storeUrl']
 			details = AliCrawler.new.get_product_details(fields,i["productId"]) #gettig all details about product from hot product list
@@ -119,6 +117,7 @@ class Item < ActiveRecord::Base
 		end
 
 	end
+	
 
 	def self.clear_expired_items
 		items = Item.where("validTime < '#{Time.now.strftime("%Y-%m-%d").to_s}'")
