@@ -31,7 +31,7 @@
 						
 						<%= link_to @item.promotionUrl do %>
 						<div class="btn-group cart">
-							<%= link_to @item.promotionUrl, :target => "_blank" do %>
+							<%= link_to aliexpress_pretty_url_path(@item.productId), :target => "_blank" do %>
 								<button type="button" class="btn btn-success">
 									Buy Now
 								</button>
@@ -52,21 +52,34 @@
 		<div class="container-fluid">		
 			<div class="col-md-12 product-info">
 					<ul id="myTab" class="nav nav-tabs nav_tabs">
-						
-						<li class="active"><a href="#reviews" data-toggle="tab">REVIEWS</a></li>
-						<li><a href="#product-info" data-toggle="tab">PRODUCT INFO</a></li>
+						<% if @ali_reviews.length > 0 %>
+							<li class="active"><a href="#reviews" data-toggle="tab">REVIEWS</a></li>
+							<li><a href="#product-info" data-toggle="tab">PRODUCT INFO</a>
+						<% else %>
+							<li class="active"><a href="#product-info" data-toggle="tab">PRODUCT INFO</a></li>
+							<li><a href="#reviews" data-toggle="tab">REVIEWS</a></li>
+						<% end %>
 						
 					</ul>
 				<div id="myTabContent" class="tab-content">
-						<div class="tab-pane fade in" id="product-info">
+
+						<% if @ali_reviews.length > 0 %>
+							<div class="tab-pane fade in" id="product-info">
+						<% else %>
+							<div class="tab-pane fade in active" id="product-info">
+						<% end %>
 						 
 							<section class="col-xs-12 container product-info text-center">
 								<%= print_multiline(@item.productDescription) %>
 							</section>
 										  
 						</div>
-					
-						<div class="tab-pane fade in active" id="reviews">
+
+						<% if @ali_reviews.length > 0 %>
+							<div class="tab-pane fade in active" id="reviews">
+						<% else %>
+							<div class="tab-pane fade in" id="reviews">
+						<% end %>
 							<% if @review == nil %>
 								<%= render "/items/show/call_to_action" %>
 							<% else %>

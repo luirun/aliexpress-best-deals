@@ -64,6 +64,7 @@ Rails.application.routes.draw do
   #items routes
   get "product/:productTitle" => "items#show", as: "item"
   delete "product/:productTitle" => "items#destroy"
+  get "product/:id/buy" => "items#go_to_aliexpress", as: "aliexpress_pretty_url"
 	resources :items do
 		collection { post :import }
 	end

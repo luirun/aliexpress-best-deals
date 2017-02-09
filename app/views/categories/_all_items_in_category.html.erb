@@ -118,7 +118,7 @@
 			<% if params[:p].to_i < 6 %>
 				<% $start = 1 %>
 				<% if (@items.length/32.0).ceil < 5 %>
-					<% $end = (@items.length/16.0).ceil %>
+					<% $end = (@items.length/32.0).ceil %>
 				<% else %>
 					<% $end = params[:p].to_i + 5 %>
 				<% end %>

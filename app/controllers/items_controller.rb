@@ -102,6 +102,11 @@ class ItemsController < ApplicationController
     save_items = Item.save_hot_products(@items["result"]["products"], params[:category][:fields][1])
   end
 
+  def go_to_aliexpress
+    @item = Item.where(:productId => params[:id]).first
+    redirect_to @item.promotionUrl
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_item
