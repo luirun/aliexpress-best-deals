@@ -10,12 +10,6 @@ class VisitorsController < ApplicationController
    	 	set_meta_tags description: "Here you can find new hot products from AliExpress with reviews and user feedback! Buy smarter with us!"
     	set_meta_tags keywords: "aliexpress,deal,review,shipping,how to buy,faq,prices,products,deals,find,review,test"
 	end
-	
-	def list_items
-		@items = AliCrawler.new.search_url_generator(params)
-		categoryId = params[:category][:fields][1]
-		save_items = Item.ali_new(@items["result"]["products"], categoryId)
-	end
 
 	def hot_products
 
