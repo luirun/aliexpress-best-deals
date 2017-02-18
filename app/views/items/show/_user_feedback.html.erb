@@ -51,12 +51,10 @@
 	<% $url = "#{request.original_url}/l" %>
 	$(".love").dblclick(function() {
 		$(".fa.fa-heart").css("color", "#ff0000");
-		alert("<%= $url %>")
 		$.ajax({
 		  type: "POST",
 		  url: "<%= $url %>" ,
 		  success: function(data){
-		   alert("hehe skonczone!")
 		  }
 		});
 	});

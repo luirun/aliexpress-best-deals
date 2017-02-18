@@ -28,7 +28,6 @@
 						<div class="product-price"><%= @item.salePrice %>$ / <%= @item.packageType %></div>
 						<div class="product-stock">In Stock</div>
 						<hr>
-						
 						<%= link_to @item.promotionUrl do %>
 						<div class="btn-group cart">
 							<%= link_to aliexpress_pretty_url_path(@item.productId), :target => "_blank" do %>
@@ -45,6 +44,8 @@
 						</div>
 					</div>
 				</div>
+				<%= render "/layouts/ad" %>
+
 				<%= render "/items/show/user_feedback" %>
 					
 				
@@ -101,5 +102,3 @@
 </div>
 
 <%= render "best_items" %>
-
-<%= cookies[:user_id] %>
