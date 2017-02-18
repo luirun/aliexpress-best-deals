@@ -1,5 +1,5 @@
 class ItemsController < ApplicationController
-  before_action :set_item, only: [:show, :edit, :update, :destroy]
+  before_action :set_item, only: [:show, :edit, :update, :destroy, :item_like]
   before_action :is_admin, only: [:save_hot_products, :auto_hot_products]
 
 
@@ -37,6 +37,17 @@ class ItemsController < ApplicationController
     set_meta_tags title: @item.productTitle
     set_meta_tags description: @item.productDescription
     set_meta_tags keywords: @item.productTitle.split.join(",")
+  end
+
+  def item_like
+    liked = Like.new
+    if current_user != nil
+      liked.userId = current_user.id
+    end
+    liked.userCookieId = cookies[:user_id]
+    liked.productId = @item.productId
+    liked.save
+    render :layout => false   
   end
 
   # GET /items/new

@@ -9,6 +9,10 @@
 	height:67px;
 	padding-left:2px;
 	margin-left:15px;
+	z-index:222;
+	-webkit-box-shadow: -1px 2px 8px -1px rgba(0,0,0,0.45);
+	-moz-box-shadow: -1px 2px 8px -1px rgba(0,0,0,0.45);
+	box-shadow: -1px 2px 8px -1px rgba(0,0,0,0.45);
 }
 .logo {
 	position:absolute;

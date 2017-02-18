@@ -1,0 +1,52 @@
+<div class="visitors-slider">
+    <div class="carousel fade-carousel slide" data-interval="20000" data-ride="carousel" id="bs-carousel">
+
+
+      <!-- Indicators -->
+      <ol class="carousel-indicators">
+        <li data-target="#bs-carousel" data-slide-to="0" class="active"></li>
+        <li data-target="#bs-carousel" data-slide-to="1"></li>
+        <li data-target="#bs-carousel" data-slide-to="2"></li>
+      </ol>
+      
+      <!-- Wrapper for slides -->
+      <div class="carousel-inner">
+        <div class="item slides active">
+          <div class="slide-1"></div>
+          <div class="hero">
+            <hgroup>
+                <h1>Alibestdeal?</h1>        
+                <h3>Find top quality Aliexpress products</h3>
+            </hgroup>
+           <%= link_to items_path do %><button class="btn btn-danger btn-lg" role="button">See All Products</button><% end %>
+          </div>
+        </div>
+        <div class="item slides">
+          <div class="slide-2"></div>
+          <div class="hero">        
+            <hgroup>
+                <h1>We are smart</h1>        
+                <h3>Read reviews of many Aliexpress products </br>Stop losing money on low quality items!</h3>
+            </hgroup>       
+            <%= link_to reviews_path do %><button class="btn btn-warning btn-lg" role="button">Read Reviews</button><% end %>
+          </div>
+        </div>
+        <div class="item slides">
+          <div class="slide-3"></div>
+          <div class="hero">        
+            <hgroup>
+                <h1>We are community</h1>        
+                <h3>Like and comment your favorite products</h3>
+            </hgroup>
+            <%= link_to new_user_path do %><button class="btn btn-success btn-lg" role="button">Start Now!</button><% end %>
+          </div>
+        </div>
+      </div> 
+    </div>
+</div>
+
+<script>
+$('.carousel').carousel({
+  interval: 1000 * 12
+});
+</script>

@@ -25,18 +25,7 @@
 <body>
 	<%= render "layouts/navbar" %>
   <%= render "layouts/login_modal" %>
-  <div class="ad-container">
-    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-      <!-- alibestdeal-top -->
-      <ins class="adsbygoogle"
-           style="display:block"
-           data-ad-client="ca-pub-6222054838117933"
-           data-ad-slot="7055539506"
-           data-ad-format="auto"></ins>
-      <script>
-      (adsbygoogle = window.adsbygoogle || []).push({});
-      </script>
-  </div>
+  
   <div class="container">
     <% flash.each do |name, msg| %>
       <%= content_tag :div, class: "alert alert-#{ name == :error ? "danger" : "success" } alert-dismissable", role: "alert" do %>
@@ -60,6 +49,18 @@
     (adsbygoogle = window.adsbygoogle || []).push({});
     </script>
   </div>
+  <div class="ad-container">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+      <!-- alibestdeal-top -->
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-6222054838117933"
+           data-ad-slot="7055539506"
+           data-ad-format="auto"></ins>
+      <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+  </div>
 </body>
 
 <script>
@@ -72,18 +73,5 @@
   ga('send', 'pageview');
 
 </script>
-
-<!-- Hotjar Tracking Code -->
-<script>
-    (function(h,o,t,j,a,r){
-        h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
-        h._hjSettings={hjid:385443,hjsv:5};
-        a=o.getElementsByTagName('head')[0];
-        r=o.createElement('script');r.async=1;
-        r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
-        a.appendChild(r);
-    })(window,document,'//static.hotjar.com/c/hotjar-','.js?sv=');
-</script>
-
 
 </html>

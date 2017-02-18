@@ -5,11 +5,14 @@ class ApplicationController < ActionController::Base
 	include SessionsHelper
   include ApplicationHelper
 
-  before_action :session_return
+ before_action :session_return
  before_action :prepare_meta_tags, if: "request.get?"
 
   def session_return
     session[:return_to] = request.fullpath
+    if cookies[:user_id] == nil
+      cookies[:user_id] = {:value => rand(1..99999999), :expires => 2.year.from_now}
+    end
   end
   
   def prepare_meta_tags(options={})

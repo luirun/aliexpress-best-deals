@@ -34,6 +34,7 @@ Rails.application.routes.draw do
   #-------------------------------------------------------------------------------------------------
  
   #users routes
+  get "register" => "users#new", as: "new_user"
   resources :users
   get "/profile" => "users#profile", as: "user_profile"
 	
@@ -63,11 +64,14 @@ Rails.application.routes.draw do
   
   #items routes
   get "product/:productTitle" => "items#show", as: "item"
+  post "product/:productTitle/l" => "items#item_like", as: "item_like"
+  get "browse/products" => "items#index", as: "items"
   delete "product/:productTitle" => "items#destroy"
   get "product/:id/buy" => "items#go_to_aliexpress", as: "aliexpress_pretty_url"
 	resources :items do
 		collection { post :import }
 	end
+  
 	   
 
      #various routes

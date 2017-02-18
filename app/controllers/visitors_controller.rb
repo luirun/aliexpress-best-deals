@@ -6,7 +6,7 @@ class VisitorsController < ApplicationController
 		session[:excluded_categories] = []
 
 		#META
-    	set_meta_tags title: "Home"
+    	set_meta_tags title: "Aliexpress Best Deals"
    	 	set_meta_tags description: "Here you can find new hot products from AliExpress with reviews and user feedback! Buy smarter with us!"
     	set_meta_tags keywords: "aliexpress,deal,review,shipping,how to buy,faq,prices,products,deals,find,review,test"
 	end
