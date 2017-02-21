@@ -1,6 +1,3 @@
-
-
-
 .btn-grey{
     background-color:#D8D8D8;
 	color:#FFF;
@@ -45,7 +42,45 @@
 	font-size:13px;
 }
 
-.pull-left .glyphicon.glyphicon-star {
+.pull-left {
+	float:left;
+	width:240px;
+}
+
+.rating-pulling-left {
+	float:left;
+	width:35px;
+	line-height:1;
+}
+
+.rating-pulling-left .glyphicon.glyphicon-star {
 	float:right;
 	margin-right:2px;
+}
+
+.rating-progress-bar {
+	margin-right:2px;
+	margin-top:8px;
+	height:11px; 
+	margin:10px 0;
+	float:left;
+	display:inline-block;
+
+	@media(min-width:400px) {
+		width:180px;
+	}
+	@media(max-width:400px) {
+		width:140px;
+	}
+}
+
+.progress {
+	height:12px;
+}
+
+.rating-pulling-right {
+	margin-left:4px;
+	margin-top:2.5px;
+	float:left;
+	display:inline-block;
 }

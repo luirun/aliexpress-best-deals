@@ -10,7 +10,12 @@ Image credits: unsplash.com
 
 .visitors-slider {
     position: relative;
-    width: calc(100vw - 0.8%);
+    @media(max-width:499px) {
+      width: calc(100vw - 2.9%);
+    }
+    @media(min-width:500px) {
+      width: calc(100vw - 0.8%);
+    }
     left: calc(-50vw + 50%);
     margin-top:-20px;
 
@@ -129,8 +134,9 @@ Image credits: unsplash.com
 @media screen and (min-width: 980px){
     .hero { width: 980px; }    
 }
-@media screen and (max-width: 640px){
-    .hero h1 { font-size: 4em; }    
+@media screen and (max-width: 980px){
+    .hero h1 { font-size: 3em; }    
+    .hero h3.smaller { font-size:1.3em; }
 }
 
 }

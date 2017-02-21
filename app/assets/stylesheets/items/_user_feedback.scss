@@ -7,11 +7,16 @@
 	top:40%;
 	text-align:center;
 	text-shadow:1px 1px black;
-}
+	width:auto;
+	}
 
 @media (max-width: 1773px) {
 	display:none;
 }
+
+	.container {
+		width:360px;
+	}
 
 
 

@@ -8,7 +8,7 @@
 				<div class="item active">
                     <ul class="thumbnails">
 						<% @best_items.each do |item| %>
-							<li class="col-md-3 col-xs-6">
+							<li class="col-md-3 col-xs-12">
 								<div class="fff">
 									<div class="thumbnail">
 										<%= link_to item_path(pretty_url_encode(item.productTitle)) do %><%= image_tag "#{item.imageUrl}_250x250.jpg" %><% end %>
