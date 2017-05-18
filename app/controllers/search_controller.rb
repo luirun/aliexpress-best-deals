@@ -59,10 +59,9 @@ class SearchController < ApplicationController
   end
 
 	def search_item
-    if request.GET[:name] != nil
+    if request.GET[:name] != nil #jezeli w gecie nie bedzie nazwy to uzywaj starej, jesli jest to zastap parametr - przydatne kiedy szukasz z strony szukania
       params[:name] = request.GET[:name]
     end
-    puts params[:name]
 	   if params[:p] == nil
 			redirect_to search_item_path(params[:name], 1)
 	   end
@@ -72,7 +71,7 @@ class SearchController < ApplicationController
       params[:name].each do |param|
         search = search + "#{param}%"
       end
-		  @items = Item.where("productTitle like '%#{search}'%")
+		  @items = Item.where("productTitle like '%#{search}'")
       if @items[0] == nil #jezeli nic nie znaleziono to skracamy fraze
         params[:name] = params[:name].slice(0..params[:name].length-2)
         puts params[:name]
@@ -82,7 +81,7 @@ class SearchController < ApplicationController
         end
       end
     else #gdy ktos szuka jednego wyrazu
-      @items = Item.where("productTitle like '%#{params[:name][0]}'")
+      @items = Item.where("productTitle like '%#{params[:name][0]}%'")
     end
 
 	end
