@@ -9,11 +9,15 @@ module ApplicationHelper
 		first_url = url
 		for i in 0..url.length-1
 			if url[i] == "-"
-				url[i] = "?"
+				url[i] = "^%"
 			end
 
 			if url[i] == " "
 				url[i] = "-"
+			end
+
+			if url[i] == "."
+				url[i] = "%^"
 			end
 		end
 		return url
@@ -25,8 +29,18 @@ module ApplicationHelper
 				url[i] = " "
 			end
 
-			if url[i] == "?"
+			if url[i] == "^" && url[i+1] == "%"
 				url[i] = "-"
+				if i+1 < url.length
+					url[i+1] = ""
+				end
+			end
+
+			if url[i] == "%" && url[i+1] == "^"
+				url[i] = "."
+				if i+1 < url.length
+					url[i+1] = ""
+				end
 			end
 		end
 		return url
