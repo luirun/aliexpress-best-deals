@@ -42,6 +42,7 @@ class AliCrawler
 
 			def get_product_description(productUrl)
 
+				sleep(rand(3..7))
 				doc = Nokogiri::HTML(open(productUrl))
 				description = doc.css(".ui-box.product-property-main")
 				
