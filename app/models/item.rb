@@ -96,14 +96,21 @@ class Item < ActiveRecord::Base
 	end
 
 	def self.add_promotion_links(promotion_urls, products)
-		
-		i = 0
-		products.each do |product|
-			product = Item.find(product.id)
-			product.promotionUrl = promotion_urls[i]["promotionUrl"]
-			puts promotion_urls[i]["promotionUrl"]
-			product.save
-			i += 1
+		if promotion_urls[1].nil?  #jezeli dodajemy link do jednego przedmiotu
+			products.each do |product|
+				product = Item.find(product.id)
+				product.promotionUrl = promotion_urls[0]["promotionUrl"]
+				product.save
+			end
+		else #jezeli jest wiele przedmiotow
+			i = 0
+			products.each do |product|
+				product = Item.find(product.id)
+				product.promotionUrl = promotion_urls[i]["promotionUrl"]
+				puts promotion_urls[i]["promotionUrl"]
+				product.save
+				i += 1
+			end
 		end
 
 	end

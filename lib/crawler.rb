@@ -49,6 +49,7 @@ class AliCrawler
 				feedback_url = "https:#{doc.css("#feedback").css("iframe").at("iframe")['thesrc']}&i18n=true" #i18n showing translated feedbacks
 				puts feedback_url
 
+				sleep(rand(3..7))
 				feedback_doc = Nokogiri::HTML(open(feedback_url))
 				feedback = {'feedback': [], 'user_info': []}  #hash for feedback details and feedback user
 				feedback_doc.css(".fb-main").each do |feed| #looping every review of product
@@ -99,7 +100,7 @@ class AliCrawler
 			end
 			
 			def get_promotion_links(product_urls)
-
+				puts product_urls[0]
 				if product_urls.class == String #checking that we sent to method many urls or just one
 					urls = product_urls
 				else
@@ -111,6 +112,7 @@ class AliCrawler
 				end
 
 				url = "http://gw.api.alibaba.com/openapi/param2/2/portals.open/api.getPromotionLinks/#{AliConfig.new.api_key}?fields=totalResults,trackingId,publisherId,url,promotionUrl&trackingId=Luirun&urls=#{urls}"
+				puts url
 				
 				make_call(url)
 			end
@@ -125,8 +127,9 @@ class AliCrawler
 			def make_call(url)
 				response = RestClient.get(url)
 				
-				
 				if response.code != 200
+					puts url
+					puts response.code
 					puts "Error!"
 				else
 					result = JSON.parse(response)
