@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   get "auto_save_hot_products" => "admins#auto_hot_products", as: "api_auto_save_hot_products"
   post "auto_save_hot_products" => "admins#auto_hot_products", as: "api_auto_save_hot_products_post"
   get "clear_expired_items" => "admins#clear_expired_items", as: "api_clear_expired_items"
+  get "update_product_details" => "admins#update_products_details", as: "update_products_details"
     #admin article manager
     get "article_manage" => "admins#article_manager", as: "article_manager"
 
@@ -68,6 +69,7 @@ Rails.application.routes.draw do
   get "browse/products" => "items#index", as: "items"
   delete "product/:productTitle" => "items#destroy"
   get "product/:id/buy" => "items#go_to_aliexpress", as: "aliexpress_pretty_url"
+  #get "/:category/:productTitle/:productId" => "items#similar_product", as: "add_similar_product"
 	resources :items do
 		collection { post :import }
 	end

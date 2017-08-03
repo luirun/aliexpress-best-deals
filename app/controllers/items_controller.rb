@@ -18,14 +18,18 @@ class ItemsController < ApplicationController
   # GET /items/1
   # GET /items/1.json
   def show
-    if @item.productDescription == nil
-      @item_details = AliCrawler.new.get_product_description(@item.productUrl) #[0] = Table of product details, [1] = product reviews, [1][:feedback] - review text, [1][:user_info] - user info in review
-      @description_save = Item.save_product_description(@item_details[0], @item.id)
-      @item = Item.find(@item.id)
-    end
-
-    if AliReview.where(:productId => @item.productId).first == nil #checking for existing reviews for product
-      @reviews_save = AliReview.new.save_product_reviews(@item_details[1],@item.productId) #sending reviews with details and product id to AliReview model
+    #if @item.productDescription == nil
+      #puts @item.productUrl
+      #@item_details = AliCrawler.new.get_product_description(@item.productUrl) #[0] = Table of product details, [1] = product reviews, [1][:feedback] - review text, [1][:user_info] - user info in review
+      #puts @item_details[0]
+      #@description_save = Item.save_product_description(@item_details[0], @item.id) #saving product description
+      #@item = Item.find(@item.id)
+    #end
+    #@similar_products = AliCrawler.new.get_similar_products(@item.productId)
+    #puts @similar_products["result"]["products"][0]
+    #@best_items = @similar_products["result"]["products"][0..15]
+    if AliReview.where(:productId => @item.productId).first == nil && @item_details[1] != nil #checking for existing reviews for product
+     @reviews_save = AliReview.new.save_product_reviews(@item_details[1],@item.productId) #sending reviews with details and product id to AliReview model
     end
 
     @ali_reviews = AliReview.where(:productId => @item.productId, :is_empty => "n")
@@ -48,6 +52,21 @@ class ItemsController < ApplicationController
     liked.productId = @item.productId
     liked.save
     render :layout => false   
+  end
+
+  def similar_product
+    @product = Item.where(:productTitle => pretty_url_decode(params[:productId])).first
+    if @product.nil?
+      fields = AliConfig.new.alibaba_api_fields[:list]
+      categoryId = Category.where(:name => params[:category]).first.id
+      @product = AliCrawler.new.get_product_details(fields, params[:productId])
+      puts @product["result"].length
+      @product = Item.ali_new(@product["result"], categoryId)
+      @product = Item.where(:productId => params[:productId]).first
+      redirect_to item_path(pretty_url_encode(@product.productTitle))
+    else
+      redirect_to item_path(pretty_url_encode(@product.productTitle))
+    end
   end
 
   # GET /items/new

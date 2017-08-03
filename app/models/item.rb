@@ -1,24 +1,37 @@
 class Item < ActiveRecord::Base
 
 	def self.ali_new(items, categoryId)
-		puts items
-
-		items.each do |i|
-			id_exist = Item.where(:productId => i["productId"]).first
-			if id_exist != nil
-				puts "Product Already Exists"
-			else
-				a = i['30daysCommission']
-				i = i.except('30daysCommission')
-				item = Item.new(i)
-				item.salePrice = i["salePrice"].slice(4..12)
-				item.productTitle = ActionView::Base.full_sanitizer.sanitize(i["productTitle"])
-				item.originalPrice = i["originalPrice"].slice(4..12)
-				item.thirtydaysCommission = a
-				item.is_approved = "n"
-				item.category = categoryId
-				item.save
+		if items.length > 13 #checking that there is one or more products
+			items.each do |i|
+				id_exist = Item.where(:productId => i["productId"].to_s).first
+				if id_exist != nil
+					puts "Product Already Exists"
+				else
+					a = i['30daysCommission']
+					i = i.except('30daysCommission')
+					item = Item.new(i)
+					item.salePrice = i["salePrice"].slice(4..12)
+					item.productTitle = ActionView::Base.full_sanitizer.sanitize(i["productTitle"])
+					item.originalPrice = i["originalPrice"].slice(4..12)
+					item.thirtydaysCommission = a
+					item.is_approved = "n"
+					item.category = categoryId
+					item.save
+				end
 			end
+		else
+			i = items
+			puts i
+			a = i['30daysCommission']
+			i = i.except('30daysCommission')
+			item = Item.new(i)
+			item.salePrice = i["salePrice"].slice(4..12)
+			item.productTitle = ActionView::Base.full_sanitizer.sanitize(i["productTitle"])
+			item.originalPrice = i["originalPrice"].slice(4..12)
+			item.thirtydaysCommission = a
+			item.is_approved = "n"
+			item.category = categoryId
+			item.save
 		end
 	end
 
@@ -132,6 +145,62 @@ class Item < ActiveRecord::Base
 			item.archived = "y"
 			item.save
 		end
+	end
+
+	def self.fetch_extra_data(browser)
+		doc = Nokogiri::HTML.parse(browser.html)
+		if browser.element(:class => "info-404").exists?
+			return "end"
+		else
+			description = doc.css(".ui-box.product-property-main")
+			browser.element(:class => "ui-switchable-trigger", :index => 1).link.click #load feedback tab
+			sleep(1)
+			if doc.css(".no-feedback.wholesale-product-feedback") != nil
+				feedback = {'feedback': [], 'user_info': []} 
+				feedback[:feedback][0] = nil #empty feedback to push script to work when we have nothing
+				product_details = [description,feedback]
+			else
+				feedback_doc = browser.element(:id => "feedback").iframe(:index => 0).element(:id => "transction-feedback") #inspect iframe with feedbacks
+				feedback_doc = Nokogiri::HTML.parse(feedback_doc.html)
+				feedback = {'feedback': [], 'user_info': []}  #hash for feedback details and feedback user
+				feedback_doc.css(".fb-main").each do |feed| #looping every review of product
+
+				user_order_rate = feed.css(".star-view").children.at("span")["style"].to_s
+				user_order_rate = user_order_rate.slice(6..8).to_i #creating % rate from style of span
+
+				user_order_info = feed.css(".user-order-info").text #color, delivery type etc text
+
+				user_review = feed.css(".buyer-feedback").css("span").text #user reviews
+
+				username = feed.css(".fb-user-info").text
+							
+				review_photos = []
+				feed.css(".pic-view-item").each do |photo|
+					review_photos << photo.css("img").at('img')["src"] #saving all photos to photo url
+				end
+
+				review_date = feed.css(".r-time").text
+
+				result = {"user_order_rate" => user_order_rate, "user_order_info" => user_order_info, "user_review" => user_review, "review_photos" => review_photos, "review_date" => review_date}
+				#saving every detail of review into new element of feedback hash
+				feedback[:feedback] << result
+			end
+
+			feedback_doc.css(".fb-user-info").each do |user|
+
+				username = user.css(".user-name").text
+				user_country = user.css(".user-country").text
+
+				result = {"username" => username, "user_country" => user_country}
+				feedback[:user_info] << result
+			
+			end
+		end
+	end
+		puts feedback
+		product_details = [description,feedback]
+		return product_details
+
 	end
 
 end

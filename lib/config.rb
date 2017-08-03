@@ -12,7 +12,8 @@ class AliConfig
 		alibaba_api_calls = {
 			'list': 'api.listPromotionProduct',
 			'details': 'api.getPromotionProductDetail',
-			'links': 'api.getPromotionLinks'
+			'links': 'api.getPromotionLinks',
+			'similar-products': 'api.listSimilarProducts'
 		}
 	end
 	

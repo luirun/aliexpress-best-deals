@@ -79,3 +79,6 @@ gem 'meta-tags'
 
 #error pages
 gem 'gaffe'
+
+#scraping
+gem 'watir'

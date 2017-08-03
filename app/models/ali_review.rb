@@ -7,6 +7,9 @@ class AliReview < ActiveRecord::Base
 			review.is_empty = "y"
 			review.productId = productId
 			review.save
+			item = Item.where(:productId => productId).first
+			item.with_reviews = "y"
+			item.save
 		else
 			reviews[:feedback].each do |feedback| #saving every not empty review with user details
 				review = AliReview.new
@@ -22,6 +25,9 @@ class AliReview < ActiveRecord::Base
 				review.save
 				i = i + 1
 			end
+			item = Item.where(:productId => productId).first
+			item.with_reviews = "y"
+			item.save
 		end
 		
 	end
