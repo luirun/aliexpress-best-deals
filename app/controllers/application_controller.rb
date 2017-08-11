@@ -27,7 +27,7 @@ class ApplicationController < ActionController::Base
       keywords:    %w[web software development mobile app],
       twitter: {
         site_name: site_name,
-        site: '@thecookieshq',
+        site: '@alibestdeal',
         card: 'summary',
         image: image
       },

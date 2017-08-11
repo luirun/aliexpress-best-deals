@@ -28,9 +28,9 @@ class ItemsController < ApplicationController
     #@similar_products = AliCrawler.new.get_similar_products(@item.productId)
     #puts @similar_products["result"]["products"][0]
     #@best_items = @similar_products["result"]["products"][0..15]
-    if AliReview.where(:productId => @item.productId).first == nil && @item_details[1] != nil #checking for existing reviews for product
-     @reviews_save = AliReview.new.save_product_reviews(@item_details[1],@item.productId) #sending reviews with details and product id to AliReview model
-    end
+    #if AliReview.where(:productId => @item.productId).first == nil && @item_details[1] != nil #checking for existing reviews for product
+    # @reviews_save = AliReview.new.save_product_reviews(@item_details[1],@item.productId) #sending reviews with details and product id to AliReview model
+    #end
 
     @ali_reviews = AliReview.where(:productId => @item.productId, :is_empty => "n")
     @product_reviews = Review.all.order("RAND()")
@@ -41,6 +41,14 @@ class ItemsController < ApplicationController
     set_meta_tags title: @item.productTitle
     set_meta_tags description: @item.productDescription
     set_meta_tags keywords: @item.productTitle.split.join(",")
+    set_meta_tags og: {
+      image: @item.imageUrl
+    }
+    set_meta_tags twitter: {
+      image: @item.imageUrl,
+      title: @item.productTitle,
+      description: "Only #{@item.salePrice} for this new product - check this out!"
+    }
   end
 
   def item_like

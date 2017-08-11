@@ -83,7 +83,7 @@ class AdminsController < ApplicationController
   	def update_products_details
 
 
-  		items = Item.select(:id,:productId,:productUrl).where(:with_reviews => "n")
+  		items = Item.select(:id,:productId,:productUrl).where(:with_reviews => "n", :with_reviews => nil)
   		browser = Watir::Browser.new
   		browser.goto "https://aliexpress.com"
   		browser.element(:class => "close-layer").click

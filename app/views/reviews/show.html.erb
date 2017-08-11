@@ -1,4 +1,32 @@
-
+<% $user = User.find(@review.author) %>
+<%# google snippets %>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org/",
+  "@type": "Product",
+  "image": "<%= @review.cover %>",
+  "name": "<%= @review.title %>",
+  "review": {
+    "@type": "Review",
+    "reviewRating": {
+      "@type": "Rating",
+      "ratingValue": "<%= @review.rating %>"
+    },
+    "name": "<%= @review.title %>",
+    "author": {
+      "@type": "Person",
+      "name": "<%= $user.nickname %>"
+    },
+    "datePublished": "<%= @review.created_at %>",
+    "reviewBody": "<%= @review.short_description %>",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Aliexpress Best Deals"
+    }
+  }
+}
+</script>
+<%# end of google snippets %>
 	
 <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet">
 </head>
@@ -12,7 +40,6 @@
                 <h1><%= @review.title %></h1>
                 <p class="lead">
 					<i class="fa fa-user"></i>
-                    <% $user = User.find(@review.author) %>
 					by <%= link_to $user.nickname, search_author_path($user.nickname) %>
                 </p>
                 <hr>
@@ -54,7 +81,12 @@
                     </div>
 
                     <div class="col-lg-3 text-center">
-                        <%= link_to "Buy It Now", Item.where(:productId => @review.productId).first.promotionUrl, :class => "btn btn-default btn-lg", :target => "_blank" %>
+                        <% $buy_now = Item.where(:productId => @review.productId).first %>
+                        <% if $buy_now != nil %>
+                            <%= link_to "Buy It Now", $buy_now.promotionUrl, :class => "btn btn-default btn-lg", :target => "_blank" %>
+                        <% else %>
+                            <p class="btn btn-default btn-lg disable">Product Unavailable</p>
+                        <% end %>
                     </div>
                 </div>
                 <hr style="width:100%;float:left;">

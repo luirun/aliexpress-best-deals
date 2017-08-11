@@ -23,6 +23,14 @@ class ReviewsController < ApplicationController
     set_meta_tags title: @review.title
     set_meta_tags description: @review.short_description
     set_meta_tags keywords: @review.keywords
+    set_meta_tags og: {
+      image: @review.cover
+    }
+    set_meta_tags twitter: {
+      image: @review.cover,
+      title: @review.title,
+      description: @review.short_description
+    }
   end
 
   # GET /subsubcategories/new
