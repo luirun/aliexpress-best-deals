@@ -14,7 +14,7 @@
 										<%= link_to item_path(pretty_url_encode(item.productTitle)) do %><%= image_tag "#{item.imageUrl}_250x250.jpg" %><% end %>
 									</div>
 									<div class="caption text-center">
-										<h4><%= simple_format(pretty_url_decode(item.productTitle)) %></h4>
+										<h4><%= pretty_url_decode(item.productTitle) %></h4>
 										<%= link_to item_path(pretty_url_encode(item.productTitle)), :class => "btn btn-success btn-sm", :style => "margin:5px;" do %>» Read More<% end %>
 									</div>
 								</div>

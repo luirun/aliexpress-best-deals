@@ -105,6 +105,7 @@
 
 <%# start of google snippets %>
 <% $brand = ActionView::Base.full_sanitizer.sanitize(@item.productDescription).split(" ") %>
+<% $description = $brand %>
 <% $index = $brand.index("Name:") %>
 
 <script type="application/ld+json">
@@ -114,7 +115,7 @@
   "name": "<%= @item.productTitle %>",
   "brand": "<%= if $index != nil then $brand[$index+1] else $brand = "Unknow" end %>",
   "image": "<%= @item.imageUrl %>",
-  "description": "<%= $brand.join(" ")[0..117] %>...",
+  "description": "<%= $description.join(" ")[0..117] %>...",
   "aggregateRating": {
     "@type": "AggregateRating",
     "ratingValue": "<%= @rate %>",
