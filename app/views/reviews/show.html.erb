@@ -55,46 +55,16 @@
                 <hr>
                 <%= image_tag @review.cover.url, :class => "img-responsive" %>
                 <hr>
-
-                <div class="col-lg-12">
-                    <div class="col-lg-3 text-center">
-                        <h4>Price: <b><%= @review.price %> USD</b></h4>
-                    </div>
-
-                    <div class="col-lg-6 text-center">
-                        <h4>Product rating:</h4>
-                        <h4 style="display:inline-block;"><b><%= @review.rating %>/5.0</b></h4>
-                        <% for i in 0..@review.rating-1 %>
-                            <span class="fa fa-star fa-2x"></span>
-                        <% end %>
-
-                        <% if @review.rating%1 != 0 %>
-                            <span class="fa fa-star-half-o fa-2x"></span>
-                            <% for i in 0...5-(@review.rating+0.5) %>
-                                <span class="fa fa-star-o fa-2x"></span>
-                            <% end %>
-                        <% else %>
-                            <% for i in 0...5-@review.rating %>
-                                <span class="fa fa-star-o fa-2x"></span>
-                            <% end %>
-                        <% end %>
-                    </div>
-
-                    <div class="col-lg-3 text-center">
-                        <% $buy_now = Item.where(:productId => @review.productId).first %>
-                        <% if $buy_now != nil %>
-                            <%= link_to "Buy It Now", $buy_now.promotionUrl, :class => "btn btn-default btn-lg", :target => "_blank" %>
-                        <% else %>
-                            <p class="btn btn-default btn-lg disable">Product Unavailable</p>
-                        <% end %>
-                    </div>
-                </div>
+                <%= render "rating_product_info" %>
                 <hr style="width:100%;float:left;">
 
-
-
                 <p class="lead"><%= simple_format(@review.long_description) %></p>
+
                 <hr>
+
+                <%= render "rating_product_info" %>
+
+                <hr style="width:100%;float:left;">
 
                 <%= render "comments/comments" %>
                 <%= render "comments/comment_form" %>

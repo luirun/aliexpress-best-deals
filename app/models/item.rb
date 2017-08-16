@@ -155,7 +155,8 @@ class Item < ActiveRecord::Base
 			description = doc.css(".ui-box.product-property-main")
 			browser.element(:class => "ui-switchable-trigger", :index => 1).link.click #load feedback tab
 			sleep(1)
-			if doc.css(".no-feedback.wholesale-product-feedback") != nil
+			#if doc.css(".no-feedback.wholesale-product-feedback") != nil  OLD NOT WORKING IF
+			if !browser.element(:id => "feedback").iframe(:index => 0).element(:id => "transction-feedback").exists?
 				feedback = {'feedback': [], 'user_info': []} 
 				feedback[:feedback][0] = nil #empty feedback to push script to work when we have nothing
 				product_details = [description,feedback]
@@ -197,7 +198,7 @@ class Item < ActiveRecord::Base
 			end
 		end
 	end
-		puts feedback
+		#puts feedback
 		product_details = [description,feedback]
 		return product_details
 
