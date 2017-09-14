@@ -1,6 +1,13 @@
 <% $hot=0 %>
-
-<% @best_items = Item.where(:is_hot => "y").where(:archived => nil).order("RAND()").limit(16)  #limit%4==0%>
+<%# this partial is used on visitors/index and in this case we dont have any @item specified, when this partial is used on item page we can look for specified similar products %>
+<% if @item == nil %>
+	<% @best_items = Item.where(:is_hot => "y").where(:archived => nil).order("RAND()").limit(16)  #limit%4==0%>
+<% else %>
+	<% @best_items = Item.where("productTitle like ?", "%#{@item.productTitle.split(" ")[0]}%").order("RAND()").limit(8)  #limit%4==0%>
+	<% if @best_items != nil && @best_items.length < 8 %>
+	<% @best_items = Item.where(:is_hot => "y").where(:archived => nil).order("RAND()").limit(16)  #limit%4==0%>
+	<% end %>
+<% end %>
 <div class="container">
 	<div class="col-md-12 col-xs-12">		
 		<div class="carousel slide best" id="myCarousel">

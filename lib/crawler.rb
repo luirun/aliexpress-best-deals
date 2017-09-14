@@ -131,6 +131,7 @@ class AliCrawler
 			def get_hot_products(currency, categories, language)
 
 				url = "http://gw.api.alibaba.com/openapi/param2/2/portals.open/api.listHotProducts/#{AliConfig.new.api_key}?localCurrency=#{currency}&categoryId=#{categories}&language=#{language}"
+				puts url
 				make_call(url)
 				
 			end

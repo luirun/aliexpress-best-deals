@@ -1,7 +1,16 @@
 <div class="well">
     <h4><i class="fa fa-book"></i> Featured products:</h4>
 		<div class="row">
-		<% @popular_items = Item.where(:is_hot => "y").order("RAND()").limit(5)  #limit%5==0%>
+
+		<%# section made to intelligent product suggestions %>
+		<% $like = "%#{@review.title.parameterize("%")}%" %>
+		<% @popular_items = Item.where("productTitle LIKE ?", $like).order("RAND()").limit(5)  #limit%5==0%>
+		<% $like_incr = 1 %>
+		<% while @popular_items[0] == nil %>
+			<% @popular_items = Item.where("productTitle LIKE ?", "%#{$like.split("%")[$like_incr]}%").order("RAND()").limit(5)  #limit%5==0%>
+			<% $like_incr += 1 %>
+		<% end %>
+
 		<% @popular_items.each do |item| %>	 
 			<div class="col-lg-12">
 				<div class="cuadro_intro_hover" style="background-color:#cccccc;">

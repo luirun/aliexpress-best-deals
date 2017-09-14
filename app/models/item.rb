@@ -1,7 +1,7 @@
 class Item < ActiveRecord::Base
 
 	def self.ali_new(items, categoryId)
-		if items.length > 13 #checking that there is one or more products
+		if items.length > 1 #checking that there is one or more products
 			items.each do |i|
 				id_exist = Item.where(:productId => i["productId"].to_s).first
 				if id_exist != nil
@@ -21,7 +21,7 @@ class Item < ActiveRecord::Base
 			end
 		else
 			i = items
-			puts i
+			#puts i
 			a = i['30daysCommission']
 			i = i.except('30daysCommission')
 			item = Item.new(i)
