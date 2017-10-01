@@ -36,9 +36,10 @@ class ItemsController < ApplicationController
     @product_reviews = Review.all.order("RAND()")
     @recommended_items = Item.where(:category => @item.category).limit((@ali_reviews.length)*2)
     @best_items = Item.where(:is_hot => "y").limit(8) #limit%4=0!!
+    if @item.subcategory != nil then @subcategory = Subcategory.find(@item.subcategory) end
 
     #META
-    set_meta_tags title: @item.productTitle
+    set_meta_tags title: @item.productTitle.html_safe
     set_meta_tags description: @item.productDescription
     set_meta_tags keywords: @item.productTitle.split.join(",")
     set_meta_tags og: {
@@ -47,7 +48,7 @@ class ItemsController < ApplicationController
     set_meta_tags twitter: {
       image: @item.imageUrl,
       title: @item.productTitle,
-      description: "Only #{@item.salePrice} for this new product - check this out!"
+      description: "Only #{@item.salePrice}$ for this new product - check this out!"
     }
   end
 
@@ -135,9 +136,13 @@ class ItemsController < ApplicationController
 		@subcategories = Subcategory.where(:parent => params[:category_id]).all
 	end
 
-  def save_hot_products
-    @items = AliCrawler.new.get_hot_products(params["currency"]["fields"], params[:category][:fields][1], params["language"]["fields"])
-    save_items = Item.save_hot_products(@items["result"]["products"], params[:category][:fields][1])
+  def save_hot_products #search hot products(high quality products) by category
+    @subcategories = Subcategory.where(:parent => params[:category][:fields][1])
+    @subcategories.each do |subcategory|
+      @items = AliCrawler.new.search_for_items("", subcategory.id)
+      puts @items.length
+      save_items = Item.save_hot_products(@items["result"]["products"], params[:category][:fields][1], subcategory.id)
+    end
   end
 
   def go_to_aliexpress
@@ -150,6 +155,10 @@ class ItemsController < ApplicationController
     def set_item
       text = "#{pretty_url_decode(params[:productTitle])}%"
       @item = Item.where("productTitle LIKE ?", text).first
+      if @item.nil?
+        flash[:alert] = "Product not found :c"
+        redirect_to error_path("product-not-found")
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

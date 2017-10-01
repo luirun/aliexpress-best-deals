@@ -18,6 +18,8 @@ Rails.application.routes.draw do
   post "auto_save_hot_products" => "admins#auto_hot_products", as: "api_auto_save_hot_products_post"
   get "clear_expired_items" => "admins#clear_expired_items", as: "api_clear_expired_items"
   get "update_product_details" => "admins#update_products_details", as: "update_products_details"
+  get "delete_empty_reviews" => "admins#delete_empty_reviews", as: "delete_empty_reviews"
+  get "mass_subcategory_filling" => "admins#mass_subcategory_filling", as: "mass_subcategory_filling"
     #admin article manager
     get "article_manage" => "admins#article_manager", as: "article_manager"
 
@@ -81,8 +83,9 @@ Rails.application.routes.draw do
     	get "get_subcategories/:category_id" => "items#get_subcategory"
 
       #search routes
-      get "category/:name" => "categories#search", as: "redirect_to_search_in_category" #redirect category
+      get "category/:name" => "search#search_category_redirect", as: "redirect_to_search_in_category" #redirect category
       get "category/:name/:p" => "search#search_category", as: "search_category_items" #show category
+      get "category/:name/:subcategory/:p" => "search#search_category", as: "search_subcategory" #show subcategorycategory
       get "search" => "search#search_item", as: "redirect_to_search_items" #redirect items
       get "search/:name/:p" => "search#search_item", as: "search_item" #show items
       get "search/keyword=:keyword" => "search#search_keyword", as: "search_keyword"

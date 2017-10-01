@@ -31,9 +31,8 @@ class AliCrawler
 			def search_for_items(keyword,category)
 				fields = AliConfig.new.alibaba_api_fields[:list].join(",")
 				hot_products= "false"
-				sort = "commissionRateUp"
 				
-				url = "https://gw.api.alibaba.com/openapi/param2/2/portals.open/api.listPromotionProduct/#{AliConfig.new.api_key}?fields=#{fields}&keywords=#{keyword}&categoryId=#{category}&pageSize=40&sort=#{sort}"
+				url = "https://gw.api.alibaba.com/openapi/param2/2/portals.open/api.listPromotionProduct/#{AliConfig.new.api_key}?fields=#{fields}&keywords=#{keyword}&categoryId=#{category}&pageSize=40&highQualityItems=true&sort=commissionRateUp"
 				puts url
 				
 				make_call(url)
@@ -41,7 +40,6 @@ class AliCrawler
 			end
 
 			def get_product_description(productUrl)
-
 				browser = Watir::Browser.new
 				browser.window.resize_to(1280,920)
 				browser.goto productUrl
@@ -140,6 +138,7 @@ class AliCrawler
 			def get_similar_products(productId)
 
 				url = "http://gw.api.alibaba.com/openapi/param2/2/portals.open/api.listSimilarProducts/#{AliConfig.new.api_key}?productId=#{productId}"
+				puts url
 				make_call(url)
 
 			end

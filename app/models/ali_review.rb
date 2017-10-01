@@ -32,4 +32,8 @@ class AliReview < ActiveRecord::Base
 		
 	end
 
+	def delete_empty_reviews(reviews)
+		reviews.delete_all
+	end
+
 end

@@ -83,12 +83,34 @@
             </div>
         </div>
 
-         <div class="col-lg-2 col-md-4 col-sm-6 col-xs-12">
+        <div class="col-lg-2 col-md-4 col-sm-6 col-xs-12">
             <div class="process">
                 <div class="process-row">
                     <div class="process-step">
-                        <%= link_to update_products_details_path, :class => "btn btn-default btn-circle category-listing-link" do %><i class="fa fa-file fa-3x"></i><% end %>
+                        <%= link_to mass_subcategory_filling_path, :class => "btn btn-default btn-circle category-listing-link" do %><i class="fa fa-bomb fa-3x"></i><% end %>
+                        <p>Mass Subcategory Filling</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-2 col-md-4 col-sm-6 col-xs-12">
+            <div class="process">
+                <div class="process-row">
+                    <div class="process-step">
+                        <%= link_to update_products_details_path, :class => "btn btn-default btn-circle category-listing-link" do %><i class="fa fa-chrome fa-3x"></i><% end %>
                         <p>Update Products Details</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-2 col-md-4 col-sm-6 col-xs-12">
+            <div class="process">
+                <div class="process-row">
+                    <div class="process-step">
+                        <%= link_to delete_empty_reviews_path, :class => "btn btn-default btn-circle category-listing-link" do %><i class="fa fa-trash fa-3x"></i><% end %>
+                        <p>Delete empty reviews</p>
                     </div>
                 </div>
             </div>

@@ -30,10 +30,10 @@ class AdminsController < ApplicationController
 	#this action will take 15-20min to be done, be sure you are able to start it now!
 	def auto_hot_products
 		if request.post?
-		    @categories = Category.all
-		    @categories.each do |category|
-			    @items = AliCrawler.new.get_hot_products("USD", category.id, "EN")
-			    save_items = Item.save_hot_products(@items["result"]["products"], category.id)
+		    @subcategories = Subcategory.all
+		    @subcategories.each do |subcategory|
+			    @items = AliCrawler.new.get_hot_products("USD", subcategory.id, "EN")
+			    save_items = Item.save_hot_products(@items["result"]["products"], subcategory.parent, subcategory.id)
 		    end
 		end
 	end
@@ -82,9 +82,24 @@ class AdminsController < ApplicationController
 
   	def update_products_details
 
-
-  		items = Item.select(:id,:productId,:productUrl).where(:with_reviews => "n", :with_reviews => nil)
-  		browser = Watir::Browser.new
+  		proxies = ['212.237.52.24:80',
+'212.237.15.178:8080',
+'212.237.15.178:80',
+'185.97.122.226:53281',
+'185.61.180.112:8080',
+'5.152.158.4:8080',
+'94.177.175.232:80',
+'94.177.175.232:8080',
+'05.152.158.4:8080',
+'212.237.24.249:8080',
+'212.237.24.249:3128',
+'94.177.175.232:3128',
+'94.177.203.243:3128']
+  		begin
+  		proxy = proxies[rand(0..proxies.length)]
+  		puts proxy
+  		items = Item.select(:id,:productId,:productUrl).where(:with_reviews => nil)
+  		browser = Watir::Browser.new :chrome, :switches => ["--proxy-server=#{proxy}"]
   		browser.goto "https://aliexpress.com"
   		browser.element(:class => "close-layer").click
   		i = 0
@@ -93,16 +108,20 @@ class AdminsController < ApplicationController
   			product_details = Item.fetch_extra_data(browser) #return [0] = Table of product details, [1] = product reviews, [1][:feedback] - review text, [1][:user_info] - user info in review
   			if product_details == "end"
   				item.delete
-  				sleep(rand(2..3.5))
+  				sleep(rand(7..15))
   			else
 	  			@description_save = Item.save_product_description(product_details[0], item.id)
 	  			@reviews_save = AliReview.new.save_product_reviews(product_details[1],item.productId) 
-	  			sleep(rand(2..3.5))
+	  			sleep(rand(7..15))
 	  		end
 	  		i+=1
-	  		if i%10 == 0 then sleep(rand(10..25)) end
+	  		if i%10 == 0 then sleep(rand(15..60)) end
   		end
   		browser.close
+  		rescue
+  			browser.close
+			retry
+		end
   		#review_ids = AliReview.select(:productId).distinct.map(&:productId)
   		#product_urls = Item.select(:productUrl).where('productId NOT IN (?)', review_ids)
   		#puts product_urls[1]
@@ -117,6 +136,28 @@ class AdminsController < ApplicationController
   			#	item.with_reviews = "y"
   			#end
   			#item.save
+  		#end
+  	end
+
+  	def mass_subcategory_filling
+		@subcategories = Subcategory.all
+		@subcategories.each do |subcategory|
+			@items = AliCrawler.new.search_for_items("", subcategory.id)
+			save_items = Item.save_hot_products(@items["result"]["products"], subcategory.parent, subcategory.id)
+		end
+		redirect_to admins_path
+  	end
+
+  	def delete_empty_reviews
+  		empty_reviews = AliReview.where(:is_empty => "y")
+  		AliReview.new.delete_empty_reviews(empty_reviews)
+  		empty_reviews = AliReview.where("length(review_content) < ?", 5)
+  		AliReview.new.delete_empty_reviews(empty_reviews)
+  		unexisting_product_reviews = AliReview.select(:productId).distinct
+  		#unexisting_product_reviews.each do |review|
+  			#if Item.where(:productId => review.productId).first == nil
+  				#AliReview.new.delete_empty_reviews(AliReview.where(:productId => review.productId))
+  			#end
   		#end
   	end
 

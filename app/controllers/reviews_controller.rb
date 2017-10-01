@@ -113,7 +113,16 @@ class ReviewsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_review
-      @review = Review.where(:title => pretty_url_decode(params[:reviewTitle])).first
+      title = pretty_url_decode(params[:reviewTitle])
+      @review = Review.where(:title => title).first
+      if @review.nil?
+        title = title.split(" ")
+        if title.length > 3 then @review = Review.where("title LIKE ?", "%#{title[1]}%#{title[3]}%").first else @review = Review.where("title LIKE ?", "%#{title[1]}%").first end
+        if @review.nil?
+          flash[:alert] = "Article not found!"
+          redirect_to reviews_path
+        end
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

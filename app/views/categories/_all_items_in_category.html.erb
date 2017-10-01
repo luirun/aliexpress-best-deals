@@ -117,7 +117,7 @@
 			<ul class="pagination">
 			<% if params[:p].to_i < 6 %>
 				<% $start = 1 %>
-				<% if (@items.length/32.0).ceil < 5 %>
+				<% if (@items.length/32.0).ceil <= 5 %>
 					<% $end = (@items.length/32.0).ceil %>
 				<% else %>
 					<% $end = params[:p].to_i + 5 %>
@@ -139,7 +139,11 @@
 					<% if params[:action] == "search_item" %>
 						<li><%= link_to i, "#{search_item_path(params[:name], i)}" %></li>
 					<% else %>
-						 <li><%= link_to i, "#{search_category_items_path(params[:name], i)}?price_min=#{params[:price_min]}&price_max=#{params[:price_max]}&sort=#{params[:sort]}" %></li>
+						<% if params[:subcategory] != nil %>
+							<li><%= link_to i, "#{search_subcategory_path(params[:name],params[:subcategory], i)}?price_min=#{params[:price_min]}&price_max=#{params[:price_max]}&sort=#{params[:sort]}" %></li>
+						<% else %>
+							<li><%= link_to i, "#{search_category_items_path(params[:name], i)}?price_min=#{params[:price_min]}&price_max=#{params[:price_max]}&sort=#{params[:sort]}" %></li>
+						<% end %>
 					<% end %>
 				<% end %>
 			<% end %>

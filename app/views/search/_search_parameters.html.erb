@@ -9,12 +9,41 @@
             </div>
         
 
-			<b>Sort by discount:</b>
-			<%= radio_button_tag(:discount, :discountup, 1) %><%= label :discount, "discountup" do %>UP<% end %>
-			<%= radio_button_tag(:discount, :discountdown, 0) %><%= label :discount, "discountdown" do %>DOWN<% end %>
+			<%#<b>Sort by discount:</b>%>
+			<%#= radio_button_tag(:discount, :discountup, 1) %><%#= label :discount, "discountup" do %><%#UP%><%# end %>
+			<%#= radio_button_tag(:discount, :discountdown, 0) %><%#= label :discount, "discountdown" do %><%#DOWN%><%# end %>
 
+			<div class="subcategory-container" style="height:20px;overflow:hidden;margin-bottom:5px;">
+				<b>Related subcategories:</b>
+				<% if params[:subcategory] != nil %>
+					<%= link_to search_category_items_path(@category.name,1) do %><div class="badge badge-info"><%= params[:subcategory] %> X</div><% end %>
+				<% else %>
+					<% @subcategories.each do |subcategory| %>
+						<%= link_to search_subcategory_path(@category.name,subcategory.name,1) do %><div class="badge badge-info"><%= subcategory.name %></div><% end %>
+					<% end %>
+				<% end %>
+			</div>
+			<% if params[:subcategory] == nil && @subcategories.length > 7 && @category.id != 1509 %>
+				<i style="float:right;transition-duration:1s;" class="more">more subcategories <i class="fa fa-level-down" aria-hidden="true"></i></i>
+			<% end %>
 			<%= submit_tag "Filter", class: "btn btn-primary btn-sm" %>
 		</div>
 	<% end %>
 	</div>
 </div>
+
+<script>
+$( ".more" ).click(function() {
+	if($(this).text()=='more subcategories '){
+		var curHeight = $(".subcategory-container").height();
+		$(".subcategory-container").css('height', 'auto');
+		var autoHeight = $(".subcategory-container").height();
+	  	$(".subcategory-container").height(curHeight).animate({height: autoHeight}, 800);
+	 	$(this).html("Less Categories <i class='fa fa-level-up' aria-hidden='true'>");
+    }else{
+    	$(".subcategory-container").animate({height: '20px'}, 800);
+        $(this).html("more subcategories <i class='fa fa-level-down' aria-hidden='true'></i>");
+    }
+});
+
+</script>

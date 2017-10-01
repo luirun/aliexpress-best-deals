@@ -78,12 +78,12 @@ class Item < ActiveRecord::Base
 	end
 
 	#method for mass saving items founded by crawler - works well for saving from file and iterating through the categories
-	def self.save_hot_products(items, categoryId)
+	def self.save_hot_products(items, categoryId, subcategoryId)
 		items.each do |i|
 			fields = ['productId','productTitle','productUrl','imageUrl','originalPrice','salePrice','discount','evaluateScore','commission','commissionRate','30daysCommission','volume','packageType','lotNum','validTime','storeName','storeUrl']
 			details = AliCrawler.new.get_product_details(fields,i["productId"]) #gettig all details about product from hot product list
 			if details["result"] == nil
-				puts "cisza nocna"
+				puts "Zwrocono pusty wynik(Cisza nocna)"
 			else
 				id_exist = Item.where(:productId => i["productId"]).first
 				if id_exist != nil
@@ -100,6 +100,7 @@ class Item < ActiveRecord::Base
 					item.promotionUrl = promotion_link[0]["promotionUrl"] #saving promotion url to record
 					item.thirtydaysCommission = a #adding 30 days commission to record
 					item.category = categoryId
+					item.subcategory = subcategoryId
 					item.is_hot = "y"
 					item.is_approved = "y"
 					item.save
@@ -153,6 +154,7 @@ class Item < ActiveRecord::Base
 			return "end"
 		else
 			description = doc.css(".ui-box.product-property-main")
+			browser.send_keys :space
 			browser.element(:class => "ui-switchable-trigger", :index => 1).link.click #load feedback tab
 			sleep(1)
 			#if doc.css(".no-feedback.wholesale-product-feedback") != nil  OLD NOT WORKING IF
@@ -201,7 +203,6 @@ class Item < ActiveRecord::Base
 		#puts feedback
 		product_details = [description,feedback]
 		return product_details
-
 	end
 
 end

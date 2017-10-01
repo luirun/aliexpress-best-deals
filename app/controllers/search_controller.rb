@@ -1,45 +1,44 @@
 class SearchController < ApplicationController
+
+  def search_category_redirect; redirect_to search_category_items_path(params[:name], 1); end
 	def search_category
       @category = Category.where(:name => params[:name]).first
-
+      @subcategories = Subcategory.where(:parent => @category.id).distinct
       #checking that pagination exsists, if not redirecting to 1 page
       if params[:p] == nil
-        redirect_to search_in_category_path(params[:name], 1)
+        redirect_to search_category_path(params[:name], 1)
+      end
+      
+      params[:price_min] = params[:price_min].to_f
+      params[:price_max] = params[:price_max].to_f
+      if params[:price_max] == 0.0 then params[:price_max] = 9999.99 else params[:price_max] = params[:price_max].to_f end
+      
+      if params[:price_min] != 0.0
+        if params[:price_min] < params[:price_max] then min_price = params[:price_min] else flash[:notice] = "Minimal price can't be higher than maximum price!";min_price = 9999;redirect_to request.referer end
+      else
+        min_price = 0.0 
       end
 
-      #price_min, price_max - 0 ? LOGIC
-      if params[:price_min] == nil || params[:price_min] == "" #0 ? LOGIC
-        if params[:price_max] != nil # 0 1 LOGIC
-          if params[:price_max] != "" #price max not contain empty space
-            if params[:price_max].to_f <= 0
-              flash[:notice] = "Price max must be higher than zero!"
-              redirect_to search_in_category_path(params[:name], params[:p])
-            else # 0 1 LOGIC
-              @items = Item.where(:category => @category.id, :is_approved => "y", salePrice: 0..params[:price_max].to_f).order("validTime DESC")
-            end
-          else #when price max contains only space
-            @items = Item.where(:category => @category.id, :is_approved => "y").order("validTime DESC")
-          end
-        else # 0 0 LOGIC
-          @items = Item.where(:category => @category.id, :is_approved => "y").order("validTime DESC")
-        end
+      if params[:price_max] != 9999.99
+        if params[:price_max] > params[:price_min] then max_price = params[:price_max] else flash[:notice] = "Minimal price can't be higher than maximum price!";max_price = 1;redirect_to request.referer end
+      else 
+        max_price = 9999.99
+      end
+      
+      if min_price < 0 || max_price <= 0
+        flash[:notice] = "You can't search for products cheaper than 0.01$!"; redirect_to request.referer;
       else
-        if params[:price_min].to_f < 0
-          flash[:notice] = "Price min must be higher than zero!"
-          redirect_to search_in_category_path(params[:name], params[:p])
-        else #PRICE MIN > 0
-          puts params[:price_max]
-          if params[:price_max] != "" # PRICE MAX != EMPTY
-            if params[:price_min] > params[:price_max] # min higher than max
-              flash[:notice] = "Maximum price must be higher than minimal price!"
-              redirect_to search_in_category_path(params[:name], params[:p])
-            else # 1 - 1 LOGIC
-              @items = Item.where(:category => @category.id, :is_approved => "y", salePrice: params[:price_min].to_f..params[:price_max].to_f).order("validTime DESC")
-            end
-          else # 1 0 LOGIC
-            @items = Item.where(:category => @category.id, :is_approved => "y", salePrice: params[:price_min].to_f..99999999).order("validTime DESC")
-          end
+        if params[:subcategory] == nil
+          @items = Item.where(:category => @category.id, salePrice: min_price..max_price, :with_reviews => "y")
+        else
+          @items = Item.where(:category => @category.id, subcategory: @subcategories.where(:name => params[:subcategory]).first.id, salePrice: min_price..max_price, :with_reviews => "y")
         end
+      end
+      
+      #when user search for subcategory - we are setting subcategory_id variable
+      if params[:subcategory] != nil
+        subcategory_id = @subcategories.where(:name => params[:subcategory]).first.id
+        @items = @items.where(:subcategory => subcategory_id)
       end
 
 	    #META
