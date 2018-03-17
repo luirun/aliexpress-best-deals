@@ -1,0 +1,146 @@
+#all-items {
+	a {
+		color:#2c3e50;
+	}
+
+	a:hover {
+		text-decoration:none;
+	}
+
+	.row {
+		margin:0px;
+	}
+
+	//BIG SCREENS
+		//BIG ITEM
+		.one-item.col-md-3.col-sm-3 {
+			padding:0px;
+			height:450px;
+			border: 1px solid #e6e6e6;
+
+			.item-sp.item-lg {
+				float:left;
+
+				h4 {
+					height:calc(150px * 0.7);
+					overflow: hidden;
+				}
+
+				.stars {
+					float: left;
+				}
+
+				.price {
+					float:left;
+				}
+
+				.img-responsive {
+					height:300px;
+					width:100%;
+				}
+			}
+		}
+
+		.one-item:hover {
+			-webkit-box-shadow:1px 0px 5px 0px rgba(50, 50, 50, 0.75);
+			-moz-box-shadow:1px 0px 5px 0px rgba(50, 50, 50, 0.75);
+			box-shadow:1px 0px 5px 0px rgba(50, 50, 50, 0.75);
+		}
+
+
+		//SMALL ITEMS
+		.three-item.col-md-3.col-sm-3 {
+			height:450px;
+			padding:0px;
+
+			.item-sp.item-sm {
+				float:left;
+				height:150px;
+				border: 1px solid #e6e6e6;
+
+				.thumb {
+					height:100%;
+					width:100px;
+					float:left;
+
+					div.vertical-align-center {
+
+						img {
+							height:148px;
+							width:100px;
+						}
+					}
+				}
+
+				h4 {
+					height:70%;
+					width:calc(100% - 100px);
+					float:left;
+					overflow: hidden;
+					margin:0px;
+				}
+			}
+
+			.item-sp.item-sm:hover{
+			-webkit-box-shadow:1px 0px 5px 0px rgba(50, 50, 50, 0.75);
+			-moz-box-shadow:1px 0px 5px 0px rgba(50, 50, 50, 0.75);
+			box-shadow:1px 0px 5px 0px rgba(50, 50, 50, 0.75);
+			}
+		}
+		//VALUES FOR BOTH
+		.price {
+			float:left;
+			height:30%;
+			width:calc(100% - 100px);
+		}
+
+		.price small {
+			text-decoration: line-through;
+		}
+		.price span.big {
+			font-size:16px;
+			font-weight:700;
+			text-decoration:none;
+		}
+
+		.price span.small {
+			font-size:12px;
+			font-weight:600;
+			text-decoration:none;
+		}
+}
+
+
+/* load more div */
+
+.rounded-plus-container {
+	width:180px;
+	height:180px;
+	margin:auto;
+}
+
+.rounded-plus {
+	width:180px;
+	height:180px;
+	background-color:#ecf0f1;
+	border-radius:100px 100px 100px 100px;
+	margin:auto;
+	transition-duration:0.5s;
+}
+
+.rounded-plus i {
+	position:relative;
+	top:60px;
+	left:65px;
+	transition-duration:0.5s;
+}
+
+.rounded-plus:hover {
+	background-color:#bdc3c7;
+	transition-duration:0.5s;
+
+	i {
+		color:black;
+		transition-duration:0.5s;
+	}
+}

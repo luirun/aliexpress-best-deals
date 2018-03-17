@@ -1,40 +1,39 @@
 <div class="container">
-		<div class="row">
-			<div class="col-sm-12">
-				<h3>Comments:</h3>
-			</div><!-- /col-sm-12 -->
-		</div><!-- /row -->
+  <div class="row">
+    <div class="col-sm-12">
+      <h3>Comments:</h3>
+    </div><!-- /col-sm-12 -->
+  </div><!-- /row -->
 
-		<% if @comments[0] == nil %>
-			<h4 style="padding-left:15px;">No comments found!</h4>
-		<% else %>
-			<% @comments.each do |comment| %>
+  <% if @comments[0] == nil %>
+    <h4 style="padding-left:15px;">No comments found!</h4>
+  <% else %>
+    <% @comments.each do |comment| %>
+      <div class="row">
+        <div class="col-sm-1">
+          <div class="thumbnail">
+            <% $user = User.find(comment.author) %>
+            <% if comment.author == 4 %>
+              <img class="img-responsive user-photo" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
+            <% else %>
+              <%= image_tag $user.avatar.url %>
+            <% end %>
+          </div><!-- /thumbnail -->
+        </div><!-- /col-sm-1 -->
 
-					
-					<div class="row">
-						<div class="col-sm-1">
-							<div class="thumbnail">
-							<% $user = User.find(comment.author) %>
-								<% if comment.author == 4 %>
-									<img class="img-responsive user-photo" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
-								<% else %>
-									<%= image_tag $user.avatar.url %>
-								<% end %>
-							</div><!-- /thumbnail -->
-						</div><!-- /col-sm-1 -->
-
-						<div class="col-sm-11">
-							<div class="panel panel-default">
-								<div class="panel-heading">
-								<strong><%= $user.nickname %></strong> <span class="text-muted">commented <%= distance_of_time_in_words(comment.created_at, 0.1.minutes.from_now) %> ago</span>
-								</div>
-						
-								<div class="panel-body">
-									<%= comment.content %>
-								</div><!-- /panel-body -->
-							</div><!-- /panel panel-default -->
-						</div><!-- /col-sm-10 -->
-					</div><!-- /row -->
-			<% end %>
-		<% end %>
+        <div class="col-sm-11">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <strong><%= $user.nickname %></strong> 
+              <span class="text-muted">commented <%= distance_of_time_in_words(comment.created_at, 0.1.minutes.from_now) %> ago</span>
+            </div>
+            
+            <div class="panel-body">
+              <%= comment.content %>
+            </div><!-- /panel-body -->
+          </div><!-- /panel panel-default -->
+        </div><!-- /col-sm-10 -->
+      </div><!-- /row -->
+    <% end %>
+  <% end %>
 </div><!-- /container -->

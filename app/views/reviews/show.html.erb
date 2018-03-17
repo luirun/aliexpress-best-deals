@@ -1,4 +1,3 @@
-<% $user = User.find(@review.author) %>
 <%# google snippets %>
 <script type="application/ld+json">
 {
@@ -15,7 +14,7 @@
     "name": "<%= @review.title %>",
     "author": {
       "@type": "Person",
-      "name": "<%= $user.nickname %>"
+      "name": "<%= @review.user.nickname %>"
     },
     "datePublished": "<%= @review.created_at %>",
     "reviewBody": "<%= @review.short_description %>",
@@ -27,83 +26,61 @@
 }
 </script>
 <%# end of google snippets %>
-	
-<link href="font-awesome/css/font-awesome.min.css" rel="stylesheet">
 </head>
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8">  
+      <h1><%= @review.title %></h1>
+      <p class="lead">
+        <i class="fa fa-user"></i>
+        by <%= link_to @review.user.nickname, search_author_path(@review.user.nickname) %>
+      </p>
+      <hr>
+      <p><i class="fa fa-calendar"></i> Posted on <%= @review.created_at %></p>
+      <p>
+        <i class="fa fa-tags"></i> 
+        Tags: <% @review.keywords.split(",").each do |keyword| %>
+          <%= link_to search_keyword_url(keyword) do %>
+            <span class="badge badge-info"><%= keyword %></span>
+          <% end %>
+        <% end %>
+      </p>
+      <hr>
+      <%= image_tag @review.cover.url, :class => "img-responsive" %>
+      <hr>
+      <%= render "rating_product_info" %>
+      <hr style="width:100%;float:left;">
+      <%= render "layouts/ad" %>
+      <p class="lead"><%= simple_format(@review.long_description) %></p>
+      <hr>
+      <%= render "rating_product_info" %>
+      <hr style="width:100%;float:left;">
+      <%= render "comments/comments" %>
+      <%= render "comments/comment_form" %>
+    </div>
+    <div class="col-lg-4">
+      <%# rendering searchbox %>
+      <%= render "searchbox" %>
+          
+      <%# rendering popular keywords box %>
+      <%= render "popular_keywords" %>
+          
+      <%# render social sharing box %>
+      <%= render "social_sharing" %>
+          
+      <%# render popular reviews box %>
+      <%= render "popular_reviews" %>
+          
+      <%= render "popular_products" %>
+    </div>
+    <%# render popular products box %>
+    <div class="lg-md-12">
+      <%# render 6 reviews categories %>
+      <%= render "review_categories" %>              
+    </div>
 
-
-    <div class="container">
-
-        <div class="row">
-            <div class="col-lg-8">
-            
-                <h1><%= @review.title %></h1>
-                <p class="lead">
-					<i class="fa fa-user"></i>
-					by <%= link_to $user.nickname, search_author_path($user.nickname) %>
-                </p>
-                <hr>
-                <p><i class="fa fa-calendar"></i> Posted on <%= @review.created_at %></p>
-				<p>
-					<i class="fa fa-tags"></i> 
-					Tags: <% @review.keywords.split(",").each do |keyword| %>
-						<%= link_to search_keyword_url(keyword) do %>
-							<span class="badge badge-info"><%= keyword %></span>
-						<% end %>
-					<% end %>
-					
-                <hr>
-                <%= image_tag @review.cover.url, :class => "img-responsive" %>
-                <hr>
-                <%= render "rating_product_info" %>
-                <hr style="width:100%;float:left;">
-                <%= render "layouts/ad" %>
-
-                <p class="lead"><%= simple_format(@review.long_description) %></p>
-
-                <hr>
-
-                <%= render "rating_product_info" %>
-
-                <hr style="width:100%;float:left;">
-
-                <%= render "comments/comments" %>
-                <%= render "comments/comment_form" %>
-
-            </div>
-
-            <div class="col-lg-4">
-			
-				<%# rendering searchbox %>
-				<%= render "searchbox" %>
-				
-				<%# rendering popular keywords box %>
-                <%= render "popular_keywords" %>
-				
-				<%# render social sharing box %>
-				<%= render "social_sharing" %>
-				
-                <%# render popular reviews box %>
-				<%= render "popular_reviews" %>
-				
-                <%= render "popular_items" %>
-
-			</div>
-			<%# render popular items box %>
-			
-            
-        <div class="lg-md-12">
-			<%# render 6 reviews categories %>
-			<%= render "review_categories" %>
-                        
-        </div>
-
-<div class="col-md-12 text-center">
-    <p>Copyright © AliBestDeal.com</p>
-</div>
-					
-					
-					
-        </footer>
-
+    <div class="col-md-12 text-center">
+      <p>Copyright © AliBestDeal.com</p>
+    </div>
+  </footer>
 </div>

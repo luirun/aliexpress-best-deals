@@ -1,0 +1,21 @@
+<div class="container">
+  <div class="row">
+    <h2>Find products by category:</h2>
+    <div class="col-md-12">
+      <% @categories.each do |category| %>
+        <div class="col-lg-2 col-md-4 col-sm-6 col-xs-12">
+          <div class="process">
+            <div class="process-row">
+              <div class="process-step">
+                <%= link_to search_category_products_path(category.name,1), class: "btn btn-default btn-circle category-listing-link" do %>
+                  <i class="<%= category.icon %> fa-3x"></i>
+                <% end %>
+                <p><%= category.name %></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

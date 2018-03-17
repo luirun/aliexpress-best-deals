@@ -1,4 +1,3 @@
-# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -11,163 +10,169 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170814220213) do
+ActiveRecord::Schema.define(version: 2018_03_03_183331) do
 
-  create_table "ali_reviews", force: :cascade do |t|
-    t.string   "productId",       limit: 45
-    t.text     "username",        limit: 65535
-    t.text     "user_country",    limit: 65535
-    t.integer  "user_order_rate", limit: 4
-    t.text     "user_order_info", limit: 65535
-    t.text     "review_date",     limit: 65535
-    t.text     "review_content",  limit: 65535
-    t.text     "review_photos",   limit: 65535
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
-    t.string   "is_empty",        limit: 3
+  create_table "ali_reviews", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+    t.string "productId", limit: 45
+    t.text "username"
+    t.text "user_country"
+    t.integer "user_order_rate"
+    t.text "user_order_info"
+    t.text "review_date"
+    t.text "review_content"
+    t.text "review_photos"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "is_empty", limit: 3
   end
 
-  create_table "categories", force: :cascade do |t|
-    t.text   "name", limit: 65535
+  create_table "categories", id: :integer, default: nil, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+    t.text "name", collation: "utf8_general_ci"
     t.string "icon", limit: 45
+    t.index ["id"], name: "id_UNIQUE", unique: true
   end
 
-  add_index "categories", ["id"], name: "id_UNIQUE", unique: true, using: :btree
-
-  create_table "ckeditor_assets", force: :cascade do |t|
-    t.string   "data_file_name",    limit: 255, null: false
-    t.string   "data_content_type", limit: 255
-    t.integer  "data_file_size",    limit: 4
-    t.string   "data_fingerprint",  limit: 255
-    t.integer  "assetable_id",      limit: 4
-    t.string   "assetable_type",    limit: 30
-    t.string   "type",              limit: 30
-    t.integer  "width",             limit: 4
-    t.integer  "height",            limit: 4
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
+  create_table "ckeditor_assets", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+    t.string "data_file_name", null: false
+    t.string "data_content_type"
+    t.integer "data_file_size"
+    t.string "data_fingerprint"
+    t.integer "assetable_id"
+    t.string "assetable_type", limit: 30
+    t.string "type", limit: 30
+    t.integer "width"
+    t.integer "height"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["assetable_type", "assetable_id"], name: "idx_ckeditor_assetable"
+    t.index ["assetable_type", "type", "assetable_id"], name: "idx_ckeditor_assetable_type"
   end
 
-  add_index "ckeditor_assets", ["assetable_type", "assetable_id"], name: "idx_ckeditor_assetable", using: :btree
-  add_index "ckeditor_assets", ["assetable_type", "type", "assetable_id"], name: "idx_ckeditor_assetable_type", using: :btree
-
-  create_table "comments", force: :cascade do |t|
-    t.integer  "author",             limit: 4
-    t.text     "page",               limit: 65535
-    t.text     "content",            limit: 65535
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
-    t.string   "image_file_name",    limit: 255
-    t.string   "image_content_type", limit: 255
-    t.integer  "image_file_size",    limit: 4
+  create_table "comments", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+    t.integer "author"
+    t.text "page"
+    t.text "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "image_file_name"
+    t.string "image_content_type"
+    t.integer "image_file_size"
     t.datetime "image_updated_at"
-    t.string   "accepted",           limit: 45
+    t.string "accepted", limit: 45
   end
 
-  create_table "hot_products", force: :cascade do |t|
-    t.string   "productId",            limit: 45
-    t.text     "productTitle",         limit: 65535
-    t.text     "productUrl",           limit: 65535
-    t.text     "promotionUrl",         limit: 65535
-    t.text     "imageUrl",             limit: 65535
-    t.string   "originalPrice",        limit: 45
-    t.string   "salePrice",            limit: 45
-    t.float    "discount",             limit: 24
-    t.integer  "lotNum",               limit: 4
-    t.string   "thirtydaysCommission", limit: 45
-    t.string   "packageType",          limit: 45
-    t.float    "evaluateScore",        limit: 24
-    t.date     "validTime"
-    t.integer  "quanity_sold",         limit: 4
-    t.float    "commision",            limit: 24
-    t.integer  "volume",               limit: 4
-    t.text     "aff_url",              limit: 65535
-    t.datetime "created_at",                                      null: false
-    t.datetime "updated_at",                                      null: false
-    t.integer  "category",             limit: 4,     default: 50, null: false
-    t.integer  "subcategory",          limit: 4
-    t.integer  "sub_subcategory",      limit: 4
-    t.text     "storeName",            limit: 65535
-    t.text     "storeUrl",             limit: 65535
+  create_table "hot_products", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+    t.string "productId", limit: 45
+    t.text "productTitle", collation: "utf8_general_ci"
+    t.text "productUrl", collation: "utf8_general_ci"
+    t.text "promotionUrl"
+    t.text "imageUrl", collation: "utf8_general_ci"
+    t.string "originalPrice", limit: 45
+    t.string "salePrice", limit: 45
+    t.float "discount"
+    t.integer "lotNum"
+    t.string "thirtydaysCommission", limit: 45, collation: "utf8_general_ci"
+    t.string "packageType", limit: 45, collation: "utf8_general_ci"
+    t.float "evaluateScore"
+    t.date "validTime"
+    t.integer "quanity_sold"
+    t.float "commision"
+    t.integer "volume"
+    t.text "aff_url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "category", default: 50, null: false
+    t.integer "subcategory"
+    t.integer "sub_subcategory"
+    t.text "storeName"
+    t.text "storeUrl"
   end
 
-  create_table "items", force: :cascade do |t|
-    t.string   "productId",            limit: 45
-    t.text     "productTitle",         limit: 65535
-    t.text     "productDescription",   limit: 65535
-    t.text     "productUrl",           limit: 65535
-    t.text     "promotionUrl",         limit: 65535
-    t.text     "imageUrl",             limit: 65535
-    t.float    "originalPrice",        limit: 24
-    t.float    "salePrice",            limit: 24
-    t.text     "storeName",            limit: 65535
-    t.text     "storeUrl",             limit: 65535
-    t.float    "discount",             limit: 24
-    t.integer  "lotNum",               limit: 4
-    t.string   "thirtydaysCommission", limit: 45
-    t.string   "packageType",          limit: 45
-    t.float    "evaluateScore",        limit: 24
-    t.date     "validTime"
-    t.integer  "quanity_sold",         limit: 4
-    t.float    "commision",            limit: 24
-    t.integer  "volume",               limit: 4
-    t.text     "aff_url",              limit: 65535
-    t.datetime "created_at",                                      null: false
-    t.datetime "updated_at",                                      null: false
-    t.integer  "category",             limit: 4,     default: 50
-    t.integer  "subcategory",          limit: 4
-    t.integer  "sub_subcategory",      limit: 4
-    t.string   "is_hot",               limit: 3
-    t.string   "is_approved",          limit: 3
-    t.string   "with_reviews",         limit: 1
-    t.string   "archived",             limit: 1
+  create_table "items", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+    t.string "productId", limit: 45
+    t.text "productTitle", collation: "utf8_general_ci"
+    t.text "productDescription"
+    t.text "productUrl", collation: "utf8_general_ci"
+    t.text "promotionUrl"
+    t.text "imageUrl", collation: "utf8_general_ci"
+    t.float "originalPrice"
+    t.float "salePrice"
+    t.text "storeName", collation: "utf8_general_ci"
+    t.text "storeUrl"
+    t.float "discount"
+    t.integer "lotNum"
+    t.string "thirtydaysCommission", limit: 45, collation: "utf8_general_ci"
+    t.string "packageType", limit: 45, collation: "utf8_general_ci"
+    t.float "evaluateScore"
+    t.date "validTime"
+    t.integer "quanity_sold"
+    t.float "commision"
+    t.integer "volume"
+    t.text "aff_url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "category", default: 50
+    t.integer "subcategory"
+    t.integer "sub_subcategory"
+    t.string "is_hot", limit: 3
+    t.string "is_approved", limit: 3
+    t.string "with_reviews", limit: 1
+    t.string "archived", limit: 1
   end
 
-  create_table "likes", force: :cascade do |t|
-    t.integer "userId",       limit: 4
-    t.string  "userCookieId", limit: 45
-    t.string  "productId",    limit: 45
+  create_table "likes", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+    t.integer "userId"
+    t.string "userCookieId", limit: 45
+    t.string "productId", limit: 45
   end
 
-  create_table "reviews", force: :cascade do |t|
-    t.text     "title",              limit: 65535
-    t.text     "short_description",  limit: 65535
-    t.text     "long_description",   limit: 65535
-    t.text     "keywords",           limit: 65535
-    t.float    "price",              limit: 24,    null: false
-    t.float    "rating",             limit: 24,    null: false
-    t.text     "promoted",           limit: 65535
+  create_table "reviews", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+    t.text "title"
+    t.text "short_description"
+    t.text "long_description"
+    t.text "keywords"
+    t.float "price", null: false
+    t.float "rating", null: false
+    t.text "promoted"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "item_id",            limit: 4
-    t.string   "cover_file_name",    limit: 255
-    t.string   "cover_content_type", limit: 255
-    t.integer  "cover_file_size",    limit: 4
+    t.integer "item_id"
+    t.string "cover_file_name"
+    t.string "cover_content_type"
+    t.integer "cover_file_size"
     t.datetime "cover_updated_at"
-    t.integer  "author",             limit: 4
-    t.string   "productId",          limit: 45,    null: false
+    t.integer "author"
+    t.string "productId", limit: 45, null: false
   end
 
-  create_table "subcategories", force: :cascade do |t|
-    t.integer "parent", limit: 4
-    t.text    "name",   limit: 65535
+  create_table "subcategories", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+    t.integer "parent"
+    t.text "name", collation: "utf8_general_ci"
   end
 
-  create_table "users", force: :cascade do |t|
-    t.text     "nickname",            limit: 65535
-    t.text     "password",            limit: 65535
-    t.text     "password_digest",     limit: 65535
-    t.text     "name",                limit: 65535
-    t.text     "surname",             limit: 65535
-    t.text     "description",         limit: 65535
-    t.text     "email",               limit: 65535
-    t.datetime "created_at",                        null: false
-    t.datetime "updated_at",                        null: false
-    t.string   "avatar_file_name",    limit: 255
-    t.string   "avatar_content_type", limit: 255
-    t.integer  "avatar_file_size",    limit: 4
+  create_table "users", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+    t.text "nickname"
+    t.text "password"
+    t.text "encrypted_password"
+    t.text "name"
+    t.text "surname"
+    t.text "description"
+    t.text "email"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "avatar_file_name"
+    t.string "avatar_content_type"
+    t.integer "avatar_file_size"
     t.datetime "avatar_updated_at"
-    t.string   "is_admin",            limit: 3
+    t.string "is_admin", limit: 3
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer "sign_in_count", default: 0, null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string "current_sign_in_ip"
+    t.string "last_sign_in_ip"
   end
 
 end

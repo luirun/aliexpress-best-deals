@@ -26,14 +26,14 @@
 
 
 //Item styles
-@import "items/_aliexpress_reviews.scss";
-@import "items/_call_to_action.scss";
-@import "items/category_listing.scss";
-@import "items/_rating.scss";
-@import "items/item_description.scss";
-@import "items/product_list.scss";
-@import "items/show_item.scss";
-@import "items/_user_feedback.scss";
+@import "products/_aliexpress_reviews.scss";
+@import "products/_call_to_action.scss";
+@import "products/category_listing.scss";
+@import "products/_rating.scss";
+@import "products/product_description.scss";
+@import "products/product_list.scss";
+@import "products/show_item.scss";
+@import "products/_user_feedback.scss";
 
 //Review styles
 @import "reviews/_comment.scss";
@@ -48,7 +48,7 @@
 @import "search/search_box.scss";
 
 //Partial styles
-@import "partials/_best_items.scss";
+@import "partials/_best_products.scss";
 @import "partials/_root_slider.scss";
 
 

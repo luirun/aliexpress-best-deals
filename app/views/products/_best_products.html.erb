@@ -1,0 +1,61 @@
+<% $hot=0 %>
+<%# this partial is used on visitors/index and in this case we dont have any @product specified, when this partial is used on product page we can look for specified similar products %>
+<% if @product.nil? %>
+  <% @best_products = Product.where(is_hot: "y").where(archived: nil).order("RAND()").limit(16)  #limit%4==0%>
+<% else %>
+  <% @best_products = Product.where("productTitle like ?", "%#{@product.productTitle.split(" ")[0]}%").order("RAND()").limit(8)  #limit%4==0%>
+  <% if !@best_products.nil? && @best_products.length < 8 %>
+  <% @best_products = Product.where(is_hot: "y").where(archived: nil).order("RAND()").limit(16)  #limit%4==0%>
+  <% end %>
+<% end %>
+<div class="container">
+  <div class="col-md-12 col-xs-12">   
+    <div class="carousel slide best" id="myCarousel">
+      <div class="carousel-inner">
+        <div class="item active">
+          <ul class="thumbnails">
+            <% @best_products.each do |product| %>
+              <li class="col-md-3 col-xs-12">
+                <div class="fff">
+                  <div class="thumbnail">
+                    <%= link_to product_path(pretty_url_encode(product.productTitle)) do %><%= image_tag "#{product.imageUrl}_250x250.jpg" %><% end %>
+                  </div>
+                  <div class="caption text-center">
+                    <h4><%= pretty_url_decode(product.productTitle) %></h4>
+                    <%= link_to product_path(pretty_url_encode(product.productTitle)), class: "btn btn-success btn-sm", style: "margin:5px;" do %>» Read More<% end %>
+                  </div>
+                </div>
+              </li>
+              <% $hot = $hot + 1 %>
+              <% if $hot%4==0 %>
+                <% if $hot==@best_products.length %>
+                  </ul>
+                  </div>
+                <% else %>
+                  </ul>
+                  </div><!-- /Slide --> 
+                  <div class="item">
+                  <ul class="thumbnails">
+                <% end %>
+              <% end %>
+            <% end %>
+
+            <nav>
+              <ul class="control-box pager">
+                <li><a data-slide="prev" href="#myCarousel" class="carousel-control-a"><i class="glyphicon glyphicon-chevron-left"></i></a></li>
+                <li><a data-slide="next" href="#myCarousel" class="carousel-control-a"><i class="glyphicon glyphicon-chevron-right"></i></a></li>
+              </ul>
+            </nav>      
+        </div><!-- /#myCarousel -->
+    </div><!-- /.carousel-slide-->      
+  </div><!-- /.col-xs-12 -->   
+</div><!-- /.row -->
+
+<script type="text/javascript">
+// Carousel Auto-Cycle
+  $(document).ready(function() {
+    $('.carousel').carousel({
+      interval: 6000
+    })
+  });
+</script>

@@ -6,7 +6,7 @@ class ReviewsController < ApplicationController
   def index
     @reviews = Review.all.order("id desc")
 
-    #META
+    # META
     set_meta_tags title: "Product Reviews"
     set_meta_tags description: "What is worth to buy from china? We are testing everything for you!"
     set_meta_tags keywords: "aliexpress,reviews,review,product,shopping,shop"
@@ -15,22 +15,16 @@ class ReviewsController < ApplicationController
   # GET /subsubcategories/1
   # GET /subsubcategories/1.json
   def show
-  	@promoted_reviews = Review.all.where.not(:id => @review.id)
-  	@comment = Comment.new
-  	@comments = Comment.where(:page => @review.id)
+    @promoted_reviews = Review.all.where.not(id: @review.id)
+    @comment = Comment.new
+    @comments = Comment.where(page: @review.id)
 
-    #META
+    # META
     set_meta_tags title: @review.title
     set_meta_tags description: @review.short_description
     set_meta_tags keywords: @review.keywords
-    set_meta_tags og: {
-      image: @review.cover
-    }
-    set_meta_tags twitter: {
-      image: @review.cover,
-      title: @review.title,
-      description: @review.short_description
-    }
+    set_meta_tags og: {image: @review.cover}
+    set_meta_tags twitter: {image: @review.cover, title: @review.title, description: @review.short_description}
   end
 
   # GET /subsubcategories/new
@@ -40,20 +34,15 @@ class ReviewsController < ApplicationController
 
   # GET /reviews/1/edit
   def edit
-    @review = Review.where(:title => params[:reviewTitle]).first
-    if current_user != nil 
-      
-      if current_user.id == @review.author || current_user.is_admin == "y"
-      else
+    @review = Review.where(title: params[:reviewTitle]).first
+    if !current_user.nil?
+      unless current_user.id == @review.author || current_user.is_admin == "y"
         redirect_to root_path
         flash[:notice] = "You are not an author of this review and you can't edit it!"
       end
-
     else
-      redirect_to root_path
-       flash[:notice] = "Login to edit this review!"
+      redirect_to root_path, notice: "Login to edit this review!"
     end
-
   end
 
   # POST /reviews
@@ -61,11 +50,11 @@ class ReviewsController < ApplicationController
   def create
     @review = Review.new(review_params)
     @review.author = current_user.id
-    product = Item.where(:productTitle => review_params[:productId]).first
+    product = Product.where(product_title: review_params[:productId]).first
     @review.productId = product.productId
     respond_to do |format|
       if @review.save
-        format.html { redirect_to new_review_path, notice: 'Review was successfully created!' }
+        format.html { redirect_to new_review_path, notice: "Review was successfully created!" }
         format.json { render :show, status: :created, location: @review }
       else
         format.html { render :new }
@@ -74,16 +63,14 @@ class ReviewsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /reviews/1
-  # PATCH/PUT /reviews/1.json
+  # check is that one working?
   def update
     @review = Review.find(params[:id])
-    product = Item.where(:productTitle => review_params[:productId]).first
-    parameters = review_params
+    product = Product.where(productTitle: review_params[:productId]).first
     parameters[:productId] = product.productId
     respond_to do |format|
       if @review.update(parameters)
-        format.html { redirect_to reviews_path, notice: 'Review was successfully updated!' }
+        format.html { redirect_to reviews_path, notice: "Review was successfully updated!" }
         format.json { render :show, status: :ok, location: @review.title }
       else
         format.html { render :edit }
@@ -98,35 +85,41 @@ class ReviewsController < ApplicationController
     @review = Review.find(params[:id])
     @review.destroy
     respond_to do |format|
-      format.html { redirect_to reviews_url, notice: 'Review was successfully destroyed.' }
+      format.html { redirect_to reviews_url, notice: "Review was successfully destroyed." }
       format.json { head :no_content }
     end
   end
 
-  def search_items
-    @items = Item.where("productTitle like '%#{params[:name]}%'").limit(5)
+  def search_products
+    @products = Product.where("productTitle like '%#{params[:name]}%'").limit(5)
     respond_to do |format|
-      format.js   { render :layout => false }
+      format.js   { render layout: false }
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_review
-      title = pretty_url_decode(params[:reviewTitle])
-      @review = Review.where(:title => title).first
-      if @review.nil?
-        title = title.split(" ")
-        if title.length > 3 then @review = Review.where("title LIKE ?", "%#{title[1]}%#{title[3]}%").first else @review = Review.where("title LIKE ?", "%#{title[1]}%").first end
-        if @review.nil?
-          flash[:alert] = "Article not found!"
-          redirect_to reviews_path
-        end
-      end
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def review_params
-      params.require(:review).permit(:title, :short_description, :long_description, :keywords, :promoted, :item_id, :cover, :author, :productId, :rating, :price)
+  # Use callbacks to share common setup or constraints between actions.
+  def set_review
+    title = pretty_url_decode(params[:reviewTitle])
+    @review = Review.where(title: title).first
+    return unless @review.nil?
+
+    title = title.split(" ")
+    if title.length > 2
+      @review = Review.where("title LIKE ?", "%#{title[1]}%#{title[2]}%").first
+    else
+      flash[:alert] = "Review not found!"
+      redirect_to reviews_path
     end
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def review_params
+    params.require(:review).permit(
+      :title, :short_description, :long_description,
+      :keywords, :promoted, :product_id, :cover,
+      :author, :productId, :rating, :price
+    )
+  end
 end

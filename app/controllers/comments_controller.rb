@@ -10,8 +10,7 @@ class CommentsController < ApplicationController
 
   # GET /comments/1
   # GET /comments/1.json
-  def show
-  end
+  def show; end
 
   # GET /comments/new
   def new
@@ -19,8 +18,7 @@ class CommentsController < ApplicationController
   end
 
   # GET /comments/1/edit
-  def edit
-  end
+  def edit; end
 
   # POST /comments
   # POST /comments.json
@@ -28,20 +26,14 @@ class CommentsController < ApplicationController
     @comment = Comment.new(comment_params)
     respond_to do |format|
       if @comment.valid?
-		if current_user == nil
-			@comment.accepted = "n"
-			@comment.author = "4"
-		else
-			@comment.author = current_user.id
-			@comment.accepted = "y"
-		end
-			@comment.save
-			format.html { redirect_to request.referrer, notice: 'Comment successfully created!' }
-			format.json { render :show, status: :created, location: @comment }
-		  else
-			format.html { redirect_to request.referrer }
-			format.json { render json: @comment.errors, status: :unprocessable_entity }
-		end
+        if @comment.save
+          format.html { redirect_to request.referer, notice: "Comment successfully created!" }
+          format.json { render :show, status: :created, location: @comment }
+        else
+          format.html { redirect_to request.referer }
+          format.json { render json: @comment.errors, status: :unprocessable_entity }
+        end
+      end
     end
   end
 
@@ -50,7 +42,7 @@ class CommentsController < ApplicationController
   def update
     respond_to do |format|
       if @comment.update(comment_params)
-        format.html { redirect_to @comment, notice: 'Comment was successfully updated.' }
+        format.html { redirect_to @comment, notice: "Comment was successfully updated." }
         format.json { render :show, status: :ok, location: @comment }
       else
         format.html { render :edit }
@@ -64,19 +56,20 @@ class CommentsController < ApplicationController
   def destroy
     @comment.destroy
     respond_to do |format|
-      format.html { redirect_to comments_url, notice: 'Comment was successfully destroyed.' }
+      format.html { redirect_to comments_url, notice: "Comment was successfully destroyed." }
       format.json { head :no_content }
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_comment
-      @comment = Comment.find(params[:id])
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def comment_params
-      params.require(:comment).permit(:author, :page, :content, :image)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_comment
+    @comment = Comment.find(params[:id])
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def comment_params
+    params.require(:comment).permit(:author, :page, :content, :image)
+  end
 end

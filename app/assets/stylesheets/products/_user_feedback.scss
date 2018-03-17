@@ -1,0 +1,217 @@
+.user-feedback {
+
+
+@media (min-width: 1774px) {
+	position:fixed;
+	left:-15px;
+	top:40%;
+	text-align:center;
+	text-shadow:1px 1px black;
+	width:auto;
+	}
+
+@media (max-width: 1773px) {
+	display:none;
+}
+
+	.container {
+		width:360px;
+	}
+
+
+
+	
+	.city-selected {
+		color:white;
+		padding-top:5px;
+		position: relative;
+		overflow: hidden;
+		min-height: 200px;
+		background-image:url("user-feedback-background.jpg");
+		background-size:cover;
+		backdrop-filter: blur(5px);
+	}
+
+	h1 {
+		font-size:0.89em;
+		font-weight:600;
+		text-transform:uppercase;
+		text-align:center;
+		padding:0px;
+		margin:0px;
+		padding-left:10px;
+		padding-right:10px;
+	}
+
+	.day {
+		padding:0px;
+		margin:0px;
+	}
+	.days textarea {
+		width:100%;
+		height:100%;
+		margin:0px;
+		padding:0px;
+		border:0px solid black;
+		resize: none;
+		padding-left:5px;
+	}
+
+	.submit-button {
+		height:100%;
+		padding:0px;
+		margin:0px;
+	}
+	.btn {
+		width:100%;
+		height:59px;
+		border-radius:0px 0px 0px 0px;
+	}
+
+	.info {
+		text-align:center;
+	}
+	.info .love i {
+		font-size:14em;
+		cursor: context-menu;
+	}
+
+	.info .loved i {
+		font-size:14em;
+		cursor: context-menu;
+		color:#ff0000;
+	}
+
+	.info .love i:hover {
+		color:#ffcccc;
+		transition-duration:0.75s;
+		transition-timing-function: ease-in;
+	}
+
+	.row-no-gutter {
+		margin-right: 0;
+		margin-left: 0;
+	}
+
+	.row-no-gutter [class*="col-"] {
+		padding-right: 0;
+		padding-left: 0;
+	}
+
+
+	#card {
+		background: #fff;
+		position: relative;
+
+		-webkit-box-shadow: 0px 1px 10px 0px rgba(207,207,207,1);
+		-moz-box-shadow: 0px 1px 10px 0px rgba(207,207,207,1);
+		box-shadow: 0px 1px 10px 0px rgba(207,207,207,1);
+
+		-webkit-transition: all 0.5s ease;
+		-moz-transition: all 0.5s ease;
+		-ms-transition: all 0.5s ease;
+		-o-transition: all 0.5s ease;
+		transition: all 0.5s ease;	
+	}
+
+	.info .city,
+	.night {
+		font-size: 24px;
+		font-weight: 200;
+		position: relative;
+
+
+		-webkit-order: 0;
+		-ms-flex-order: 0;
+		order: 0;
+		-webkit-flex: 0 1 auto;
+		-ms-flex: 0 1 auto;
+		flex: 0 1 auto;
+		-webkit-align-self: auto;
+		-ms-flex-item-align: auto;
+		align-self: auto;
+	}
+
+
+
+	.city span {
+		color: #fff;
+		font-size: 13px;
+		font-weight: bold;
+
+		text-transform: lowercase;
+		text-align: left;
+	}
+
+
+
+
+
+	.temp {
+		font-size: 73px;
+		display: block;
+		position: relative;
+		font-weight: bold;
+	}
+
+	.wind span {
+		font-size: 13px;
+		text-transform: uppercase;
+	}
+
+	.city-selected:hover figure {
+		opacity: 0.4;
+	}
+
+
+	figure {
+	    width: 100%;
+	    height: 100%;
+	    position: absolute;
+	    left: 0;
+	    top: 0;
+	    background-position: center;
+	    background-size: cover;
+	    opacity: 0.1;
+	    z-index: 1;
+
+	    -webkit-transition: all 0.5s ease;
+	    -moz-transition: all 0.5s ease;
+	    -ms-transition: all 0.5s ease;
+	    -o-transition: all 0.5s ease;
+	    transition: all 0.5s ease;
+	}
+
+	.days .row [class*="col-"]:nth-child(2) .day  {
+	    border-width: 0 1px 0 1px;
+	    border-style: solid;
+	    border-color: #eaeaea;
+	}
+
+	.days .row [class*="col-"] {
+		-webkit-transition: all 0.5s ease;
+		-moz-transition: all 0.5s ease;
+		-ms-transition: all 0.5s ease;
+		-o-transition: all 0.5s ease;
+		transition: all 0.5s ease;	
+	}
+
+	.days {
+		background-color:#EBEBE4;
+	}
+	.days .row [class*="col-"]:hover{
+		background: #eaeaea;
+	}
+
+	.day h1 {
+		font-size: 14px;
+		text-transform: uppercase;
+		margin-top: 10px;
+	}
+
+	.day svg {
+		color: #000;
+		width: 32px;
+		height: 32px;
+	}
+}

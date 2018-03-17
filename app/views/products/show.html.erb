@@ -1,0 +1,144 @@
+<% url = Rails.application.routes.recognize_path(request.referrer) %>
+<% if url[:action] != "search_category" %>
+  <% if !@product.subcategory_id.nil? && @product.subcategory_id != @product.category_id %>
+    <%= link_to "Home", root_path %> -> <%= link_to Category.find(@product.category_id).name, search_category_products_path(Category.find(@product.category_id).name,1) %> -> 
+    <%= link_to @subcategory.name, search_subcategory_path(Category.find(@product.category_id).name,@subcategory.name,1) %> -><%= @product.productTitle.slice(0..40) %>...
+  <% else %>
+    <%= link_to "Home", root_path %> -> <%= link_to Category.find(@product.category_id).name, search_category_products_path(Category.find(@product.category).name,1) %> -> <%= @product.productTitle.slice(0..40) %>...
+  <% end %>
+<% else %>
+  <%= link_to "Home", root_path %> -> <%= link_to "Back", request.referrer %> -> <%= @product.productTitle.slice(0..40) %>...
+<% end %>
+
+<div class="container-fluid">
+  <div class="content-wrapper"> 
+    <div class="item-container">  
+      <div class="container"> 
+        <div class="col-md-12">
+          <div class="product col-md-5 col-xs-12 service-image-left" style="height:100%;">
+            <center>
+              <%= image_tag @product.imageUrl, class: "product-display" %><%# adding main product photo %>
+            </center>
+          </div>
+
+          <div class="col-md-7">
+            <div class="product-title">
+              <%= simple_format(@product.productTitle) %>
+            </div>
+
+            <div class="product-rating">
+              <%= render "/products/show/rating", reviews: @ali_reviews %>
+            </div>
+
+            <hr>
+            <div class="product-price"><%= @product.salePrice %>$ / <%= @product.packageType %> 
+              <% if @product.archived == "y" %>
+                <i class='fa fa-exclamation-triangle' style='color:red'> Price may be outdated</i>
+              <% else %>
+                <i class='fa fa-exclamation-triangle' style='color:green'> Price up to date</i>
+              <% end %>
+            </div>
+            <div class="product-stock">In Stock</div>
+            <hr>
+            <%= link_to @product.promotionUrl do %>
+              <div class="btn-group cart">
+                <%= link_to aliexpress_pretty_url_path(@product.productId), target: "_blank" do %>
+                  <button type="button" class="btn btn-success">
+                    Buy Now
+                  </button>
+                <% end %>
+              </div>
+            <% end %>
+            <div class="btn-group wishlist">
+              <button type="button" class="btn btn-danger">
+                Add To Cart
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <%= render "/layouts/ad" %>
+
+        <%= render "/products/show/user_feedback" %>    
+      </div> 
+    </div>
+    <div class="container-fluid">   
+      <div class="col-md-12 product-info">
+        <ul id="myTab" class="nav nav-tabs nav_tabs">
+          <% if @ali_reviews.length > 0 %>
+            <li class="active"><a href="#reviews" data-toggle="tab">REVIEWS</a></li>
+            <li><a href="#product-info" data-toggle="tab">PRODUCT INFO</a>
+          <% else %>
+            <li class="active"><a href="#product-info" data-toggle="tab">PRODUCT INFO</a></li>
+            <li><a href="#reviews" data-toggle="tab">REVIEWS</a></li>
+          <% end %>  
+        </ul>
+        <div id="myTabContent" class="tab-content">
+          <% if @ali_reviews.length > 0 %>
+            <div class="tab-pane fade in" id="product-info">
+          <% else %>
+            <div class="tab-pane fade in active" id="product-info">
+          <% end %>
+             
+            <section class="col-xs-12 container product-info text-center">
+              <%#= print_multiline(@product.productDescription) %>
+            </section>
+                      
+          </div>
+
+          <% if @ali_reviews.length > 0 %>
+            <div class="tab-pane fade in active" id="reviews">
+          <% else %>
+            <div class="tab-pane fade in" id="reviews">
+          <% end %>
+            <% if @review == nil %>
+              <%= render "/products/show/call_to_action" %>
+            <% end %>
+            <% i = 0 %><%# for making every review unique - without it javascript can't work %>
+            <% @ali_reviews.each do |review| %>
+              <%= render "/products/show/aliexpress_reviews", review: review, i: i %><%# sending product, i and user info to partial %>
+              <% i = i + 1 %>
+            <% end %>
+          </div>
+        </div>
+        <hr>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%= render "best_products" %>
+
+<%# start of google snippets                         @product.productDEscription%>
+<% $brand = ActionView::Base.full_sanitizer.sanitize("AliBestDeal - No Description").split(" ") %>
+<% $description = $brand %>
+<% $index = $brand.index("Name:") %>
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org/",
+    "@type": "Product",
+    "name": "<%= @product.productTitle %>",
+    "brand": "<%= if $index != nil then $brand[$index+1] else $brand = "Unknow" end %>",
+    "image": "<%= @product.imageUrl %>",
+    "description": "<%= $description.join(" ")[0..117] %>...",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "<%= @rate %>",
+      "ratingCount": "<%= @rate_count %>"
+    },
+    "offers": {
+      "@type": "Offer",
+      "priceCurrency": "USD",
+      "price": "<%= @product.salePrice %>",
+      "priceValidUntil": "<%= @product.validTime %>",
+      "itemCondition": "http://schema.org/NewCondition",
+      "availability": "http://schema.org/InStock",
+      "seller": {
+        "@type": "Organization",
+        "name": "Aliexpress"
+      }
+    }
+  }
+</script>
+<%# end of google snippets %>

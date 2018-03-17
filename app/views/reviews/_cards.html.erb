@@ -1,40 +1,39 @@
 <% $i = 0 %>
 <div class="container">
-		<% @reviews.each do |review| %>
-		<% if $i%3 == 0 %>
-   			<div class="row">
-    	<% end %>
-			<div class="col-sm-4 col-md-4">
-				<div class="review-card">
-					<div class="review-card-img-content">
-						<%= image_tag review.cover.url(:hmedium), :class => "img-responsive" %>
-						<span class="review-card-title">
-							<b><%= review.title %> </b>
-						</span>
-					</div>
-					<div class="content">
-						<div class="author">
-							By <b><%= User.find(review.author).nickname %></b> |
-							<%= review.updated_at %>
-						</div>
-						<div>
-							<%= review.short_description %>
-							<% if current_user != nil %>
-								<% if current_user.is_admin == "y" || current_user == @review.author %>
-									<%= link_to 'Edit', edit_review_path(review.title) %>
-									<%= link_to 'Destroy', review, method: :delete, data: { confirm: 'Are you sure?' } %>
-								<% end %>
-							<% end %>
-						</div>
-						<div>
-							<%= link_to "Read More", review_path(pretty_url_encode(review.title)), :class => "btn btn-primary btn-sm" %>
-						</div>
-					</div>
-				</div>
-			</div>
-			<% $i +=1 %>
-			<% if $i%3 == 0 %>
-    			</div>
-    		<% end %>
-		<% end %>
+  <% @reviews.each do |review| %>
+    <% if $i%3 == 0 %>
+      <div class="row">
+    <% end %>
+    <div class="col-sm-4 col-md-4">
+      <div class="review-card">
+        <div class="review-card-img-content">
+          <%= image_tag review.cover.url(:hmedium), class: "img-responsive" %>
+          <span class="review-card-title">
+            <b><%= review.title %> </b>
+          </span>
+        </div>
+        <div class="content">
+          <div class="author">
+            By <b><%= review.user.nickname %></b> | <%= review.updated_at %>
+          </div>
+          <div>
+            <%= review.short_description %>
+            <% if current_user != nil %>
+              <% if current_user.is_admin == "y" || current_user == @review.author %>
+                <%= link_to 'Edit', edit_review_path(review.title) %>
+                <%= link_to 'Destroy', review, method: :delete, data: { confirm: 'Are you sure?' } %>
+              <% end %>
+            <% end %>
+          </div>
+          <div>
+            <%= link_to "Read More", review_path(pretty_url_encode(review.title)), class: "btn btn-primary btn-sm" %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <% $i +=1 %>
+    <% if $i%3 == 0 %>
+      </div>
+    <% end %>
+  <% end %>
 </div>

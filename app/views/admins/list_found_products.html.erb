@@ -1,0 +1,73 @@
+<% if @products.length == 0 %>
+  Success, we have found <%= @products.length %> products!
+<% else %>
+  Sorry, we found nothing :( <%= link_to api_products_search_path %>
+<% end %>
+
+<%= form_tag api_products_save_path do |f| %>
+  
+  <div class="form-group">
+    <%= label :api_call, "Api Call Method" %>
+    <%= button_tag 'Submit', type: 'submit' %>
+  </div>
+
+  <table>
+
+    <tr>
+      <td>productTitle</td>
+      <td>Image</td>
+      <td>salePrice</td>
+      <td>discount</td>>
+      <td>validTime</td>
+      <td>Approved?</td>
+      <td><%= link_to "Approve All", "#", :id => "approve_all", :remote => true %></td>
+      <td><%= link_to "Disapprove All", "#", :id => "disapprove_all", :remote => true %></td>
+    </tr>
+
+    <% @products["result"]["products"].each do |product| %>
+      <tr>
+        <td><%= simple_format(product["productTitle"]) %></td>
+        <td><%= image_tag product["imageUrl"], {width: "250px", height: "250px"} %></td>
+        <td><b><%= product["salePrice"] %></b></td>
+        <td><%= product["discount"] %></td>
+        <td><%= product["validTime"] %></td>
+        <td>
+          <%= label :approved, "Accept?" %>
+          <%= check_box_tag "productId[]", product["productId"], 0, :class => "checkboxes" %>
+        </td>
+      </tr>
+    <% end %>
+
+    <tr>
+      <td>productTitle</td>
+      <td>Image</td>
+      <td>salePrice</td>
+      <td>discount</td>>
+      <td>validTime</td>
+      <td>Approved?</td>
+      <td><%= link_to "Approve All", "#", id: "approve_all", remote: true %></td>
+      <td><%= link_to "Disapprove All", "#", id: "disapprove_all", remote: true %></td>
+    </tr>
+  </table>
+
+  <div class="form-group">
+    <%= label :api_call, "Api Call Method" %>
+    <%= button_tag 'Submit', type: 'submit' %>
+  </div>
+
+<% end %>
+
+<script type="text/javascript">
+$(document).ready(function () {
+  $('#approve_all').click(function (){
+    $(".checkboxes").each( function () {
+      $(this).prop('checked', true);
+      });
+  });
+  $('#disapprove_all').click(function (){
+    $(".checkboxes").each( function () {
+      $(this).prop('checked', false);
+      });
+  });
+});
+</script>

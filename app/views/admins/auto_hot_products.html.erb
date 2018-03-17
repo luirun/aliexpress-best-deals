@@ -3,14 +3,14 @@ Are you sure you want to do this action? It will take about 20 minutes! <input t
 <div id="result">WAIT! WE WILL CHANGE THIS TEXT WHEN EVERYTHING WILL BE DONE!</div>
 
 <script type="text/javascript">
-	function send() {
-		$.ajax({
-		  type: "POST",
-		  url: "<%= api_auto_save_hot_products_post_path %>" ,
-		  success: function(data){
-		   $('#result').text("Done");
-		   alert("hehe skonczone!")
-		  }
-		});
-	}
+  function send() {
+    $.ajax({
+      type: "POST",
+      url: "<%= api_auto_save_hot_products_post_path %>" ,
+      success: function(data){
+       $('#result').text("Done");
+       alert("hehe skonczone!")
+      }
+    });
+  }
 </script>

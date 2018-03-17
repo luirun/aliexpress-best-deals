@@ -1,3 +1,12 @@
-class Subcategory < ActiveRecord::Base
-	belongs_to :items
+class Subcategory < ApplicationRecord
+  has_many :products
+  scope :find_all_products_of_parent, -> { where(parent: params[:category_id]).all }
+
+  def self.fill_all_subcategories_of_category(parent)
+    @subcategories = Subcategory.where(parent: parent)
+    @subcategories.each do |subcategory|
+      @products = AliCrawler.new.search_for_category_products("", subcategory.id)
+      Product.save_hot_products(@products["result"]["products"], params[:category][:fields][1], subcategory.id)
+    end
+  end
 end

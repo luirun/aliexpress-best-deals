@@ -25,14 +25,12 @@
 
     <tbody>
       <%= content_tag_for(:tr, @users) do |user| %>
-            <td><%= user.nickname %></td>
-            <td><%= user.password %></td>
-            <td><%= user.password_digest %></td>
-            <td><%= user.name %></td>
-            <td><%= user.surname %></td>
-            <td><%= user.description %></td>
-            <td><%= user.email %></td>
-            <td><%= link_to 'Show', user %></td>
+        <td><%= user.nickname %></td>
+        <td><%= user.name %></td>
+        <td><%= user.surname %></td>
+        <td><%= user.description %></td>
+        <td><%= user.email %></td>
+        <td><%= link_to 'Show', user %></td>
         <td><%= link_to 'Edit', edit_user_path(user) %></td>
         <td><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       <% end %>

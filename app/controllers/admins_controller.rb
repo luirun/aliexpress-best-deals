@@ -1,164 +1,160 @@
+=begin
+  --------------------- NAVIGATION -------------------------
+  1 - searching for products - LINE 10
+  2 - serching for hot products by category - LINE 35
+  3 - search for all hot products/all not hot products in subcategories
+  4 - various cleaning
+  5 - admin comment manager
+  6 - fill category from file
+  7 - fetch product details
+  ----------------------- END ---------------------------------
+=end
+
 class AdminsController < ApplicationController
+  before_action :is_admin
 
-	before_action :is_admin
+  # 1 - search for products
+  # search_products -> list_products -> save_products
+  # admin/form -> admin/product_list [POST] -> admin/saved_products [POST]
+  # 3 methods below are connected with themselves
+  def search_for_products; end
 
+  def list_found_products
+    @products = AliexpressHelper.search_url_generator(params)
+    category_id = params[:category][:fields][1]
+    Product.ali_new(@products["result"]["products"], category_id)
+  end
 
-	def index
+  def save_found_products
+    Product.clear_unwanted_products(params[:productId]) # delete products that were not checked in form earlier
+    product_urls = Product.where(promotionUrl: nil).select(:productUrl, :id).limit(40).order("id desc")
+    return if product_urls[0].nil?
+    promotion_urls = AliCrawler.new.get_promotion_links(product_urls)
+    Product.add_promotion_links(promotion_urls["result"]["promotionUrls"], product_urls)
+  end
 
-	end
+  #---------------------------- 1 end -----------------------------------
 
-	def search_items
-		@alicrawler_params = AliCrawler.new
-	end
+  # 2 - search hot products(high quality products) by category
+  # /hot_products_by_category [FORM HERE] -> /hot_products_by_category [POST]
+  def save_hot_products_by_category
+    Subcategory.fill_all_subcategories_of_category(params[:category][:fields][1])
+  end
 
-	def list_items
-		@items = AliCrawler.new.search_url_generator(params)
-		categoryId = params[:category][:fields][1]
-		save_items = Item.ali_new(@items["result"]["products"], categoryId)
-	end
+  #---------------------------- 2 end -----------------------------------
 
-	def save_items
-		save_items = Item.clear_unwanted_items(params[:productId])
-		product_urls = Item.where(:promotionUrl => nil).select(:productUrl, :id).limit(40).order("id desc")
-		if product_urls[0] != nil
-			promotion_urls = AliCrawler.new.get_promotion_links(product_urls)
-			Item.add_promotion_links(promotion_urls["result"]["promotionUrls"],product_urls)
-		end
-	end
+  # 3 - search for all hot products
+  # /auto_save_hot_products -> /auto_save_hot_products [POST]
+  # this action will take 15-20min to be done, be sure you are able to start it now!
+  def auto_hot_products
+    return unless request.post?
+    @subcategories = Subcategory.all
+    @subcategories.each do |subcategory|
+      @products = AliCrawler.new.get_hot_products("USD", subcategory.id, "EN")
+      Product.save_hot_products(@products["result"]["products"], subcategory.parent, subcategory.id)
+    end
+  end
 
+  # /mass_subcategory_filling
+  def mass_subcategory_filling
+    @subcategories = Subcategory.all
+    @subcategories.each do |subcategory|
+      @products = AliexpressHelper.search_for_category_products("", subcategory.id)
+      Product.save_hot_products(@products["result"]["products"], subcategory.parent, subcategory.id)
+    end
+    redirect_to admins_path
+  end
 
-	#this action will take 15-20min to be done, be sure you are able to start it now!
-	def auto_hot_products
-		if request.post?
-		    @subcategories = Subcategory.all
-		    @subcategories.each do |subcategory|
-			    @items = AliCrawler.new.get_hot_products("USD", subcategory.id, "EN")
-			    save_items = Item.save_hot_products(@items["result"]["products"], subcategory.parent, subcategory.id)
-		    end
-		end
-	end
+  #---------------------------- 3 end -----------------------------------
 
-	def article_manager
-		@articles = Review.all
-	end
+  # 4 - various clearing
+  # /clear_expired_products => here => Product.clear_expired_products
+  def clear_expired_products
+    Product.clear_expired_products
+  end
 
-	def comments_manager
-		@unapproved_comments = Comment.all.where(:accepted => "n").order("id desc")
-	end
+  # /delete_empty_reviews
+  def delete_empty_reviews
+    empty_reviews = AliReview.where(is_empty: "y").where("length(review_content) < ?", 5)
+    AliReview.new.delete_empty_reviews(empty_reviews)
+    # unexisting_product_reviews = AliReview.select(:productId).distinct
+    # unexisting_product_reviews.each do |review|
+    # if Product.where(:productId => review.productId).first == nil
+    # AliReview.new.delete_empty_reviews(AliReview.where(:productId => review.productId))
+    # end
+    # end
+  end
+  #---------------------------- 4 end -----------------------------------
 
-	def comments_manager_update
-		params[:commentId].each do |comment|
-			#approve procedure
-			if comment[1][(comment[1].length) - 1]  == 'a'
-				comment[1][(comment[1].length) - 1] = ''
-				accept = Comment.find(comment[1])
-				accept.accepted = "y"
-				accept.save
-			end
-			#delete procedure
-			if comment[1][(comment[1].length) - 1]  == 'd'
-				comment[1][(comment[1].length) - 1] = ''
-				deleted = Comment.find(comment[1])
-				deleted.delete
-			end
-		end
-		redirect_to admins_path
-	end
+  # 5 - comment manager
+  # /comments_manager [FORM] -> /comments_manager_update [POST]
+  def comments_manager
+    @unapproved_comments = Comment.all.where(accepted: "n").order("id desc")
+  end
 
-	def clear_expired_items
-    	items = Item.clear_expired_items()
-  	end
+  def comments_manager_update
+    Comment.approve_comments(params[:commentId])
+    Comment.delete_comments(params[:commentId])
+    redirect_to admins_path
+  end
 
-  	def save_from_file
-  		keywords = params[:keywords]["fields"].read
-  		category = params[:category][:fields][1]
-  		keywords = keywords.split(",")
-  		keywords.each do |keyword|
-  			@items = AliCrawler.new.search_for_items(keyword,category)
-  			save_items = Item.save_hot_products(@items["result"]["products"], category)
-  		end
-  		redirect_to admins_path
-  	end
+  #---------------------------- 5 end -----------------------------------
 
-  	def update_products_details
+  # 6 - fill category from file
+  # fill_category_from_file [FORM] -> /save_from_file [POST]
+  def save_from_file
+    keywords = params[:keywords]["fields"].read.split(",")
+    category = params[:category][:fields][1]
+    Product.save_from_file(keywords, category)
+    redirect_to admins_path
+  end
 
-  		proxies = ['212.237.52.24:80',
-'212.237.15.178:8080',
-'212.237.15.178:80',
-'185.97.122.226:53281',
-'185.61.180.112:8080',
-'5.152.158.4:8080',
-'94.177.175.232:80',
-'94.177.175.232:8080',
-'05.152.158.4:8080',
-'212.237.24.249:8080',
-'212.237.24.249:3128',
-'94.177.175.232:3128',
-'94.177.203.243:3128']
-  		begin
-  		proxy = proxies[rand(0..proxies.length)]
-  		puts proxy
-  		items = Item.select(:id,:productId,:productUrl).where(:with_reviews => nil)
-  		browser = Watir::Browser.new :chrome, :switches => ["--proxy-server=#{proxy}"]
-  		browser.goto "https://aliexpress.com"
-  		browser.element(:class => "close-layer").click
-  		i = 0
-  		items.each do |item|
-  			browser.goto item.productUrl
-  			product_details = Item.fetch_extra_data(browser) #return [0] = Table of product details, [1] = product reviews, [1][:feedback] - review text, [1][:user_info] - user info in review
-  			if product_details == "end"
-  				item.delete
-  				sleep(rand(7..15))
-  			else
-	  			@description_save = Item.save_product_description(product_details[0], item.id)
-	  			@reviews_save = AliReview.new.save_product_reviews(product_details[1],item.productId) 
-	  			sleep(rand(7..15))
-	  		end
-	  		i+=1
-	  		if i%10 == 0 then sleep(rand(15..60)) end
-  		end
-  		browser.close
-  		rescue
-  			browser.close
-			retry
-		end
-  		#review_ids = AliReview.select(:productId).distinct.map(&:productId)
-  		#product_urls = Item.select(:productUrl).where('productId NOT IN (?)', review_ids)
-  		#puts product_urls[1]
+  #---------------------------- 6 end -----------------------------------
 
+  # 7 - fetch product details
+  def update_products_details
+    proxies = ["#addproxyhere comma sepparated"]
+    begin
+      proxy = proxies[rand(0..proxies.length)]
+      products = Product.select(:id, :productId, :productUrl).where(with_reviews: nil).order("RAND()")
+      browser = Watir::Browser.new :chrome, switches: ["--proxy-server=#{proxy}"]
+      browser.goto "https://aliexpress.com"
+      browser.element(class: "close-layer").click
+      i = 0
+      products.each do |product|
+        browser.goto product.productUrl
+        # return [0] = Table of product details, [1] = product reviews,
+        # [1][:feedback] - review text, [1][:user_info] - user info in review
+        product_details = Product.fetch_extra_data(browser)
+        if product_details == "end"
+          product.delete
+        else
+          @description_save = Product.save_product_description(product_details[0], product.id)
+          @reviews_save = AliReview.new.save_product_reviews(product_details[1], product.productId)
+        end
+        sleep(rand(7..15))
+        i += 1
+        sleep(rand(15..60)) if (i % 10).zero?
+      end
+      browser.close
+    rescue
+      browser.close
+      retry
+    end
+  end
+  #---------------------------- 7 end -----------------------------------
 
-  		#one time script to mark products with reviews or not
-  		#items = Item.all
-  		#items.each do |item|
-  			#if AliReview.where(:productId => item.productId)[0].nil?
-  			#	item.with_reviews = "n"
-  			#else
-  			#	item.with_reviews = "y"
-  			#end
-  			#item.save
-  		#end
-  	end
+  # one time script to mark products with reviews or not
+  def mark_products_with_reviews
+    products = Product.all
+    products.each do |product|
+      product.with_reviews = "y" unless AliReview.where(productId: product.productId)[0].nil?
+      product.save if product.with_reviews == "Y"
+    end
+  end
 
-  	def mass_subcategory_filling
-		@subcategories = Subcategory.all
-		@subcategories.each do |subcategory|
-			@items = AliCrawler.new.search_for_items("", subcategory.id)
-			save_items = Item.save_hot_products(@items["result"]["products"], subcategory.parent, subcategory.id)
-		end
-		redirect_to admins_path
-  	end
-
-  	def delete_empty_reviews
-  		empty_reviews = AliReview.where(:is_empty => "y")
-  		AliReview.new.delete_empty_reviews(empty_reviews)
-  		empty_reviews = AliReview.where("length(review_content) < ?", 5)
-  		AliReview.new.delete_empty_reviews(empty_reviews)
-  		unexisting_product_reviews = AliReview.select(:productId).distinct
-  		#unexisting_product_reviews.each do |review|
-  			#if Item.where(:productId => review.productId).first == nil
-  				#AliReview.new.delete_empty_reviews(AliReview.where(:productId => review.productId))
-  			#end
-  		#end
-  	end
-
+  # undone yet
+  def article_manager
+    @articles = Review.all
+  end
 end

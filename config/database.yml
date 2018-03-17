@@ -13,9 +13,9 @@ default: &default
   adapter: mysql2
   encoding: utf8
   pool: 5
-  username: home
-  password: JASIU12db
-  host: 193.70.114.252
+  username: <%= ENV["db_user"] %>
+  password: <%= ENV["db_passwd"] %>
+  host: <%= ENV["db_host"] %>
 
 development:
   <<: *default

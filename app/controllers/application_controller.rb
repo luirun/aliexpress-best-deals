@@ -1,27 +1,26 @@
 class ApplicationController < ActionController::Base
+  # devise settings on the bottom of the file
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
-	include SessionsHelper
+  include SessionsHelper
   include ApplicationHelper
+  include AliexpressHelper
 
- before_action :session_return
- before_action :prepare_meta_tags, if: "request.get?"
- rescue_from ::ActiveRecord::RecordNotFound, with: :record_not_found
+  before_action :session_return
+  before_action :prepare_meta_tags, if: -> { request.get? }
+  rescue_from ::ActiveRecord::RecordNotFound, with: :record_not_found
 
   def record_not_found
     render json: {error: exception.message}.to_json, status: 404
-    return
   end
 
   def session_return
     session[:return_to] = request.fullpath
-    if cookies[:user_id] == nil
-      cookies[:user_id] = {:value => rand(1..99999999), :expires => 2.year.from_now}
-    end
+    cookies[:user_id] = {value: rand(1..999_999_999), expires: 2.years.from_now} if cookies[:user_id].nil?
   end
-  
+
   def prepare_meta_tags(options={})
     site_name   = "AliBestDeal"
     image       = options[:image] || "your-default-image-url"
@@ -34,21 +33,41 @@ class ApplicationController < ActionController::Base
       keywords:    %w[web software development mobile app],
       twitter: {
         site_name: site_name,
-        site: '@alibestdeal',
-        card: 'summary',
+        site: "@alibestdeal",
+        card: "summary",
         image: image
       },
       og: {
         url: current_url,
         site_name: site_name,
         image: image,
-        type: 'website'
+        type: "website"
       }
     }
-
     options.reverse_merge!(defaults)
-
     set_meta_tags options
   end
-	
+
+  # devise settings
+  helper_method :resource_name, :resource, :devise_mapping, :resource_class
+
+  def resource_name
+    :user
+  end
+
+  def resource
+    @resource ||= User.new
+  end
+
+  def devise_mapping
+    @devise_mapping ||= Devise.mappings[:user]
+  end
+
+  before_action :configure_permitted_parameters, if: :devise_controller?
+
+  protected
+
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:nickname, :name, :surname, :description])
+  end
 end

@@ -2,11 +2,10 @@
   <% if @review.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@review.errors.count, "error") %> prohibited this post from being saved:</h2>
-
       <ul>
-      <% @review.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
+        <% @review.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
       </ul>
     </div>
   <% end %>
@@ -32,17 +31,17 @@
 
   <div class="field">
     <%= f.label :keywords %><br>
-    <%= f.text_area :keywords, :class => "form-control" %>
+    <%= f.text_area :keywords, class: "form-control" %>
   </div>
 
   <div class="field">
     <%= f.label :rating %><br>
-    <%= f.range_field :rating, :min => "0", :max => "5", :step => "0.5", :style => "width:50%;", :class => "form-control" %>
+    <%= f.range_field :rating, min: "0", max: "5", step: "0.5", style: "width:50%;", class: "form-control" %>
   </div>
   
   <div class="field">
 		<%= f.label :cover %><br>
-		<%= f.file_field :cover, :class => "form-control" %>
+		<%= f.file_field :cover, class: "form-control" %>
   </div>
   
 	<div class="field">
@@ -51,12 +50,12 @@
 	</div>
 
   <div class="field">
-    <%= f.label :productId, "Choose product" %><br>
+    <%= f.label :product_id, "Choose product" %><br>
     <% if params[:action] == "edit" %>
-      <% $value = Item.where(:productId => @review.productId).first %>
-      <%= f.text_field :productId, :class => "search-product", :value => $value.productTitle %><div class="enable">Change</div>
+      <% $value = Product.find_by(productId: @review.productId) %>
+      <%= f.text_field :product_id, class: "search-product", value: $value.productTitle %><div class="enable">Change</div>
     <% else %>
-      <%= f.text_field :productId, :class => "search-product" %><div class="enable">Change</div>
+      <%= f.text_field :product_id, class: "search-product" %><div class="enable">Change</div>
     <% end %>
   </div>
 
@@ -73,9 +72,9 @@
 
 <script type="text/javascript">
   $('.search-product').change(function() {
-      $title = $('.search-product').val();
+      $title = $('.search-item').val();
       $.ajax({
-          url: "/review/search-items/"+$title,
+          url: "/review/search-products/"+$title,
           type: "GET",
       })
   });

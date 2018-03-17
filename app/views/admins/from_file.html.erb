@@ -1,18 +1,16 @@
 <%= form_tag save_from_file_path, action: :upload, multipart: true do |f| %>
+  <div class="form-group">
+    <%= label :category, "Which category do you want to fill?" %>
+    <%= select :category, "fields", Category.all.collect {|p| [ p.name, p.id ] }, {prompt: "Select Fields"}, {:multiple => true, :size => 10} %>
+  </div>
 
-	<div class="form-group">
-		<%= label :category, "Which category do you want to fill?" %>
-		<%= select :category, "fields", Category.all.collect {|p| [ p.name, p.id ] }, {prompt: "Select Fields"}, {:multiple => true, :size => 10} %>
-	</div>
-
-	<div class="form-group">
-		<%= label :keywords, "Upload list of comma separated keywords" %>
-		<%= file_field :keywords, "fields" %>
-	</div>
-	
-	<div class="form-group">
-		<%= label :api_call, "Api Call Method" %>
-		<%= button_tag 'Submit', type: 'submit' %>
-	</div>
-	
+  <div class="form-group">
+    <%= label :keywords, "Upload list of comma separated keywords" %>
+    <%= file_field :keywords, "fields" %>
+  </div>
+  
+  <div class="form-group">
+    <%= label :api_call, "Api Call Method" %>
+    <%= button_tag 'Submit', type: 'submit' %>
+  </div>
 <% end %>

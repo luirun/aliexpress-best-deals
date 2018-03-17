@@ -1,0 +1,4 @@
+$('#item_subcategory').empty();
+<% @subcategories.each do |subcategory| %>
+  $('#item_subcategory').append($('<option value="<%= subcategory.id %>"><%= subcategory.name %></option>'));
+<% end %>
