@@ -71,7 +71,7 @@
               <div class="col-md-6">
                 <div class="view">
                   <div class="caption">
-                    <p><%= product_review.author %></p>
+                    <p><%= product_review.user_id %></p>
                     <%= link_to review_path(pretty_url_encode(product_review.title)), rel: "tooltip", title: "View" do %>
                       <span class="fa fa-search fa-2x"></span>
                     <% end %>

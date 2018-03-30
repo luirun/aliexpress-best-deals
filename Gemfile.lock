@@ -108,6 +108,11 @@ GEM
       thread_safe
     erubi (1.7.0)
     execjs (2.7.0)
+    factory_girl (4.8.0)
+      activesupport (>= 3.0.0)
+    factory_girl_rails (4.8.0)
+      factory_girl (~> 4.8.0)
+      railties (>= 3.0.0)
     ffi (1.9.23)
     ffi (1.9.23-x86-mingw32)
     font-awesome-sass (5.0.6.2)
@@ -317,6 +322,7 @@ DEPENDENCIES
   devise
   dotenv-rails
   easy_translate
+  factory_girl_rails
   font-awesome-sass
   gaffe
   jbuilder (~> 2.0)

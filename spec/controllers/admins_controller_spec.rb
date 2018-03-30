@@ -1,24 +1,20 @@
 require 'rails_helper'
+require 'devise'
 
 RSpec.describe AdminsController, :type => :controller do
 
-  before(:all) do
-    visit '/login'
-    fill_in 'session[email]', with: "luirun@gazeta.pl"
-    fill_in 'session[password]', with: "zaqzaq"
-    click_button 'Login'
+  before(:each) do
+    login_user
   end
 
   describe '#GET search_for_products' do
     it "should redirect to #list_found_products after submitting form" do
-      visit '/admin/search_for_products'
-      puts page.html
-      puts "aaa"
+      visit admins_path
       #find_by_id('category_fields').find("option[value='509']").click
       #find("option[value='509']").select_option
-        fill_in 'keyword', with: 'xiaomi'
-        click_button 'Submit'
-        expect(page).to have_content 'Success'
+      fill_in 'keyword', with: 'xiaomi'
+      click_button 'Submit'
+      expect(page).to have_content 'Success'
     end
   end
 

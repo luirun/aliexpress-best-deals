@@ -84,6 +84,7 @@ gem 'watir'
 gem 'rspec-rails'
 gem 'capybara'
 gem 'spring-commands-rspec', group: :development # testing speed up
+gem 'factory_girl_rails'
 
 # code analyze
 gem 'rubocop'

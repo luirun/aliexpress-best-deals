@@ -15,7 +15,7 @@ class Product < ApplicationRecord
   belongs_to :subcategory
 
   scope :hot_products, -> { where(is_hot: "y")}
-  scope :recommended_products, -> (product) { where(:category => product.category_id).limit(12)}
+  scope :recommended_products, -> (product) { where(:category_id => product.category_id).limit(12)}
   # scope for not depreciated random method
   # scope :random, -> { order(Arel::Nodes::NamedFunction.new('RANDOM', [])) }
 
@@ -24,7 +24,10 @@ class Product < ApplicationRecord
 
   # 1.1 - Saving all products found by Aliexpress Api - /admin/form
   def self.ali_new(products, category_id)
-    if products.length > 1 # checking that there is one or more products
+    if products.length.zero? # checking that there is one or more products
+      return nil # flash some error action
+    else
+      logger.info("We have found #{products.length} products")
       products.each do |i|
         id_exist = Product.find_by(productId: i["productId"].to_s)
         if !id_exist.nil?
@@ -38,27 +41,11 @@ class Product < ApplicationRecord
           product.originalPrice = i["originalPrice"].slice(4..12)
           product.thirtydaysCommission = a
           product.is_approved = "n"
-          product.category = category_id
+          product.category_id = category_id
           product.save
         end
       end
-    else
-      if products.length.zero?
-        # flash some error action
-      else
-        i = products
-        logger.info("We have found #{i.length} products")
-        a = i["30daysCommission"]
-        i = i.except("30daysCommission")
-        product = Product.new(i)
-        product.salePrice = i["salePrice"].slice(4..12)
-        product.productTitle = ActionView::Base.full_sanitizer.sanitize(i["productTitle"])
-        product.originalPrice = i["originalPrice"].slice(4..12)
-        product.thirtydaysCommission = a
-        product.is_approved = "n"
-        product.category = categoryId
-        product.save
-      end
+      return "Products successfully saved!"
     end
   end
 
@@ -88,8 +75,8 @@ class Product < ApplicationRecord
           product.originalPrice = i["originalPrice"].slice(4..12)
           product.promotionUrl = promotion_link[0]["promotionUrl"] # saving promotion url to record
           product.thirtydaysCommission = a # adding 30 days commission to record
-          product.category = category_id
-          product.subcategory = subcategory_id
+          product.category_id = category_id
+          product.subcategory_id = subcategory_id
           product.is_hot = "y"
           product.is_approved = "y"
           product.save

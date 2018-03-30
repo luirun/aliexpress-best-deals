@@ -33,9 +33,9 @@
             <hr>
             <div class="product-price"><%= @product.salePrice %>$ / <%= @product.packageType %> 
               <% if @product.archived == "y" %>
-                <i class='fa fa-exclamation-triangle' style='color:red'> Price may be outdated</i>
+                <i class='fas fa-exclamation-triangle' style='color:red'> Price may be outdated</i>
               <% else %>
-                <i class='fa fa-exclamation-triangle' style='color:green'> Price up to date</i>
+                <i class='fas fa-exclamation-triangle' style='color:green'> Price up to date</i>
               <% end %>
             </div>
             <div class="product-stock">In Stock</div>

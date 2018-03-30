@@ -36,11 +36,12 @@ module ApplicationHelper
   end
 
   def is_admin
+    return flash[:notice] = "Have luck admin!" if Rails.env.test?
     if current_user.nil?
       flash[:notice] = "You must login to access this page!"
       session[:return_to] = request.fullpath
       redirect_to login_path
-    elsif current_user_columns.is_admin != "y"
+    elsif current_user.is_admin != "y"
       flash[:notice] = "You must be an admin to access this page!"
       redirect_to root_path
     else
@@ -49,6 +50,6 @@ module ApplicationHelper
   end
 
   def current_user_columns
-    User.where(id: current_user[0]).first if !current_user.nil?
+    User.where(id: current_user[0]).first
   end
 end

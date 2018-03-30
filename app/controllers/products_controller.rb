@@ -17,6 +17,7 @@ class ProductsController < ApplicationController
   # GET /products.json
   def index
     @categories = Category.all
+    if @categories.nil? then @categories = ["Sorry, actually no categories ;("] end
 
     # META
     set_meta_tags title: "Find Cheapests Products"

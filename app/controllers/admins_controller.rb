@@ -1,6 +1,6 @@
 =begin
   --------------------- NAVIGATION -------------------------
-  1 - searching for products - LINE 10
+  1 - searching for products - LINE 1
   2 - serching for hot products by category - LINE 35
   3 - search for all hot products/all not hot products in subcategories
   4 - various cleaning
@@ -20,7 +20,7 @@ class AdminsController < ApplicationController
   def search_for_products; end
 
   def list_found_products
-    @products = AliexpressHelper.search_url_generator(params)
+    @products = AliexpressScraper.search_url_generator(params)
     category_id = params[:category][:fields][1]
     Product.ali_new(@products["result"]["products"], category_id)
   end
@@ -59,7 +59,7 @@ class AdminsController < ApplicationController
   def mass_subcategory_filling
     @subcategories = Subcategory.all
     @subcategories.each do |subcategory|
-      @products = AliexpressHelper.search_for_category_products("", subcategory.id)
+      @products = AliexpressScraper.search_for_category_products("", subcategory.id)
       Product.save_hot_products(@products["result"]["products"], subcategory.parent, subcategory.id)
     end
     redirect_to admins_path
