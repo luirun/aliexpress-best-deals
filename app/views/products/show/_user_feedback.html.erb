@@ -6,7 +6,7 @@
           <div class="city-selected">
             <div class="info">
               <div class="city"><h1>Do you like this product?</h1></div>
-                <% if Like.where(productId: @product.productId, userCookieId: cookies[:user_id]).first == nil %>
+                <% if ProductLike.find_by(product_id: @product.productId, user_cookie_id: cookies[:user_id]) == nil %>
                   <div class="love">
                     <i class="fa fa-heart"></i>
                   </div>
@@ -39,12 +39,24 @@
 </div>
 
 <script>
-  <% $url = "#{request.original_url}/l" %>
+  <% $like_url = "#{request.original_url}/like" %>
   $(".love").dblclick(function() {
     $(".fa.fa-heart").css("color", "#ff0000");
+    $(this).removeClass('love').addClass('loved');
     $.ajax({
       type: "POST",
-      url: "<%= $url %>" ,
+      url: "<%= $like_url %>" ,
+      success: function(data){
+      }
+    });
+  });
+  <% $unlike_url = "#{request.original_url}/unlike" %>
+  $(".loved").dblclick(function() {
+    $(".fa.fa-heart").css("color", "white");
+    $(this).removeClass('loved').addClass('love');
+    $.ajax({
+      type: "POST",
+      url: "<%= $unlike_url %>" ,
       success: function(data){
       }
     });

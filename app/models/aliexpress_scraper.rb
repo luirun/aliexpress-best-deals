@@ -137,14 +137,19 @@ class AliexpressScraper
   #------------------------------------------------ 4 - END -------------------------------------------------
   # 5 - Calling method
   def self.make_call(url)
-    response = RestClient.get(url)
-    if response.code != 200
-      logger.fatal "Error, response code: #{response.code} for url: #{url}"
-    else
-      result = JSON.parse(response)
-      logger.fatal "error!" if result["errorCode"] != 200_100_00
-      puts result["result"]["products"]
-      return result
+    begin
+      response = RestClient.get(url)
+      if response.code != 200
+        logger.fatal "Error, response code: #{response.code} for url: #{url}"
+      else
+        result = JSON.parse(response)
+        logger.fatal "error!" if result["errorCode"] != 200_100_00
+        #puts result["result"]["products"]
+        return result
+      end
+    rescue => e
+      sleep(1)
+      make_call(url)
     end
   end
 

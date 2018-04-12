@@ -8,7 +8,7 @@
 =end
 
 class ProductsController < ApplicationController
-  before_action :set_product, only: [:show, :edit, :update, :destroy, :product_like]
+  before_action :set_product, only: [:show, :edit, :update, :destroy, :product_like, :product_unlike]
   before_action :is_admin, only: [:create]
 
   # 1 - Basic CRUD Actions
@@ -30,7 +30,7 @@ class ProductsController < ApplicationController
   def show
     @ali_reviews = AliReview.non_empty_reviews(@product)
     @product_reviews = Review.all_by_random
-    @recommended_products = Product.recommended_products(@product)
+    @recommended_products = Product.recommended_products(@product.category_id)
     @best_products = Product.hot_products.limit(8) # limit must be %4=0!!
     @subcategory = Subcategory.find(@product.subcategory_id) if !@product.subcategory_id.nil? && @product.subcategory_id != @product.category_id
 
@@ -88,7 +88,16 @@ class ProductsController < ApplicationController
 
   # like box on product page, appears only on resolution >= 1080p
   def product_like
-    Like.new_like(@product.product_id)
+    if user_signed_in?
+      ProductLike.create_like(@product.productId, current_user_columns.id, cookies[:user_id])
+    else
+      ProductLike.create_like(@product.productId, 4, cookies[:user_id])
+    end
+    render layout: false
+  end
+
+  def product_unlike
+    ProductLike.destroy_like(@product.productId, cookies[:user_id])
     render layout: false
   end
 

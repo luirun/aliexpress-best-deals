@@ -34,21 +34,30 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
-  gem 'dotenv-rails', groups: [:development, :test] # environment variables
-  gem 'devise' # user logigng in
   gem 'better_errors', '~> 2.1', '>= 2.1.1' # better errors
+    # Access an IRB console on exception pages or by using <%= console %> in views
+end
+
+group :development, :production do
+  gem 'bootstrap' # bootstrap for layout
   gem 'roo' # import from csv files
 end
 
-group :development do
-  # Access an IRB console on exception pages or by using <%= console %> in views
-  gem 'web-console', '~> 2.0'
-  gem 'bootstrap' # bootstrap for layout
+group :production, :development, :test do
+	gem 'dotenv-rails', groups: [:development, :test, :production] # environment variables
+	gem 'devise' # user logigng in
+end
+
+group :test do
+	gem 'rspec-rails'
+	gem 'capybara'
+	gem 'spring-commands-rspec' # testing speed up
+	gem 'factory_girl_rails'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
-
+gem 'web-console', '~> 2.0', groups: [:development]
 
 gem 'autoprefixer-rails'
 gem 'bootstrap-generators'
@@ -80,11 +89,5 @@ gem 'gaffe'
 # scraping
 gem 'watir'
 
-# testing gems
-gem 'rspec-rails'
-gem 'capybara'
-gem 'spring-commands-rspec', group: :development # testing speed up
-gem 'factory_girl_rails'
-
 # code analyze
-gem 'rubocop'
+gem 'rubocop' 

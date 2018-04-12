@@ -38,7 +38,7 @@ Rails.application.routes.draw do
   # ---------------- 3 end ------------------
 
   # 4 - various clearing
-  get "clear_expired_products", to: "admins#clear_expired_products", as: "api_clear_expired_products"
+  get "archive_expired_products", to: "admins#archive_expired_products", as: "api_archive_expired_products"
   get "delete_empty_reviews", to: "admins#delete_empty_reviews", as: "delete_empty_reviews"
   # ---------------- 4 end ------------------
 
@@ -52,8 +52,9 @@ Rails.application.routes.draw do
   post "save_from_file", to: "admins#save_from_file", as: "save_from_file"
   # ---------------- 6 end ------------------
 
-  # 7 - fetch product details
+  # 7 - fetch product and category details
   get "update_product_details", to: "admins#update_products_details", as: "update_products_details"
+  get "fetch_categories", to: "admins#fetch_categories", as: "fetch_categories"
   # ---------------- 7 end ------------------
 
   # admin article manager - UNDONE!
@@ -94,7 +95,8 @@ Rails.application.routes.draw do
 
   # products routes
   get "product/:productTitle", to: "products#show", as: "product"
-  post "product/:productTitle/l", to: "products#product_like", as: "product_like"
+  post "product/:productTitle/like", to: "products#product_like", as: "product_like"
+  post "product/:productTitle/unlike", to: "products#product_unlike", as: "product_unlike"
   get "browse/products", to: "products#index", as: "products"
   delete "product/:productTitle", to: "products#destroy"
   get "product/:id/buy", to: "products#go_to_aliexpress", as: "aliexpress_pretty_url"

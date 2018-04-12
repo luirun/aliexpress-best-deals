@@ -13,9 +13,10 @@
 
 class Product < ApplicationRecord
   belongs_to :subcategory
+  has_many :productLike
 
   scope :hot_products, -> { where(is_hot: "y")}
-  scope :recommended_products, -> (product) { where(:category_id => product.category_id).limit(12)}
+  scope :recommended_products, -> (product) { where(category_id: product).limit(12)}
   # scope for not depreciated random method
   # scope :random, -> { order(Arel::Nodes::NamedFunction.new('RANDOM', [])) }
 
@@ -57,29 +58,34 @@ class Product < ApplicationRecord
                 commission commissionRate 30daysCommission volume
                 packageType lotNum validTime storeName storeUrl]
     products.each do |i|
-      details = AliCrawler.new.get_product_details(fields, i["productId"]) # gettig all details about product from hot product list
-      if details["result"].nil?
-        logger.info("We have not found any details about #{product.productTitle}.")
+      if !Product.find_by(productId: i["productId"]).nil?
+        logger.info("Product Already Exists")
       else
-        id_exist = Product.find_by(productId: i["productId"])
-        if !id_exist.nil?
-          logger.info("Product Already Exists")
+        details = AliexpressScraper.get_product_details(fields, i["productId"]) # gettig all details about product from hot product list
+        if details["result"].nil?
+          logger.info("We have not found any details about #{i['productTitle']}.")
         else
-          details = details["result"]
-          a = details["30daysCommission"]
-          i = details.except("30daysCommission")
-          promotion_link = AliCrawler.new.get_promotion_links(i["productUrl"]) # getting promotion url from aliexpress
-          promotion_link = promotion_link["result"]["promotionUrls"] # shortening our hash a little
-          product = Product.new(i) # making new instance in Hot Products table
-          product.salePrice = i["salePrice"].slice(4..12)
-          product.originalPrice = i["originalPrice"].slice(4..12)
-          product.promotionUrl = promotion_link[0]["promotionUrl"] # saving promotion url to record
-          product.thirtydaysCommission = a # adding 30 days commission to record
-          product.category_id = category_id
-          product.subcategory_id = subcategory_id
-          product.is_hot = "y"
-          product.is_approved = "y"
-          product.save
+            details = details["result"]
+            a = details["30daysCommission"]
+            i = details.except("30daysCommission")
+            promotion_link = AliexpressScraper.get_promotion_links(i["productUrl"]) # getting promotion url from aliexpress
+            promotion_link = promotion_link["result"]["promotionUrls"] # shortening our hash a little
+            product = Product.new(i) # making new instance in Hot Products table
+            product.salePrice = i["salePrice"].slice(4..12)
+            product.originalPrice = i["originalPrice"].slice(4..12)
+            product.promotionUrl = promotion_link[0]["promotionUrl"] # saving promotion url to record
+            product.thirtydaysCommission = a # adding 30 days commission to record
+            product.category_id = category_id
+            product.subcategory_id = subcategory_id
+            product.is_hot = "y"
+            product.is_approved = "y"
+          begin
+            product.save
+          rescue
+            sleep 2
+            ActiveRecord.connection.reconnect!
+            retry
+          end
         end
       end
     end
@@ -95,18 +101,12 @@ class Product < ApplicationRecord
   end
 
   def self.add_promotion_links(promotion_urls, products)
-    if promotion_urls[1].nil? # if there is only one product
-      products.each do |product|
-        product = Product.find(product.id)
-        product.promotionUrl = promotion_urls[0]["promotionUrl"]
-        product.save
-      end
-    else # if there is many products
+    if !promotion_urls.nil?
       i = 0
       products.each do |product|
         product = Product.find(product.id)
         product.promotionUrl = promotion_urls[i]["promotionUrl"]
-        logger.info(promotion_urls[i]["promotionUrl"])
+        logger.info("Added to product #{product.id} promotion link: \n #{promotion_urls[i]['promotionUrl']}")
         product.save
         i += 1
       end
@@ -136,7 +136,7 @@ class Product < ApplicationRecord
   #--------------------------- 3 - END -------------------------
 
   # 4 - Clear expired products
-  def self.clear_expired_products
+  def self.archive_expired_products
     products = Product.where("validTime < '#{Time.zone.now.strftime('%Y-%m-%d')}'")
     products.each do |product|
       product.archived = "y"

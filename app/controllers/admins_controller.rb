@@ -60,7 +60,7 @@ class AdminsController < ApplicationController
     @subcategories = Subcategory.all
     @subcategories.each do |subcategory|
       @products = AliexpressScraper.search_for_category_products("", subcategory.id)
-      Product.save_hot_products(@products["result"]["products"], subcategory.parent, subcategory.id)
+      Product.save_hot_products(@products["result"]["products"], subcategory.category_id, subcategory.id)
     end
     redirect_to admins_path
   end
@@ -68,9 +68,9 @@ class AdminsController < ApplicationController
   #---------------------------- 3 end -----------------------------------
 
   # 4 - various clearing
-  # /clear_expired_products => here => Product.clear_expired_products
-  def clear_expired_products
-    Product.clear_expired_products
+  # /archive_expired_products => here => Product.archive_expired_products
+  def archive_expired_products
+    Product.archive_expired_products
   end
 
   # /delete_empty_reviews
@@ -111,7 +111,7 @@ class AdminsController < ApplicationController
 
   #---------------------------- 6 end -----------------------------------
 
-  # 7 - fetch product details
+  # 7 - fetch product and category details
   def update_products_details
     proxies = ["#addproxyhere comma sepparated"]
     begin
@@ -141,6 +141,12 @@ class AdminsController < ApplicationController
       browser.close
       retry
     end
+  end
+
+  # provide .html of this page in root path - https://www.aliexpress.com/all-wholesale-products.html
+  def fetch_categories
+    page = File.open("#{Rails.root}/Categories.html") { |f| Nokogiri::HTML(f) }
+    Category.save_fetched_categories_and_subcategories(page)
   end
   #---------------------------- 7 end -----------------------------------
 

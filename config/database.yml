@@ -16,6 +16,9 @@ default: &default
   username: <%= ENV["db_user"] %>
   password: <%= ENV["db_passwd"] %>
   host: <%= ENV["db_host"] %>
+production:
+  <<: *default
+  database: aliexpress_production
 
 development:
   <<: *default

@@ -52,7 +52,8 @@
         <div class="user-menu-content">
           <h3>You may also like:</h3>
           <ul class="user-menu-list">
-            <% @recommended_products[0+i*2...2+i*2].each do |product| %>
+            <% @recommended_products %>
+            <% @recommended_products.each do |product| %>
               <li>
                 <h4>
                   <%= link_to product_path(pretty_url_encode(product.productTitle)) do %>

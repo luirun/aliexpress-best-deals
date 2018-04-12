@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_03_03_183331) do
+ActiveRecord::Schema.define(version: 2018_04_10_115258) do
 
   create_table "ali_reviews", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.string "productId", limit: 45
@@ -88,7 +88,15 @@ ActiveRecord::Schema.define(version: 2018_03_03_183331) do
     t.text "storeUrl"
   end
 
-  create_table "items", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+  create_table "likes", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+    t.integer "userId"
+    t.string "userCookieId", limit: 45
+    t.string "productId", limit: 45
+    t.date "created_at", null: false
+    t.date "updated_at", null: false
+  end
+
+  create_table "products", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.string "productId", limit: 45
     t.text "productTitle", collation: "utf8_general_ci"
     t.text "productDescription"
@@ -111,19 +119,14 @@ ActiveRecord::Schema.define(version: 2018_03_03_183331) do
     t.text "aff_url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "category", default: 50
-    t.integer "subcategory"
+    t.integer "category_id", default: 50
+    t.integer "subcategory_id"
     t.integer "sub_subcategory"
     t.string "is_hot", limit: 3
     t.string "is_approved", limit: 3
     t.string "with_reviews", limit: 1
     t.string "archived", limit: 1
-  end
-
-  create_table "likes", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
-    t.integer "userId"
-    t.string "userCookieId", limit: 45
-    t.string "productId", limit: 45
+    t.integer "like_count"
   end
 
   create_table "reviews", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
@@ -141,12 +144,12 @@ ActiveRecord::Schema.define(version: 2018_03_03_183331) do
     t.string "cover_content_type"
     t.integer "cover_file_size"
     t.datetime "cover_updated_at"
-    t.integer "author"
-    t.string "productId", limit: 45, null: false
+    t.integer "user_id"
+    t.string "product_id", limit: 45, null: false
   end
 
   create_table "subcategories", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
-    t.integer "parent"
+    t.integer "category_id"
     t.text "name", collation: "utf8_general_ci"
   end
 
@@ -173,6 +176,7 @@ ActiveRecord::Schema.define(version: 2018_03_03_183331) do
     t.datetime "last_sign_in_at"
     t.string "current_sign_in_ip"
     t.string "last_sign_in_ip"
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
 end

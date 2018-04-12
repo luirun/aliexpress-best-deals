@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :product do
-    id 1024380
+    id 11
     productId 32813027712
     productTitle "Laptop Ultraslim notebook 1920x1080 FHD Intel Cherry Trail"
     productDescription ""
@@ -25,6 +25,13 @@ FactoryGirl.define do
     name "Computer & Office"
     icon "fa fa-laptop"
   end
-  # This will use the User class (Admin would have been guessed)
-  #factory :admin, class: User do
+
+  factory :productLike do
+    id 1
+    user_id 1
+    user_cookie_id 93510648
+    product_id 11
+    created_at 2018-04-10
+    updated_at 2018-04-10
+  end
 end
