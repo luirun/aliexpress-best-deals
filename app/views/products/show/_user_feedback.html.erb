@@ -40,7 +40,7 @@
 
 <script>
   <% $like_url = "#{request.original_url}/like" %>
-  $(".love").dblclick(function() {
+  $(".info").on('dblclick','.love', function() {
     $(".fa.fa-heart").css("color", "#ff0000");
     $(this).removeClass('love').addClass('loved');
     $.ajax({
@@ -51,7 +51,7 @@
     });
   });
   <% $unlike_url = "#{request.original_url}/unlike" %>
-  $(".loved").dblclick(function() {
+  $(".info").on('dblclick','.loved', function() {
     $(".fa.fa-heart").css("color", "white");
     $(this).removeClass('loved').addClass('love');
     $.ajax({
