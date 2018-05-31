@@ -1,0 +1,26 @@
+.col-lg-12
+  .col-lg-3.text-center
+    %h4
+      Price:
+      %b
+        = @review.price
+        USD
+  .col-lg-6.text-center
+    %h4 Product rating:
+    %h4{:style => "display:inline-block;"}
+      %b
+        = @review.rating
+        \/ 5.0
+    - (0..@review.rating-1).each do |i|
+      =icon('fas', 'star fa-2x')
+    - if @review.rating % 1 != 0
+      =icon('fas', 'star-half fa-2x')
+    - else
+      - (0...5-@review.rating).each do
+        =icon('far', 'fa-star fa-2x')
+  .col-lg-3.text-center
+    - $buy_now = Product.find_by(productId: @review.product_id)
+    - if !$buy_now.nil?
+      = link_to "Buy It Now", $buy_now.promotionUrl, class: "btn btn-default btn-lg", target: "_blank"
+    - else
+      %p.btn.btn-default.btn-lg.disable Product Unavailable

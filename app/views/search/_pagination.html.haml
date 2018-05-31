@@ -1,0 +1,15 @@
+.row
+  .col-md-12.text-center
+    %ul.pagination
+      - (params[:p].to_i - 4 .. params[:p].to_i + 4).each do |i|
+        - next if i < 1 
+        - if i == params[:p].to_i
+          %li.disabled= link_to i, "", style: "background-color:#3498db;", disabled: "disabled"
+        - else
+          - if params[:action] == "search_product"
+            %li= link_to i, "#{search_product_path(params[:name], i)}"
+          - else
+            - if !params[:subcategory].nil?
+              %li= link_to i, "#{search_subcategory_path(params[:name],params[:subcategory], i)}?price_min=#{params[:price_min]}&price_max=#{params[:price_max]}&sort=#{params[:sort]}"
+            - else
+              %li= link_to i, "#{search_category_products_path(params[:name], i)}?price_min=#{params[:price_min]}&price_max=#{params[:price_max]}&sort=#{params[:sort]}"

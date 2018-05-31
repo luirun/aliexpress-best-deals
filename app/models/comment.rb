@@ -27,7 +27,7 @@ class Comment < ApplicationRecord
     end
   end
 
-  def self.delete_comments(comments)
+  def self.delete_comments(comments = nil)
     params[:commentId].each do |comment|
       if comment[1][(comment[1].length) - 1] == "d"
         comment[1][(comment[1].length) - 1] = ""

@@ -1,23 +1,17 @@
-=begin
-  --------------------------------- NAVIGATION ------------------------------
-
-    1 - Basic CRUD actions
-    2 - Various Actions
-
-  ------------------------------------ END ---------------------------------
-=end
+# --------------------------------- NAVIGATION ------------------------------
+# 1 - Basic CRUD actions
+# 2 - Various Actions
+# ------------------------------------ END ---------------------------------
 
 class ProductsController < ApplicationController
-  before_action :set_product, only: [:show, :edit, :update, :destroy, :product_like, :product_unlike]
+  before_action :set_product, only: [:show, :edit, :destroy, :product_like, :product_unlike]
   before_action :is_admin, only: [:create]
 
   # 1 - Basic CRUD Actions
 
-  # GET /products
-  # GET /products.json
   def index
     @categories = Category.all
-    if @categories.nil? then @categories = ["Sorry, actually no categories ;("] end
+    @categories ||= ["Sorry, actually no categories ;("]
 
     # META
     set_meta_tags title: "Find Cheapests Products"
@@ -25,13 +19,12 @@ class ProductsController < ApplicationController
     set_meta_tags keywords: "aliexpress,category,products,deals,find,review,test"
   end
 
-  # GET /products/1
-  # GET /products/1.json
   def show
     @ali_reviews = AliReview.non_empty_reviews(@product)
     @product_reviews = Review.all_by_random
     @recommended_products = Product.recommended_products(@product.category_id)
     @best_products = Product.hot_products.limit(8) # limit must be %4=0!!
+    @branded_products = Product.all_from_brand(@product) # limit%4==0
     @subcategory = Subcategory.find(@product.subcategory_id) if !@product.subcategory_id.nil? && @product.subcategory_id != @product.category_id
 
     # META
@@ -48,16 +41,12 @@ class ProductsController < ApplicationController
     }
   end
 
-  # GET /products/new
   def new
     @product = Product.new
   end
 
-  # GET /products/1/edit
   def edit; end
 
-  # POST /products
-  # POST /products.json
   def create
     @product = Product.new(product_params)
 
@@ -72,8 +61,6 @@ class ProductsController < ApplicationController
     end
   end
 
-  # DELETE /products/1
-  # DELETE /products/1.json
   def destroy
     @product.destroy
     respond_to do |format|
@@ -121,7 +108,7 @@ class ProductsController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_product
-    @product = Product.find_product(pretty_url_decode(params[:productTitle]))
+    @product = Product.like_title(pretty_url_decode(params[:productTitle]))
     redirect_to error_path("product-not-found") if @product.nil?
   end
 

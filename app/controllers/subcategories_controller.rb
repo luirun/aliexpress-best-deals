@@ -9,8 +9,7 @@ class SubcategoriesController < ApplicationController
 
   # GET /subcategories/1
   # GET /subcategories/1.json
-  def show
-  end
+  def show; end
 
   # GET /subcategories/new
   def new
@@ -18,8 +17,7 @@ class SubcategoriesController < ApplicationController
   end
 
   # GET /subcategories/1/edit
-  def edit
-  end
+  def edit; end
 
   # POST /subcategories
   # POST /subcategories.json
@@ -28,7 +26,7 @@ class SubcategoriesController < ApplicationController
 
     respond_to do |format|
       if @subcategory.save
-        format.html { redirect_to new_subcategory_path, notice: 'Subcategory was successfully created.' }
+        format.html { redirect_to new_subcategory_path, notice: "Subcategory was successfully created." }
         format.json { render :show, status: :created, location: @subcategory }
       else
         format.html { render :new }
@@ -42,7 +40,7 @@ class SubcategoriesController < ApplicationController
   def update
     respond_to do |format|
       if @subcategory.update(subcategory_params)
-        format.html { redirect_to @subcategory, notice: 'Subcategory was successfully updated.' }
+        format.html { redirect_to @subcategory, notice: "Subcategory was successfully updated." }
         format.json { render :show, status: :ok, location: @subcategory }
       else
         format.html { render :edit }
@@ -56,19 +54,20 @@ class SubcategoriesController < ApplicationController
   def destroy
     @subcategory.destroy
     respond_to do |format|
-      format.html { redirect_to subcategories_url, notice: 'Subcategory was successfully destroyed.' }
+      format.html { redirect_to subcategories_url, notice: "Subcategory was successfully destroyed." }
       format.json { head :no_content }
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_subcategory
-      @subcategory = Subcategory.find(params[:id])
-    end
+    
+  # Use callbacks to share common setup or constraints between actions.
+  def set_subcategory
+    @subcategory = Subcategory.find(params[:id])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def subcategory_params
-      params.require(:subcategory).permit(:parent, :name)
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def subcategory_params
+    params.require(:subcategory).permit(:parent, :name)
+  end
 end

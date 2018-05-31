@@ -1,0 +1,10 @@
+= form_tag save_from_file_path, action: :upload, multipart: true do |f|
+  .form-group
+    = label :category, "Which category do you want to fill?"
+    = select :category, "fields", Category.all.collect {|p| [ p.name, p.id ] }, {prompt: "Select Fields"}, {:multiple => true, :size => 10}
+  .form-group
+    = label :keywords, "Upload list of comma separated keywords"
+    = file_field :keywords, "fields"
+  .form-group
+    = label :api_call, "Api Call Method"
+    = button_tag 'Submit', type: 'submit'

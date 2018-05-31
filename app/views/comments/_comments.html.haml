@@ -1,0 +1,33 @@
+.container
+  .row
+    .col-sm-12
+      %h3 Comments:
+    / /col-sm-12
+  / /row
+  - if @comments[0] == nil
+    %h4{:style => "padding-left:15px;"} No comments found!
+  - else
+    - @comments.each do |comment|
+      .row
+        .col-sm-1
+          .thumbnail
+            - $user = User.find(comment.author)
+            - if comment.author == 4
+              %img.img-responsive.user-photo{:src => "https://ssl.gstatic.com/accounts/ui/avatar_2x.png"}/
+            - else
+              = image_tag $user.avatar.url
+          / /thumbnail
+        / /col-sm-1
+        .col-sm-11
+          .panel.panel-default
+            .panel-heading
+              %strong= $user.nickname
+              %span.text-muted
+                commented #{distance_of_time_in_words(comment.created_at, 0.1.minutes.from_now)} ago
+            .panel-body
+              = comment.content
+            / /panel-body
+          / /panel panel-default
+        / /col-sm-10
+      / /row
+/ /container

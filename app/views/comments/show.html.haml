@@ -1,0 +1,15 @@
+.page-header
+  = link_to comments_path, class: 'btn btn-default' do
+    %span.glyphicon.glyphicon-list-alt
+    Back
+  = link_to edit_comment_path(@comment), class: 'btn btn-primary' do
+    %span.glyphicon.glyphicon-pencil
+    Edit
+  %h1 Show comment
+%dl.dl-horizontal
+  %dt Author:
+  %dd= @comment.author
+  %dt Page:
+  %dd= @comment.page
+  %dt Content:
+  %dd= @comment.content

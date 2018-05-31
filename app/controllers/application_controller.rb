@@ -25,18 +25,16 @@ class ApplicationController < ActionController::Base
     site_name   = "AliBestDeal"
     image       = options[:image] || "your-default-image-url"
     current_url = request.url
-
-    # Let's prepare a nice set of defaults
     defaults = {
-      site:        site_name,
-      image:       image,
-      keywords:    %w[web software development mobile app],
+      site: site_name,
+      image: image,
+      keywords: %w[web software development mobile app],
       twitter: {
         site_name: site_name,
         site: "@alibestdeal",
         card: "summary",
         image: image
-      },
+        },
       og: {
         url: current_url,
         site_name: site_name,

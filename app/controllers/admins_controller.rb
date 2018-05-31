@@ -1,14 +1,12 @@
-=begin
-  --------------------- NAVIGATION -------------------------
-  1 - searching for products - LINE 1
-  2 - serching for hot products by category - LINE 35
-  3 - search for all hot products/all not hot products in subcategories
-  4 - various cleaning
-  5 - admin comment manager
-  6 - fill category from file
-  7 - fetch product details
-  ----------------------- END ---------------------------------
-=end
+# --------------------- NAVIGATION -------------------------
+# 1 - searching for products - LINE 1
+# 2 - serching for hot products by category - LINE 35
+# 3 - search for all hot products/all not hot products in subcategories
+# 4 - various cleaning
+# 5 - admin comment manager
+# 6 - fill category from file
+# 7 - fetch product details
+# ----------------------- END ---------------------------------
 
 class AdminsController < ApplicationController
   before_action :is_admin

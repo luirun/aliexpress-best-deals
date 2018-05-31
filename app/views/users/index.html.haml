@@ -1,0 +1,29 @@
+.page-header
+  = link_to new_user_path, class: 'btn btn-primary' do
+    %span.glyphicon.glyphicon-plus
+    New User
+  %h1 Listing users
+.table-responsive
+  %table.table.table-striped.table-bordered.table-hover
+    %thead
+      %tr
+        %th Nickname
+        %th Password
+        %th Password digest
+        %th Name
+        %th Surname
+        %th Description
+        %th Email
+        %th
+        %th
+        %th
+    %tbody
+      = content_tag_for(:tr, @users) do |user|
+        %td= user.nickname
+        %td= user.name
+        %td= user.surname
+        %td= user.description
+        %td= user.email
+        %td= link_to 'Show', user
+        %td= link_to 'Edit', edit_user_path(user)
+        %td= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' }

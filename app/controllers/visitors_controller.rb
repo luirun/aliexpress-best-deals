@@ -1,7 +1,8 @@
 class VisitorsController < ApplicationController
   def index
-    @recent_reviews = Review.all.limit(3).order("id desc")
-    @categories = Category.order("RAND()").limit(3)
+    @recent_reviews = Review.limit(3).order("id desc")
+    @categories = Category.all.sample(3)
+    @best_products = Product.where(is_hot: 'y').limit(32).sample(16)
     session[:excluded_categories] = []
 
     # META
@@ -12,7 +13,8 @@ class VisitorsController < ApplicationController
 
   def hot_products; end
 
-  def new_items_append
+  def new_products_append
+    @categories = Category.where.not(id: session[:excluded_categories]).sample(3)
     respond_to do |format|
       format.js
     end

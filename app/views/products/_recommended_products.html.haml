@@ -1,0 +1,45 @@
+- $hot=0
+.container
+  .col-md-12.col-xs-12
+    #myCarousel.carousel.slide.best
+      .carousel-inner
+        .item.active
+          %ul.thumbnails
+            - @best_products.each do |product|
+              %li.col-md-3.col-xs-12
+                .fff
+                  .thumbnail
+                    - $category = Category.where(id: @product.category).first
+                    = link_to add_similar_product_path($category.name, pretty_url_encode(product['productTitle']), product['productId']) do
+                      = image_tag "#{product['imageUrl']}_250x250.jpg"
+                  .caption.text-center
+                    %h4= simple_format(pretty_url_decode(product['productTitle']))
+                    = link_to add_similar_product_path($category.name, pretty_url_encode(product['productTitle']), product['productId']), |
+                      class: "btn btn-success btn-sm", style: "margin:5px;" do                                                            |
+                      » Read More
+              - $hot = $hot + 1
+              - if $hot%4==0
+                - if $hot==@best_products.length
+        - else
+      / /Slide
+      .item
+        %ul.thumbnails
+      / /#myCarousel
+      %nav
+        %ul.control-box.pager
+          %li
+            %a.carousel-control-a{"data-slide" => "prev", :href => "#myCarousel"}
+              %i.glyphicon.glyphicon-chevron-left
+          %li
+            %a.carousel-control-a{"data-slide" => "next", :href => "#myCarousel"}
+              %i.glyphicon.glyphicon-chevron-right
+    / /.carousel-slide
+  / /.col-xs-12
+/ /.row
+:javascript
+  // Carousel Auto-Cycle
+    $(document).ready(function() {
+      $('.carousel').carousel({
+        interval: 6000
+      })
+    });

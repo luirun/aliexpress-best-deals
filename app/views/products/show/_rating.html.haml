@@ -1,0 +1,53 @@
+- if reviews[0].nil?
+  .container
+    .row
+      .col-sm-6.col-xs-12
+        .rating-block
+          %h4 Average user rating
+          %h2.bold.padding-bottom-7
+            0
+            %small / 5
+          - for i in 1..5 do
+            %button.btn.btn-default.btn-grey.btn-sm{"aria-label" => "Left Align", :type => "button"}
+              %span.glyphicon.glyphicon-star{"aria-hidden" => "true"}
+      .col-sm-6.col-xs-12
+        %h4 Rating breakdown
+        - (1..5).reverse_each do |i|
+          .pull-left
+            .rating-pulling-left
+              %div{:style => "height:9px; margin:5px 0;"}
+                =i
+                %span.glyphicon.glyphicon-star
+            .rating-progress-bar
+              .progress
+                .progress-bar.progress-bar-success{"aria-valuemax" => "5", "aria-valuemin" => "0", "aria-valuenow" => "0", :role => "progressbar", :style => "width: 0%"}
+            .rating-pulling-right 0
+- else
+  .container
+    .row
+      .col-sm-6.col-xs-12
+        .rating-block
+          %h4 Average user rating
+          %h2.bold.padding-bottom-7
+            %small #{rating[:avg]} / 5
+          - (1..rating[:avg]).each do
+            %button.btn.btn-warning.btn-sm{"aria-label" => "Left Align", :type => "button"}
+              %span.glyphicon.glyphicon-star{"aria-hidden" => "true"}
+          - if rating[:avg] < 5
+            - (rating[:avg]...5).each do
+              %button.btn.btn-default.btn-grey.btn-sm{"aria-label" => "Left Align", :type => "button"}
+                %span.glyphicon.glyphicon-star{"aria-hidden" => "true"}
+      .col-sm-6
+        %h4 Rating breakdown
+        - i = 5
+        - rating.except(:avg).reverse_each do |rate|
+          .pull-left
+            .rating-pulling-left
+              %div{:style => "height:9px; margin:5px 0;"}
+                = i
+                %span.glyphicon.glyphicon-star
+            .rating-progress-bar
+              .progress{:style => "height:9px; margin:8px 0;"}
+                .progress-bar{class: select_progress_bar_class(i), "aria-valuemax" => "5", "aria-valuemin" => "0", "aria-valuenow" => "#{5*(rate[1]/reviews.length)}", :role => "progressbar", :style => "width: #{(rate[1]/reviews.length)*100}%"}
+            .rating-pulling-right= rate[1].to_i
+          - i -= 1

@@ -1,4 +1,4 @@
-class ProductLike< ActiveRecord::Base
+class ProductLike < ActiveRecord::Base
   belongs_to :product
   belongs_to :user
 
@@ -7,13 +7,13 @@ class ProductLike< ActiveRecord::Base
 
   def self.create_like(product_id, current_user_id, cookie_id)
     if ProductLike.find_by(product_id: product_id, user_id: current_user_id).nil?
-      self.create(product_id: product_id, user_id: current_user_id, user_cookie_id: cookie_id)
+      ProductLike.create(product_id: product_id, user_id: current_user_id, user_cookie_id: cookie_id)
     else
       logger.fatal("This action shouldn't be allowed from UI!")
     end
   end
 
   def self.destroy_like(product_id, cookie_id)
-    self.find_by(product_id: product_id, user_cookie_id: cookie_id).destroy
+    ProductLike.find_by(product_id: product_id, user_cookie_id: cookie_id).destroy
   end
 end

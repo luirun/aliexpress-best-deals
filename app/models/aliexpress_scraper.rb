@@ -1,22 +1,20 @@
-=begin
-  ------------------------------ NAVIGATION ----------------------
-    1 - Search in Aliexpress Api methods/helper
-      1.1 - Generate url to search by params from /admin/form
-      1.2 - Generate url to search by kewrods inputed in file
+# ------------------------------ NAVIGATION ----------------------
+#    1 - Search in Aliexpress Api methods/helper
+#      1.1 - Generate url to search by params from /admin/form
+#      1.2 - Generate url to search by kewrods inputed in file
+#
+#    2 - Search for hot/similar products
+#      2.1 - Find hot products
+#      2.2 - Find similar products
+#
+#    3 - Get product details from Aliexpress Api
+#      3.1 - Find product details using Api
+#      3.2 - Get affilate links for product
+#
+#    4 - Fetch product details
+#
+#    5 - Calling function
 
-    2 - Search for hot/similar products
-      2.1 - Find hot products
-      2.2 - Find similar products
-
-    3 - Get product details from Aliexpress Api
-      3.1 - Find product details using Api
-      3.2 - Get affilate links for product
-
-    4 - Fetch product details
-
-    5 - Calling function
-
-=end
 
 require "net/http"
 require "json"
@@ -24,7 +22,7 @@ require "open-uri"
 require "rest-client"
 
 class AliexpressScraper
-  #--------------------------------------------------------------------------
+  # --------------------------------------------------------------------------
   # 1 - Search in Aliexpress Api methods/helper
   # 1.1 - Generate url to search by params from /admin/form
   def self.search_url_generator(params)
@@ -44,7 +42,7 @@ class AliexpressScraper
     make_call(url)
   end
 
-  #--------------------------------- 1 - END ---------------------------------
+  # --------------------------------- 1 - END ---------------------------------
   # 2 -  Find hot/similar products
   # 2.1 - Find hot products
   def self.get_hot_products(currency, category, language)
@@ -59,7 +57,7 @@ class AliexpressScraper
     make_call(url)
   end
 
-  #--------------------------- 2 - END --------------------------------------
+  # --------------------------- 2 - END --------------------------------------
   # 3 - Get product details from aliexpress api
   # 3.1 - Find product details
   def self.get_product_details(fields, product_id)
@@ -84,57 +82,55 @@ class AliexpressScraper
     make_call(url)
   end
 
-  #-------------------------------- 3 - END -------------------------------
+  # -------------------------------- 3 - END -------------------------------
   # 4 - Fetch product details
   def self.fetch_product_details(browser)
     doc = Nokogiri::HTML.parse(browser.html)
-    if browser.element(class: "info-404").exists?
-      return "end"
+    return if browser.element(class: "info-404").exists?
+    description = doc.css(".ui-box.product-property-main")
+    browser.send_keys :space
+    browser.element(class: "ui-switchable-trigger", index: 1).link.click # load feedback tab
+    sleep(1)
+    # if doc.css(".no-feedback.wholesale-product-feedback") != nil  OLD NOT WORKING IF
+    if !browser.element(id: "feedback").iframe(index: 0).element(id: "transction-feedback").exists?
+      feedback = {"feedback" => [], "user_info" => []}
+      feedback[:feedback][0] = nil # empty feedback to push script to work when we have nothing
+      product_details = [description, feedback]
     else
-      description = doc.css(".ui-box.product-property-main")
-      browser.send_keys :space
-      browser.element(class: "ui-switchable-trigger", index: 1).link.click # load feedback tab
-      sleep(1)
-      # if doc.css(".no-feedback.wholesale-product-feedback") != nil  OLD NOT WORKING IF
-      if !browser.element(id: "feedback").iframe(index: 0).element(id: "transction-feedback").exists?
-        feedback = {"feedback" => [], "user_info" => []}
-        feedback[:feedback][0] = nil # empty feedback to push script to work when we have nothing
-        product_details = [description, feedback]
-      else
-        feedback_doc = browser.element(id: "feedback").iframe(index: 0).element(id: "transction-feedback") # inspect iframe with feedbacks
-        feedback_doc = Nokogiri::HTML.parse(feedback_doc.html)
-        feedback = {"feedback" => [], "user_info" => []} # hash for feedback details and feedback user
-        feedback_doc.css(".fb-main").each do |feed| # looping every review of product
-          user_order_rate = feed.css(".star-view").children.at("span")["style"].to_s
-          user_order_rate = user_order_rate.slice(6..8).to_i # creating % rate from style of span
-          user_order_info = feed.css(".user-order-info").text # color, delivery type etc text
-          user_review = feed.css(".buyer-feedback").css("span").text # user reviews
-          username = feed.css(".fb-user-info").text
-          review_photos = []
-          feed.css(".pic-view-item").each do |photo|
-            review_photos << photo.css("img").at("img")["src"] # saving all photos to photo url
-          end
-          review_date = feed.css(".r-time").text
-          result = {"user_order_rate" => user_order_rate, "user_order_info" => user_order_info,
-                    "user_review" => user_review, "review_photos" => review_photos, "review_date" => review_date}
-          # saving every detail of review into new element of feedback hash
-          feedback[:feedback] << result
+      feedback_doc = browser.element(id: "feedback").iframe(index: 0).element(id: "transction-feedback") # inspect iframe with feedbacks
+      feedback_doc = Nokogiri::HTML.parse(feedback_doc.html)
+      feedback = {"feedback" => [], "user_info" => []} # hash for feedback details and feedback user
+      feedback_doc.css(".fb-main").each do |feed| # looping every review of product
+        user_order_rate = feed.css(".star-view").children.at("span")["style"].to_s
+        user_order_rate = user_order_rate.slice(6..8).to_i # creating % rate from style of span
+        user_order_info = feed.css(".user-order-info").text # color, delivery type etc text
+        user_review = feed.css(".buyer-feedback").css("span").text # user reviews
+        username = feed.css(".fb-user-info").text
+        review_photos = []
+        feed.css(".pic-view-item").each do |photo|
+          review_photos << photo.css("img").at("img")["src"] # saving all photos to photo url
         end
+        review_date = feed.css(".r-time").text
+        result = {"user_order_rate" => user_order_rate, "user_order_info" => user_order_info,
+          "user_review" => user_review, "review_photos" => review_photos, "review_date" => review_date,
+          "user_name" => username}
+        # saving every detail of review into new element of feedback hash
+        feedback[:feedback] << result
+      end
 
-        feedback_doc.css(".fb-user-info").each do |user|
-          username = user.css(".user-name").text
-          user_country = user.css(".user-country").text
-          result = {"username" => username, "user_country" => user_country}
-          feedback[:user_info] << result
-        end
+      feedback_doc.css(".fb-user-info").each do |user|
+        username = user.css(".user-name").text
+        user_country = user.css(".user-country").text
+        result = {"username" => username, "user_country" => user_country}
+        feedback[:user_info] << result
       end
     end
+    
     # puts feedback
-    product_details = [description, feedback]
-    return product_details
+    return [description, feedback]
   end
 
-  #------------------------------------------------ 4 - END -------------------------------------------------
+  # ------------------------------------------------ 4 - END -------------------------------------------------
   # 5 - Calling method
   def self.make_call(url)
     begin
@@ -144,14 +140,14 @@ class AliexpressScraper
       else
         result = JSON.parse(response)
         logger.fatal "error!" if result["errorCode"] != 200_100_00
-        #puts result["result"]["products"]
+        # puts result["result"]["products"]
         return result
       end
-    rescue => e
+    rescue
       sleep(1)
       make_call(url)
     end
   end
 
-  #-------------------------------------------------- 5 - END ------------------------------------------------
+  # -------------------------------------------------- 5 - END ------------------------------------------------
 end

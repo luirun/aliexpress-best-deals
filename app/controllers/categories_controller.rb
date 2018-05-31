@@ -1,6 +1,6 @@
 class CategoriesController < ApplicationController
   before_action :set_category, only: [:show, :edit, :update, :destroy]
-  before_action :is_admin, only: [:index, :update, :destroy]
+  before_action :is_admin, only: [:update, :destroy]
 
   # GET /categories
   # GET /categories.json

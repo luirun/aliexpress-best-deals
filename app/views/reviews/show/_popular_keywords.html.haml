@@ -1,0 +1,12 @@
+.well
+  %h4
+    = icon('fa', 'tags')
+    Popular Tags:
+  .row
+    .col-lg-12
+      %ul.list-unstyled
+        - Review.all.order("RAND()").limit(2).each do |review|
+          - review.keywords.split(",").each do |keyword|
+            = link_to search_keyword_path(keyword) do
+              %li
+                %span.badge.badge-info{:style => "display:inline-block;float:left;margin:2px;"}= keyword

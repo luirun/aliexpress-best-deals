@@ -1,0 +1,24 @@
+.container
+  - @reviews.in_groups_of(3).each do |three_reviews|
+    .row
+      - three_reviews.each do |review|
+        .col-sm-4.col-md-4
+          .review-card
+            .review-card-img-content
+              = image_tag review.cover.url(:hmedium), class: "img-responsive"
+              %span.review-card-title
+                %b
+                  = review.title
+            .content
+              .author
+                By
+                %b= review.user.nickname
+                | #{review.updated_at}
+              %div
+                = review.short_description
+                - if current_user != nil
+                  - if current_user.is_admin == "y" || current_user == @review.author
+                    = link_to 'Edit', edit_review_path(review.title)
+                    = link_to 'Destroy', review, method: :delete, data: { confirm: 'Are you sure?' }
+              %div
+                = link_to "Read More", review_path(pretty_url_encode(review.title)), class: "btn btn-primary btn-sm"

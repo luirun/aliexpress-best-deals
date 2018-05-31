@@ -52,7 +52,7 @@ group :test do
 	gem 'rspec-rails'
 	gem 'capybara'
 	gem 'spring-commands-rspec' # testing speed up
-	gem 'factory_girl_rails'
+	gem 'factory_bot_rails'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
@@ -78,7 +78,7 @@ gem 'bcrypt'
 gem 'easy_translate'
 
 # icons from font awesome
-gem 'font-awesome-sass'
+gem 'font-awesome-sass', '~> 5.0.13'
 
 # meta tags
 gem 'meta-tags'
@@ -90,4 +90,6 @@ gem 'gaffe'
 gem 'watir'
 
 # code analyze
-gem 'rubocop' 
+gem 'rubocop'
+
+gem "haml"

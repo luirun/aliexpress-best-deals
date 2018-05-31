@@ -9,4 +9,8 @@ class Subcategory < ApplicationRecord
       Product.save_hot_products(@products["result"]["products"], params[:category][:fields][1], subcategory.id)
     end
   end
+
+  def with_products?
+    products.count > 0
+  end
 end

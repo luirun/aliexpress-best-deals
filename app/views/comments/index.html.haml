@@ -1,0 +1,23 @@
+.page-header
+  = link_to new_comment_path, class: 'btn btn-primary' do
+    %span.glyphicon.glyphicon-plus
+    New Comment
+  %h1 Listing comments
+.table-responsive
+  %table.table.table-striped.table-bordered.table-hover
+    %thead
+      %tr
+        %th Author
+        %th Page
+        %th Content
+        %th
+        %th
+        %th
+    %tbody
+      = content_tag_for(:tr, @comments) do |comment|
+        %td= comment.author
+        %td= comment.page
+        %td= comment.content
+        %td= link_to 'Show', comment
+        %td= link_to 'Edit', edit_comment_path(comment)
+        %td= link_to 'Destroy', comment, method: :delete, data: { confirm: 'Are you sure?' }

@@ -1,0 +1,96 @@
+= form_for(@review) do |f|
+  - if @review.errors.any?
+    #error_explanation
+      %h2
+        = pluralize(@review.errors.count, "error")
+        prohibited this post from being saved:
+      %ul
+        - @review.errors.full_messages.each do |message|
+          %li= message
+  .field
+    = f.label :title
+    %br/
+    = f.text_area :title, :class => "form-control"
+  .field
+    = f.label :short_description
+    %br/
+    = f.text_area :short_description, :class => "form-control"
+  .field
+    = f.label :price, "Price in USD:"
+    %br/
+    = f.text_field :price, :class => "form-control"
+  .field
+    = f.label :long_description
+    %br/
+    = f.cktext_area :long_description
+  .field
+    = f.label :keywords
+    %br/
+    = f.text_area :keywords, class: "form-control"
+  .field
+    = f.label :rating
+    %br/
+    = f.range_field :rating, min: "0", max: "5", step: "0.5", style: "width:50%;", class: "form-control"
+  .field
+    = f.label :cover
+    %br/
+    = f.file_field :cover, class: "form-control"
+  .field
+    = f.label :promoted
+    %br/
+    = f.check_box :promoted, {}, "y", "n"
+  .field
+    = f.label :product_id, "Choose product"
+    %br/
+    - if params[:action] == "edit"
+      - $value = Product.find_by(productId: @review.productId)
+      = f.text_field :product_id, class: "search-product", value: $value.productTitle
+      .enable Change
+    - else
+      = f.text_field :product_id, class: "search-product"
+      .enable Change
+  .product-list
+  .actions
+    = f.submit
+:javascript
+  $('.search-product').change(function() {
+      $title = $('.search-item').val();
+      $.ajax({
+          url: "/review/search-products/"+$title,
+          type: "GET",
+      })
+  });
+
+  $(function() {
+    $('.enable').click(function() {
+      $('.search-product').prop("readonly", false);
+      $('.search-product').css("background-color", "white");
+    });
+  });
+:css
+  .product-list {
+    width:300px;
+  }
+  .one-item {
+    width:400px;
+    height:120px;
+    background-color:red;
+  }
+  
+  .one-item:hover {
+    border:2px solid blue;
+  }
+  
+  .one-item img {
+    float:left;
+    width:100px;
+    height:120px;
+  }
+  
+  .enable {
+    color:blue;
+  }
+  
+  .enable:hover {
+    text-decoration: underline;
+  }

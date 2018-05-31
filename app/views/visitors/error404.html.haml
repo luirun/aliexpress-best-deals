@@ -1,0 +1,13 @@
+.error
+  .error-code.m-b-10.m-t-20
+    404
+    = icon('fa', 'warning')
+  %h3.font-bold We couldn't find the page..
+  .error-desc
+    Sorry, but the page you are looking for was either not found or does not exist.
+    %br/
+    Try refreshing the page or click the button below to go back to the Homepage.
+    %div
+      = link_to root_path, class: "login-detail-panel-button btn" do
+        = icon('fa', 'arrow-left')
+        Go back to Homepage

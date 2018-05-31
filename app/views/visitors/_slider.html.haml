@@ -1,0 +1,39 @@
+.visitors-slider
+  #bs-carousel.carousel.fade-carousel.slide{"data-interval" => "20000", "data-ride" => "carousel"}
+    %ol.carousel-indicators
+      %li.active{"data-slide-to" => "0", "data-target" => "#bs-carousel"}
+      %li{"data-slide-to" => "1", "data-target" => "#bs-carousel"}
+      %li{"data-slide-to" => "2", "data-target" => "#bs-carousel"}
+    .carousel-inner
+      .item.slides.active
+        .slide-1
+        .hero
+          %hgroup
+            %h1 Alibestdeal?
+            %h3 Find top quality Aliexpress products
+          = link_to products_path do
+            %button.btn.btn-danger.btn-lg See All Products
+      .item.slides
+        .slide-2
+        .hero
+          %hgroup
+            %h1 We are smart
+            %h3.smaller
+              Read reviews of many Aliexpress products
+              = succeed "Stop" do
+                %br
+          = link_to reviews_path do
+            %button.btn.btn-warning.btn-lg Read Reviews
+      .item.slides
+        .slide-3
+        .hero
+          %hgroup
+            %h1 We are community
+            %h3 Like and comment your favorite products
+          = link_to new_user_path do
+            %button.btn.btn-success.btn-lg Start Now!
+
+:javascript
+  $('.carousel').carousel({
+    interval: 1000 * 12
+  });

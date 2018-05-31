@@ -1,0 +1,29 @@
+%nav.navbar.navbar-default
+  .container
+    .navbar-header
+      %button.navbar-toggle.collapsed{"aria-controls" => "navbar", "aria-expanded" => "false", "data-target" => "#navbar", "data-toggle" => "collapse", :type => "button"}
+        %span.sr-only Toggle navigation
+        %span.icon-bar
+        %span.icon-bar
+        %span.icon-bar
+      = link_to root_path, class: "navbar-logo" do
+        = image_tag "logo.png", alt: "logo", class: "logo"
+    #navbar.navbar-collapse.collapse
+      %ul.nav.navbar-nav.navbar-left
+        .col-lg-12.col-md-12.col-sm-12.col-xs-12{:style => "float:left;display:block;"}
+          %li{:style => "height:40px;width:100%;"}
+            = render "layouts/navbar_search"
+      %ul.nav.navbar-nav.navbar-right
+        - if params[:controller] == "visitors"
+          %li.active= link_to "Home", root_path
+        - else
+          %li= link_to "Home", root_path
+        - if params[:controller] == "products"
+          %li.active= link_to "Products", products_categories_path
+        - else
+          %li= link_to "Products", products_categories_path
+        - if params[:controller] == "reviews"
+          %li.active= link_to "Reviews", reviews_path
+        - else
+          %li= link_to "Reviews", reviews_path
+        = render "layouts/navbar_links"

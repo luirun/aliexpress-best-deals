@@ -1,0 +1,10 @@
+.well
+  %h4
+    =icon('fa', 'fire')
+    Popular Reviews:
+  %ul
+    - popular_reviews.each do |review|
+      %li
+        =icon('far', 'sticky-note', style: "margin-right:2px;")
+        = link_to review_path(pretty_url_encode(review.title)) do
+          = pretty_url_decode(review.title)

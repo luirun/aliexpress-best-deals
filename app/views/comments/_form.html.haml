@@ -1,0 +1,27 @@
+= form_for(@comment, html: { class: "form-horizontal", role: "form" }) do |f|
+  - if @comment.errors.any?
+    .alert.alert-danger.alert-dismissable{:role => "alert"}
+      %button.close{"data-dismiss" => "alert", :type => "button"}
+        %span{"aria-hidden" => "true"} ×
+        %span.sr-only Close
+      %h4
+        = pluralize(@comment.errors.count, "error")
+        prohibited this comment from being saved:
+      %ul
+        - @comment.errors.full_messages.each do |msg|
+          %li= msg
+  .form-group
+    = f.label :author, class: "col-sm-2 control-label"
+    .col-sm-10
+      = f.number_field :author, class: "form-control"
+  .form-group
+    = f.label :page, class: "col-sm-2 control-label"
+    .col-sm-10
+      = f.text_area :page, class: "form-control"
+  .form-group
+    = f.label :content, class: "col-sm-2 control-label"
+    .col-sm-10
+      = f.text_area :content, class: "form-control"
+  .form-group
+    .col-sm-offset-2.col-sm-10
+      = f.submit class: "btn btn-primary"

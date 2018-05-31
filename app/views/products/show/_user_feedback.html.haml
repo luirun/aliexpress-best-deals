@@ -1,0 +1,46 @@
+.user-feedback
+  .container
+    .row
+      .col-sm-12
+        #card.weater
+          .city-selected
+            .info
+              .city
+                %h1 Do you like this product?
+              - if ProductLike.find_by(product_id: @product.productId, user_cookie_id: cookies[:user_id]) == nil
+                .love
+                  = icon('fa', 'heart')
+              - else
+                .loved
+                  = icon('fa', 'heart')
+          .days
+            .row.row-no-gutter
+              .col-md-9
+                .day
+                  %textarea{:disabled => "disabled", :placeholder => "Leave us your feedback"}
+              .col-md-3
+                .submit-button
+                  %input.btn.btn-success{:disabled => "disabled", :type => "button", :value => "Submit"}/
+:javascript
+  <haml_silent>   $like_url = &quot;\#{request.original_url}/like&quot; 
+  </haml_silent>  $(".info").on('dblclick','.love', function() {
+      $(".fa.fa-heart").css("color", "#ff0000");
+      $(this).removeClass('love').addClass('loved');
+      $.ajax({
+        type: "POST",
+        url: "#{$like_url}" ,
+        success: function(data){
+        }
+      });
+    });
+  <haml_silent>   $unlike_url = &quot;\#{request.original_url}/unlike&quot; 
+  </haml_silent>  $(".info").on('dblclick','.loved', function() {
+      $(".fa.fa-heart").css("color", "white");
+      $(this).removeClass('loved').addClass('love');
+      $.ajax({
+        type: "POST",
+        url: "#{$unlike_url}" ,
+        success: function(data){
+        }
+      });
+    });

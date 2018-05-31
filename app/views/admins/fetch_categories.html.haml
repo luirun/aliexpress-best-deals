@@ -1,0 +1,3 @@
+- @page.css(".item.util-clearfix").each do |category|
+  = category.css(".big-title").css('a').text
+  = category.css('a').to_s.split("/")[4]

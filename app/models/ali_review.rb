@@ -1,7 +1,30 @@
 class AliReview < ApplicationRecord
   belongs_to :product
-  
-  scope :non_empty_reviews, -> (product) { where(productId: product.productId, is_empty: "n") }
+
+  scope :non_empty_reviews, ->(product) { where(productId: product.productId, is_empty: "n") }
+
+  def self.calculate_product_rating(reviews)
+    return if reviews.count.zero?
+    product_rating  = {one: 0.0, two: 0.0, three: 0.0, four: 0.0, five: 0.0}
+    product_rating[:avg] = 0
+    reviews.each do |review|
+      product_rating[:avg] += review.user_order_rate
+      case review.user_order_rate
+      when 100
+        product_rating[:five] += 1
+      when 80
+        product_rating[:four] += 1
+      when 60
+        product_rating[:three] += 1
+      when 40
+        product_rating[:two] += 1 
+      when 20
+        product_rating[:one] += 1
+      end
+    end
+    product_rating[:avg] = (product_rating[:avg] / reviews.count) / 20.round(1)
+    return product_rating
+  end
 
   def save_product_reviews(reviews, product_id)
     i = 0

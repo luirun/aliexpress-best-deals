@@ -1,0 +1,19 @@
+.well
+  %h4
+    =icon('fas', 'book')
+    Featured products:
+  .row
+    - similar_products.each do |product|
+      .col-lg-12
+        .cuadro_intro_hover{:style => "background-color:#cccccc;"}
+          %p{:style => "text-align:center;"}
+            = image_tag product.imageUrl, class: "img-responsive"
+          .caption
+            .blur
+            .caption-text.text-center
+              %h3{:style => "border-top:2px solid white; border-bottom:2px solid white; padding:10px; overflow:hidden; height:150px;"}
+                = simple_format(product.productTitle)
+              %p
+              = link_to product_path(pretty_url_encode(product.productTitle)), class: "btn btn-default" do
+                =icon('fas', 'plus')
+                More

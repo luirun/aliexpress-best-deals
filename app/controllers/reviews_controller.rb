@@ -12,14 +12,14 @@ class ReviewsController < ApplicationController
     set_meta_tags keywords: "aliexpress,reviews,review,product,shopping,shop"
   end
 
-  # GET /subsubcategories/1
-  # GET /subsubcategories/1.json
   def show
     @promoted_reviews = Review.all.where.not(id: @review.id)
+    @product = Product.find_by(productId: @review.product_id)
+    @similar_products = Product.where(category_id: @product.category_id).sample(5)
+    @popular_reviews = Review.where.not(id: @review).limit(5)
     @comment = Comment.new
     @comments = Comment.where(page: @review.id)
 
-    # META
     set_meta_tags title: @review.title
     set_meta_tags description: @review.short_description
     set_meta_tags keywords: @review.keywords
@@ -27,12 +27,10 @@ class ReviewsController < ApplicationController
     set_meta_tags twitter: {image: @review.cover, title: @review.title, description: @review.short_description}
   end
 
-  # GET /subsubcategories/new
   def new
     @review = Review.new
   end
 
-  # GET /reviews/1/edit
   def edit
     @review = Review.where(title: params[:reviewTitle]).first
     if !current_user.nil?
@@ -45,8 +43,6 @@ class ReviewsController < ApplicationController
     end
   end
 
-  # POST /reviews
-  # POST /reviews.json
   def create
     @review = Review.new(review_params)
     @review.author = current_user.id
@@ -63,7 +59,7 @@ class ReviewsController < ApplicationController
     end
   end
 
-  # check is that one working?
+  # REVIEW: Is it work?
   def update
     @review = Review.find(params[:id])
     product = Product.where(productTitle: review_params[:productId]).first

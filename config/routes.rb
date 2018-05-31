@@ -79,6 +79,8 @@ Rails.application.routes.draw do
   # ----------------------------------------------------------------------------------------
 
   resources :categories
+  get "browse/categories", to: "categories#index", as: "products_categories"
+
   resources :subcategories
   resources :subsubcategories
 
@@ -97,7 +99,6 @@ Rails.application.routes.draw do
   get "product/:productTitle", to: "products#show", as: "product"
   post "product/:productTitle/like", to: "products#product_like", as: "product_like"
   post "product/:productTitle/unlike", to: "products#product_unlike", as: "product_unlike"
-  get "browse/products", to: "products#index", as: "products"
   delete "product/:productTitle", to: "products#destroy"
   get "product/:id/buy", to: "products#go_to_aliexpress", as: "aliexpress_pretty_url"
   # get "/:category/:productTitle/:productId", to: "products#similar_product", as: "add_similar_product"

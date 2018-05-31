@@ -1,22 +1,22 @@
-=begin
-  ------------------------- NAVIGATION -------------------
-  1 - Create products section
-    1.1 - Saving all products found by Aliexpress Api - /admin/form
-    1.2 - Find details of found product and save their category and subcategory
-  
-  2 - Add product details
-  3 - Delete unapproved products found in search products form - /admin/form -> /admin/product_list [POST]
-  4 - Clear expired products
-  5 - Various helper methods
-  --------------------------- END -----------------------
-=end
+# ------------------------- NAVIGATION -------------------
+# 1 - Create products section
+#   1.1 - Saving all products found by Aliexpress Api - /admin/form
+#  1.2 - Find details of found product and save their category and subcategory
+#
+# 2 - Add product details
+# 3 - Delete unapproved products found in search products form - /admin/form -> /admin/product_list [POST]
+# 4 - Clear expired products
+# 5 - Various helper methods
+# --------------------------- END -----------------------
 
 class Product < ApplicationRecord
   belongs_to :subcategory
   has_many :productLike
 
-  scope :hot_products, -> { where(is_hot: "y")}
-  scope :recommended_products, -> (product) { where(category_id: product).limit(12)}
+  scope :hot_products, -> { where(is_hot: "y") }
+  scope :recommended_products, ->(product) { where(category_id: product).limit(12) }
+  scope :all_from_brand, ->(product) { where("productTitle like ?", "%#{product.extract_product_brand}%") }
+  scope :like_title, ->(title) { find_by("productTitle LIKE ?", title) }
   # scope for not depreciated random method
   # scope :random, -> { order(Arel::Nodes::NamedFunction.new('RANDOM', [])) }
 
@@ -25,29 +25,26 @@ class Product < ApplicationRecord
 
   # 1.1 - Saving all products found by Aliexpress Api - /admin/form
   def self.ali_new(products, category_id)
-    if products.length.zero? # checking that there is one or more products
-      return nil # flash some error action
-    else
-      logger.info("We have found #{products.length} products")
-      products.each do |i|
-        id_exist = Product.find_by(productId: i["productId"].to_s)
-        if !id_exist.nil?
-          logger.info("Product Already Exists")
-        else
-          a = i["30daysCommission"]
-          i = i.except("30daysCommission")
-          product = Product.new(i)
-          product.salePrice = i["salePrice"].slice(4..12)
-          product.productTitle = ActionView::Base.full_sanitizer.sanitize(i["productTitle"])
-          product.originalPrice = i["originalPrice"].slice(4..12)
-          product.thirtydaysCommission = a
-          product.is_approved = "n"
-          product.category_id = category_id
-          product.save
-        end
+    return if products.length.zero?
+    logger.info("We have found #{products.length} products")
+    products.each do |i|
+      id_exist = Product.find_by(productId: i["productId"].to_s)
+      if id_exist.nil?
+        a = i["30daysCommission"]
+        i = i.except("30daysCommission")
+        product = Product.new(i)
+        product.salePrice = i["salePrice"].slice(4..12)
+        product.productTitle = ActionView::Base.full_sanitizer.sanitize(i["productTitle"])
+        product.originalPrice = i["originalPrice"].slice(4..12)
+        product.thirtydaysCommission = a
+        product.is_approved = "n"
+        product.category_id = category_id
+        product.save
+      else
+        logger.info("Product Already Exists")
       end
-      return "Products successfully saved!"
     end
+    logger.info("Products successfully saved!")
   end
 
   # 1.2 - Find details of found product and save their category and subcategory
@@ -65,20 +62,20 @@ class Product < ApplicationRecord
         if details["result"].nil?
           logger.info("We have not found any details about #{i['productTitle']}.")
         else
-            details = details["result"]
-            a = details["30daysCommission"]
-            i = details.except("30daysCommission")
-            promotion_link = AliexpressScraper.get_promotion_links(i["productUrl"]) # getting promotion url from aliexpress
-            promotion_link = promotion_link["result"]["promotionUrls"] # shortening our hash a little
-            product = Product.new(i) # making new instance in Hot Products table
-            product.salePrice = i["salePrice"].slice(4..12)
-            product.originalPrice = i["originalPrice"].slice(4..12)
-            product.promotionUrl = promotion_link[0]["promotionUrl"] # saving promotion url to record
-            product.thirtydaysCommission = a # adding 30 days commission to record
-            product.category_id = category_id
-            product.subcategory_id = subcategory_id
-            product.is_hot = "y"
-            product.is_approved = "y"
+          details = details["result"]
+          a = details["30daysCommission"]
+          i = details.except("30daysCommission")
+          promotion_link = AliexpressScraper.get_promotion_links(i["productUrl"]) # getting promotion url from aliexpress
+          promotion_link = promotion_link["result"]["promotionUrls"] # shortening our hash a little
+          product = Product.new(i) # making new instance in Hot Products table
+          product.salePrice = i["salePrice"].slice(4..12)
+          product.originalPrice = i["originalPrice"].slice(4..12)
+          product.promotionUrl = promotion_link[0]["promotionUrl"] # saving promotion url to record
+          product.thirtydaysCommission = a # adding 30 days commission to record
+          product.category_id = category_id
+          product.subcategory_id = subcategory_id
+          product.is_hot = "y"
+          product.is_approved = "y"
           begin
             product.save
           rescue
@@ -101,15 +98,14 @@ class Product < ApplicationRecord
   end
 
   def self.add_promotion_links(promotion_urls, products)
-    if !promotion_urls.nil?
-      i = 0
-      products.each do |product|
-        product = Product.find(product.id)
-        product.promotionUrl = promotion_urls[i]["promotionUrl"]
-        logger.info("Added to product #{product.id} promotion link: \n #{promotion_urls[i]['promotionUrl']}")
-        product.save
-        i += 1
-      end
+    return if promotion_urls.nil?
+    i = 0
+    products.each do |product|
+      product = Product.find(product.id)
+      product.promotionUrl = promotion_urls[i]["promotionUrl"]
+      logger.info("Added to product #{product.id} promotion link: \n #{promotion_urls[i]['promotionUrl']}")
+      product.save
+      i += 1
     end
   end
   #------------------------------- 2 - END ------------------------
@@ -154,22 +150,21 @@ class Product < ApplicationRecord
       product.save
     end
   end
+
+  # TODO
+  def extract_product_brand
+    productTitle.split(" ")[0]
+  end
   # ------------------------ 5 - END -----------------------------------
 
   # 6 - Logic from controller
-  def self.find_product(product_title)
-    product = Product.where("productTitle LIKE ?", product_title).first
-  end
 
   def self.save_from_file(keywords, category)
     keywords.each do |keyword|
-      products = AliCrawler.new.search_for_category_products(keyword, category)
+      AliCrawler.new.search_for_category_products(keyword, category)
       Product.save_hot_products(@products["result"]["products"], category)
     end
   end
 
   # ------- 6 - END -----------
 end
-
-
-

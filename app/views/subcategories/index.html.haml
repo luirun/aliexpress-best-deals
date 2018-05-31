@@ -1,0 +1,21 @@
+.page-header
+  = link_to new_subcategory_path, class: 'btn btn-primary' do
+    %span.glyphicon.glyphicon-plus
+    New Subcategory
+  %h1 Listing subcategories
+.table-responsive
+  %table.table.table-striped.table-bordered.table-hover
+    %thead
+      %tr
+        %th Parent
+        %th Name
+        %th
+        %th
+        %th
+    %tbody
+      = content_tag_for(:tr, @subcategories) do |subcategory|
+        %td= subcategory.parent
+        %td= subcategory.name
+        %td= link_to 'Show', subcategory_path(subcategory)
+        %td= link_to 'Edit', edit_subcategory_path(subcategory)
+        %td= link_to 'Destroy', subcategory_path(subcategory), method: :delete, data: { confirm: 'Are you sure?' }

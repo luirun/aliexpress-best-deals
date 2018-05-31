@@ -1,0 +1,21 @@
+.product-list
+  - $i = 1
+  .product-sublist
+    Choose product of this review:
+    - locals[:products].each do |product|
+      .one-product{:id => "#{$i}"}
+        = image_tag product.imageUrl
+        %div{:class => "title#{$i}"}= product.productTitle
+      - $i += 1
+:javascript
+  $(function() {
+      $('.one-item').click(function() {
+      $id = $(this).attr("id");
+      });
+      $( ".one-item" ).on( "click", function() {
+        $value = $('div.title'+$id).text();
+        $('.search-product').val($value).prop("readonly", true);
+        $('.search-product').css("background-color", "#bdc3c7");
+        $('.product-sublist').fadeOut();
+      });
+        });

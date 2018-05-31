@@ -1,20 +1,12 @@
-=begin
-  ------------------------------ Navigation -----------------------------
-    1 - Search category with filters
-    2 - Search for products
-      2.1 - Search for product - GET params
-      2.2 - Search for product helper
-
-    3 - Search reviews by keywords
-    4 - Find all reviews written by selected author
-
-  ---------------------------------- End ------------------------------------
-
-=end
-
+# 1 - Search category with filters
+# 2 - Search for products
+#   2.1 - Search for product - GET params
+#   2.2 - Search for product helper
+# 3 - Search reviews by keywords
+# 4 - Find all reviews written by selected author
 
 class SearchController < ApplicationController
-  # 1- Search category with filters
+  # 1 - Search category with filters
   def search_category_redirect
     redirect_to search_category_products_path(params[:name], 1)
   end
@@ -22,52 +14,23 @@ class SearchController < ApplicationController
   def search_category_with_filters
     @category = Category.where(name: params[:name]).first
     @subcategories = @category.subcategories.distinct
-    @subcategory = Subcategory.find_by(name: params[:subcategory]) if !params[:subcategory].nil?
-    # checking that pagination exsists, if not redirecting to 1 page
-    redirect_to search_category_path(params[:name], 1) if params[:p].nil?
-    
-    params[:price_min] = params[:price_min].to_f
-    params[:price_max] = params[:price_max].to_f
-    params[:price_max] = 9999.99 if params[:price_max] == 0.0
+    subcategory = Subcategory.find_by(name: params[:subcategory]) unless params[:subcategory].nil?
 
-    if params[:price_min] != 0.0
-      if params[:price_min] < params[:price_max]
-        min_price = params[:price_min]
-      else
-        flash[:notice] = "Minimal price can't be higher than maximum price!"
-        min_price = 9999
-        redirect_to request.referer
-      end
-    else
-      min_price = 0.0
-    end
+    redirect_to search_category_path(params[:name], 1) && return if params[:p].nil?
 
-    if params[:price_max] != 9999.99
-      if params[:price_max] > params[:price_min]
-        max_price = params[:price_max]
-      else
-        flash[:notice] = "Minimal price can't be higher than maximum price!"
-        max_price = 1
-        redirect_to request.referer
-      end
-    else
-      max_price = 9999.99
-    end
+    params[:min_price] = params[:min_price].to_f
+    params[:max_price] = params[:max_price].to_f
+    params[:max_price] = 9999.99 if params[:max_price] == 0.0
 
-    if min_price < 0 || max_price <= 0
-      flash[:notice] = "You can't search for products cheaper than 0.01$!"
-      redirect_to request.referer
-    elsif @subcategory.nil?
-      @products = @category.products.where(salePrice: min_price..max_price)
-    else
-      @products = @subcategory.products.where(salePrice: min_price..max_price)
-    end
+    redirect_to request.referer, flash: { alert: 'Prices must be greater than zero!'} && return if params[:min_price] < 0 || params[:max_price] < 0
+    redirect_to request.referer, flash: { alert: 'Minimum price must be lower than maximum price!'} && return if params[:min_price] > params[:max_price]
+    redirect_to request.referer, flash: { alert: 'Maxiumum price must be greaterthan 0.1$!'} && return if params[:max_price] < 0.1
 
-    # when user search for subcategory - we are setting subcategory_id variable
-    unless params[:subcategory].nil?
-      subcategory_id = @subcategories.where(name: params[:subcategory]).first.id
-      @products = @products.where(subcategory_id: subcategory_id)
-    end
+    @products = if subcategory.nil?
+                  @category.products.where(salePrice: params[:min_price]..params[:max_price])
+                else
+                  subcategory.products.where(salePrice: params[:min_price]..params[:max_price])
+                end
 
     # META
     set_meta_tags title: "Search in #{params[:name]}"

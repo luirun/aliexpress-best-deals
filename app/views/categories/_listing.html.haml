@@ -1,0 +1,12 @@
+.container
+  .row
+    %h2 Find products by category:
+    .col-md-12
+      - @categories.each do |category|
+        .col-lg-2.col-md-4.col-sm-6.col-xs-12
+          .process
+            .process-row
+              .process-step
+                = link_to search_category_products_path(category.name,1), class: "btn btn-default btn-circle category-listing-link" do
+                  =icon('fa', "#{category.icon} fa-3x")
+                %p= category.name
