@@ -5,7 +5,7 @@ RSpec.describe ProductsController do
   
   describe 'GET index' do
     it 'show all categories' do
-      @categories = FactoryGirl.create(:category)
+      @categories = FactoryBot.create(:category)
       get :index
       expect(response.body).to have_content("Find products by category:")
     end

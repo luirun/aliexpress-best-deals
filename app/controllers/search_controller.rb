@@ -27,9 +27,9 @@ class SearchController < ApplicationController
     redirect_to request.referer, flash: { alert: 'Maxiumum price must be greaterthan 0.1$!'} && return if params[:max_price] < 0.1
 
     @products = if subcategory.nil?
-                  @category.products.where(salePrice: params[:min_price]..params[:max_price])
+                  @category.products.where(salePrice: params[:min_price]..params[:max_price]).limit(params[:p].to_i * 32)
                 else
-                  subcategory.products.where(salePrice: params[:min_price]..params[:max_price])
+                  subcategory.products.where(salePrice: params[:min_price]..params[:max_price]).limit(params[:p].to_i * 32)
                 end
 
     # META

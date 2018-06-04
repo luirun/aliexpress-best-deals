@@ -8,7 +8,7 @@ describe Product do
 
   describe '.ali_new' do
     category_id = 540
-    products = Hash.new
+    let(:products) { Hash.new }
     products["products"] = []
 
     it "got numeric category_id" do
@@ -23,7 +23,7 @@ describe Product do
     end
 
     context "when one or more products passed as argument" do
-      products["products"][0] = FactoryGirl.build(:product).attributes
+      products["products"][0] = FactoryBot.build(:product).attributes
       products["products"][0]["salePrice"] = "US $1.11"
       products["products"][0]["originalPrice"] = "US $1.11"
 
@@ -45,7 +45,7 @@ describe Product do
 
     context "This product already exists" do
       it "save to logs that product already exist" do
-        products["products"][0] = FactoryGirl.create(:product, productId: 1).attributes
+        products["products"][0] = FactoryBot.create(:product, productId: 1).attributes
         expect(Rails.logger).to receive(:info).with("Product Already Exists")
         described_class.save_hot_products(products["products"], category_id, subcategory_id)
       end
@@ -53,7 +53,7 @@ describe Product do
 
     context "Product does not exist already" do
       context "Aliexpress API returned no details about this product" do
-        products["products"][0] = FactoryGirl.build(:product, productId: 1).attributes
+        products["products"][0] = FactoryBot.build(:product, productId: 1).attributes
         it "save to logs information that Api returned no details" do
           expect(Rails.logger).to receive(:info).with(/We have not found any details about/)
           described_class.save_hot_products(products["products"], category_id, subcategory_id)
@@ -62,7 +62,7 @@ describe Product do
 
       context "Aliexpress API returned all details about this product" do
         it "save all recieved details of product" do
-          products["products"][0] = FactoryGirl.build(:product).attributes
+          products["products"][0] = FactoryBot.build(:product).attributes
           described_class.save_hot_products(products["products"], category_id, subcategory_id)
           products_counter = Product.all.length
           expect(products_counter).to be >= 1
@@ -73,7 +73,7 @@ describe Product do
 
   describe ".save_product_description" do
     it "update given product with given description" do
-      product = FactoryGirl.create(:product)
+      product = FactoryBot.create(:product)
       product_description = "<div class='ui-box product-property-main'>    <div class='ui-box-title'>Item specifics</div>"
       described_class.save_product_description(product_description, product.id)
 
@@ -85,10 +85,10 @@ describe Product do
   describe ".add_promotion_links" do
     context "passed not nil hash with promotion urls" do
       it "update given product with given promotion url" do
-        FactoryGirl.create(:product, promotionUrl: nil)
+        FactoryBot.create(:product, promotionUrl: nil)
         product = Product.all
         promotion_url = Array.new
-        promotion_url[0] = {"promotionUrl" => FactoryGirl.build(:product).attributes["promotionUrl"]}
+        promotion_url[0] = {"promotionUrl" => FactoryBot.build(:product).attributes["promotionUrl"]}
         described_class.add_promotion_links(promotion_url, product)
 
         product = Product.find(11)
@@ -103,7 +103,7 @@ describe Product do
 
   describe ".archive_expired_products" do
     it "marked as archived all products which validTime is older than today" do
-      FactoryGirl.create(:product)
+      FactoryBot.create(:product)
       described_class.archive_expired_products
 
       expect(Product.find(11).archived).to eq "y"

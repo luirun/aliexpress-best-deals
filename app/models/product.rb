@@ -15,8 +15,9 @@ class Product < ApplicationRecord
 
   scope :hot_products, -> { where(is_hot: "y") }
   scope :recommended_products, ->(product) { where(category_id: product).limit(12) }
-  scope :all_from_brand, ->(product) { where("productTitle like ?", "%#{product.extract_product_brand}%") }
+  scope :all_from_brand, ->(product) { where("productTitle like ?", "%#{product.extract_product_brand}%").where(category_id: product.category_id) }
   scope :like_title, ->(title) { find_by("productTitle LIKE ?", title) }
+  scope :delete_without_category, -> { where('category_id not in (?)', Category.pluck(:id).delete_all) }
   # scope for not depreciated random method
   # scope :random, -> { order(Arel::Nodes::NamedFunction.new('RANDOM', [])) }
 

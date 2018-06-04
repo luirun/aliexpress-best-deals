@@ -15,9 +15,8 @@ class ReviewsController < ApplicationController
   def show
     @promoted_reviews = Review.all.where.not(id: @review.id)
     @product = Product.find_by(productId: @review.product_id)
-    @similar_products = Product.where(category_id: @product.category_id).sample(5)
+    @similar_products = Product.where(category_id: @product.category_id).limit(10).sample(5)
     @popular_reviews = Review.where.not(id: @review).limit(5)
-    @comment = Comment.new
     @comments = Comment.where(page: @review.id)
 
     set_meta_tags title: @review.title
@@ -98,7 +97,7 @@ class ReviewsController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_review
     title = pretty_url_decode(params[:reviewTitle])
-    @review = Review.where(title: title).first
+    @review = Review.find_by_title(title)
     return unless @review.nil?
 
     title = title.split(" ")

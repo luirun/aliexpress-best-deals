@@ -125,7 +125,6 @@ class AliexpressScraper
         feedback[:user_info] << result
       end
     end
-    
     # puts feedback
     return [description, feedback]
   end

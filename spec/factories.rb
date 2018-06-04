@@ -1,4 +1,5 @@
-FactoryGirl.define do
+FactoryBot.define do
+
   factory :product do
     id 11
     productId 32813027712
@@ -26,12 +27,18 @@ FactoryGirl.define do
     icon "fa fa-laptop"
   end
 
-  factory :productLike do
+factory :subcategory do
+    id 702
+    category_id 7  
+  end
+
+  factory :product_like do
     id 1
     user_id 1
     user_cookie_id 93510648
     product_id 11
-    created_at 2018-04-10
-    updated_at 2018-04-10
+    created_at "2018-04-10"
+    updated_at "2018-04-10"
   end
+
 end

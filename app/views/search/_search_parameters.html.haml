@@ -15,7 +15,7 @@
               = params[:subcategory]
               X
         - else
-          - @category.subcategories.each do |subcategory|
+          - @category.subcategories.includes(:products).each do |subcategory|
             - if subcategory.with_products?
               = link_to search_subcategory_path(@category.name,subcategory.name,1) do
                 .badge.badge-info= subcategory.name

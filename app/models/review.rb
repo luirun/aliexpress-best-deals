@@ -1,5 +1,6 @@
 class Review < ApplicationRecord
   belongs_to :user
+  has_one :product, foreign_key: 'productId'
 
   scope :all_by_random, -> { all.order("RAND()") }
 

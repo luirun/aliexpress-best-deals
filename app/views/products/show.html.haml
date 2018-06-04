@@ -80,7 +80,7 @@
                   - i = i + 1
                   
         %hr
-    = render "best_products", products: @branded_products[0..-((@branded_products.count % 4) + 1)]
+    = render "best_products", products: @branded_products[0..-((@branded_products.length % 4) + 1)]
     - $brand = ActionView::Base.full_sanitizer.sanitize("AliBestDeal - No Description").split(" ")
     - $description = $brand
     - $index = $brand.index("Name:")

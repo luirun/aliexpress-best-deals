@@ -1,6 +1,7 @@
 class Subcategory < ApplicationRecord
   has_many :products
   scope :find_all_products_of_parent, -> { where(parent: params[:category_id]).all }
+  scope :fast_product, -> { joins(:products) }
 
   def self.fill_all_subcategories_of_category(parent)
     @subcategories = Subcategory.where(parent: parent)
@@ -11,6 +12,6 @@ class Subcategory < ApplicationRecord
   end
 
   def with_products?
-    products.count > 0
+    products.length > 0
   end
 end

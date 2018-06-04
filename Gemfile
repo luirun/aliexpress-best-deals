@@ -4,6 +4,13 @@ source 'https://rubygems.org'
 gem 'rails', '~> 5.2.0.rc1'
 # Use mysql as the database for Active Record
 gem 'mysql2', '>= 0.3.13', '< 0.5'
+
+# optimization
+gem 'rack-mini-profiler', require: false
+gem 'flamegraph'
+gem 'stackprof' # ruby 2.1+ only
+gem 'memory_profiler'
+
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets

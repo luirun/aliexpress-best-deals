@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_04_10_115258) do
+ActiveRecord::Schema.define(version: 2018_06_04_142011) do
 
   create_table "ali_reviews", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.string "productId", limit: 45
@@ -88,12 +88,13 @@ ActiveRecord::Schema.define(version: 2018_04_10_115258) do
     t.text "storeUrl"
   end
 
-  create_table "likes", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
-    t.integer "userId"
-    t.string "userCookieId", limit: 45
-    t.string "productId", limit: 45
+  create_table "product_likes", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+    t.integer "user_id"
+    t.string "user_cookie_id", limit: 45
+    t.integer "product_id"
     t.date "created_at", null: false
     t.date "updated_at", null: false
+    t.index ["product_id"], name: "fk_rails_9fdc191f6f"
   end
 
   create_table "products", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
@@ -113,20 +114,20 @@ ActiveRecord::Schema.define(version: 2018_04_10_115258) do
     t.string "packageType", limit: 45, collation: "utf8_general_ci"
     t.float "evaluateScore"
     t.date "validTime"
-    t.integer "quanity_sold"
-    t.float "commision"
     t.integer "volume"
     t.text "aff_url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "category_id", default: 50
     t.integer "subcategory_id"
-    t.integer "sub_subcategory"
     t.string "is_hot", limit: 3
     t.string "is_approved", limit: 3
     t.string "with_reviews", limit: 1
     t.string "archived", limit: 1
     t.integer "like_count"
+    t.index ["category_id"], name: "fk_rails_fb915499a4"
+    t.index ["productId"], name: "productId", unique: true
+    t.index ["subcategory_id"], name: "fk_rails_150008c07d"
   end
 
   create_table "reviews", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
@@ -139,13 +140,13 @@ ActiveRecord::Schema.define(version: 2018_04_10_115258) do
     t.text "promoted"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer "item_id"
     t.string "cover_file_name"
     t.string "cover_content_type"
     t.integer "cover_file_size"
     t.datetime "cover_updated_at"
     t.integer "user_id"
     t.string "product_id", limit: 45, null: false
+    t.index ["user_id"], name: "fk_rails_74a66bd6c5"
   end
 
   create_table "subcategories", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
@@ -179,4 +180,8 @@ ActiveRecord::Schema.define(version: 2018_04_10_115258) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "product_likes", "products"
+  add_foreign_key "products", "categories"
+  add_foreign_key "products", "subcategories"
+  add_foreign_key "reviews", "users"
 end
