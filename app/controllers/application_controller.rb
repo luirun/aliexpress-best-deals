@@ -9,14 +9,7 @@ class ApplicationController < ActionController::Base
 
   before_action :session_return
   before_action :prepare_meta_tags, if: -> { request.get? }
-  before_action :configure_permitted_parameters, if: :devise_controller?
 
-  before_action do
-    if current_user && current_user.is_admin?
-      require 'rack-mini-profiler'
-      Rack::MiniProfiler.authorize_request
-    end
-  end
   rescue_from ::ActiveRecord::RecordNotFound, with: :record_not_found
 
   def record_not_found
@@ -67,10 +60,19 @@ class ApplicationController < ActionController::Base
     @devise_mapping ||= Devise.mappings[:user]
   end
 
+  before_action :configure_permitted_parameters, if: :devise_controller?
+  before_action :enable_rack_mini_profiler_for_admin
+
   protected
 
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:sign_up, keys: [:nickname, :name, :surname, :description])
+  end
+
+  def enable_rack_mini_profiler_for_admin     
+    if current_user && current_user.is_admin?
+      Rack::MiniProfiler.authorize_request
+    end
   end
 
 end
