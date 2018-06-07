@@ -7,21 +7,21 @@
       .process
         .process-row
           .process-step
-            = link_to api_products_search_path, class: "btn btn-default btn-circle category-listing-link" do
+            = link_to admins_aliexpress_api_products_search_path, class: "btn btn-default btn-circle category-listing-link" do
               =icon('fa', 'underline fa-3x')
             %p Search by Keywords
     .col-lg-2.col-md-4.col-sm-6.col-xs-12
       .process
         .process-row
           .process-step
-            = link_to api_hot_products_by_category_path, class: "btn btn-default btn-circle category-listing-link" do
+            = link_to admins_aliexpress_api_search_hot_products_by_category_path, class: "btn btn-default btn-circle category-listing-link" do
               = icon('fa', 'fire fa-3x')
             %p Hot Products by Category
     .col-lg-2.col-md-4.col-sm-6.col-xs-12
       .process
         .process-row
           .process-step
-            = link_to api_auto_save_hot_products_path, class: "btn btn-default btn-circle category-listing-link" do
+            = link_to admins_aliexpress_api_save_hot_products_view_path, class: "btn btn-default btn-circle category-listing-link" do
               = icon('fa', 'fire-extinguisher fa-3x')
             %p
               Add Products from Hot List
@@ -30,48 +30,48 @@
       .process
         .process-row
           .process-step
-            = link_to api_archive_expired_products_path, class: "btn btn-default btn-circle category-listing-link" do
+            = link_to admins_aliexpress_api_archive_expired_products_path, class: "btn btn-default btn-circle category-listing-link" do
               = icon('fa', 'calendar-times-o fa-3x')
             %p Check for outdated products
     .col-lg-2.col-md-4.col-sm-6.col-xs-12
       .process
         .process-row
           .process-step
-            = link_to article_manager_path, class: "btn btn-default btn-circle category-listing-link" do
+            = link_to article_manager_admins_path, class: "btn btn-default btn-circle category-listing-link" do
               = icon('fa', 'list-alt fa-3x')
             %p Manage articles
     .col-lg-2.col-md-4.col-sm-6.col-xs-12
       .process
         .process-row
           .process-step
-            = link_to comments_manager_path, class: "btn btn-default btn-circle category-listing-link" do
+            = link_to comments_manager_admins_path, class: "btn btn-default btn-circle category-listing-link" do
               = icon('fa', 'comment fa-3x')
             %p New Comments
   .col-lg-2.col-md-4.col-sm-6.col-xs-12
     .process
       .process-row
         .process-step
-          = link_to from_file_path, class: "btn btn-default btn-circle category-listing-link" do
+          = link_to from_file_admins_path, class: "btn btn-default btn-circle category-listing-link" do
             = icon('fa', 'file fa-3x')
           %p Fill Category From File
   .col-lg-2.col-md-4.col-sm-6.col-xs-12
     .process
       .process-row
         .process-step
-          = link_to mass_subcategory_filling_path, class: "btn btn-default btn-circle category-listing-link" do
+          = link_to admins_aliexpress_api_fill_all_subcategories_path, class: "btn btn-default btn-circle category-listing-link" do
             = icon('fa', 'bomb fa-3x')
           %p Mass Subcategory Filling
   .col-lg-2.col-md-4.col-sm-6.col-xs-12
     .process
       .process-row
         .process-step
-          = link_to update_products_details_path, class: "btn btn-default btn-circle category-listing-link" do
+          = link_to admins_scraping_update_products_details_path, class: "btn btn-default btn-circle category-listing-link" do
             = icon('fa', 'chrome fa-3x')
           %p Update Products Details
   .col-lg-2.col-md-4.col-sm-6.col-xs-12
     .process
       .process-row
         .process-step
-          = link_to delete_empty_reviews_path, class: "btn btn-default btn-circle category-listing-link" do
+          = link_to delete_empty_reviews_admins_path, class: "btn btn-default btn-circle category-listing-link" do
             = icon('fa', 'trash fa-3x')
           %p Delete empty reviews

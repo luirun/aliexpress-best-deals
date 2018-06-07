@@ -1,10 +1,10 @@
-- if !user_signed_in?
+- unless user_signed_in?
   %li= link_to "Login", "#", {"data-toggle" => "modal", "data-target" => "#login-modal"}
 - else
   - if params[:controller] == "users"
-    %li.active= link_to "Profile", user_profile_path
+    %li.active= link_to "Profile", user_path
   - else
-    %li= link_to "Profile", user_profile_path
-  - if current_user_columns
+    %li= link_to "Profile", user_path
+  - if current_user && current_user.is_admin?
     %li= link_to "Admin Panel", admins_path
   %li= link_to "Sign out", destroy_user_session_path, :method => :delete

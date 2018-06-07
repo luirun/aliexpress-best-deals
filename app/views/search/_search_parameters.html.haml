@@ -10,14 +10,14 @@
       .subcategory-container{style: "height:20px;overflow:hidden;margin-bottom:5px;"}
         %b Related subcategories:
         - if params[:subcategory] != nil
-          = link_to search_category_products_path(@category.name,1) do
+          = link_to products_category_search_path(@category.name,1) do
             .badge.badge-info
               = params[:subcategory]
               X
         - else
           - @category.subcategories.includes(:products).each do |subcategory|
             - if subcategory.with_products?
-              = link_to search_subcategory_path(@category.name,subcategory.name,1) do
+              = link_to subcategory_category_search_path(@category.name,subcategory.name,1) do
                 .badge.badge-info= subcategory.name
 
       - if params[:subcategory].nil? && @subcategories.length > 7 && @category.id != 1509

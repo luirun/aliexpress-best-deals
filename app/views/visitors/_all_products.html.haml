@@ -10,7 +10,7 @@
         - next if category.products.count < 4
         %h1
           %i{:class => "#{category.icon}"}
-          = link_to category.name, search_category_products_path(category.name, 1)
+          = link_to category.name, products_category_search_path(category.name, 1)
         - category.products.limit(64).sample(8).in_groups_of(8, false).each do |big_product_group|
           .row
             - big_product_group.each_slice(4).to_a.each do |small_product_group|

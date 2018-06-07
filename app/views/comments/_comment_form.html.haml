@@ -5,7 +5,7 @@
     .col-md-12
       .widget-area.no-padding.blank
         .status-upload
-          = form_for Comment.new do |f|
+          = form_for [@review, Comment.new] do |f|
             = f.hidden_field :page, value: @review.id
             = f.text_area :content, placeholder: "Share your opinion!"
             %ul

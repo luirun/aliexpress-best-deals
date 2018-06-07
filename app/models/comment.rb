@@ -1,19 +1,20 @@
 class Comment < ApplicationRecord
+  belongs_to :review
+
   has_attached_file :image, styles: {medium: "300x300>", hmedium: "450x450>", thumb: "100x100>", wide: "1900x450#"},
                             path: ":rails_root/public/system/:attachment/:id/:style/:filename",
                             url: "/system/:attachment/:id/:style/:filename"
   validates_attachment_content_type :image, content_type: /\Aimage\/.*\Z/
 
-  before_save :select_who_commented
-
-  def select_who_commented
+  def select_who_commented(current_user)
     if current_user.nil?
-      @comment.accepted = "n"
-      @comment.author = "4"
+      self.accepted = "n"
+      self.author = "4"
     else
-      @comment.author = current_user.id
-      @comment.accepted = "y"
+      self.author = current_user.id
+      self.accepted = "y"
     end
+    return self
   end
 
   def self.approve_comments(comments)

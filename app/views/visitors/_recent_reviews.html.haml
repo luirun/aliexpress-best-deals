@@ -16,7 +16,7 @@
               = icon('fa','ellipsis-v')
           .card-action
             - review.keywords.split(",").each do |keyword|
-              = link_to keyword, search_keyword_path(keyword)
+              = link_to keyword, keyword_search_path(keyword)
           %div{:class => "card-reveal #{$js}"}
             %span.card-title= pretty_url_decode(review.title)
             %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}

@@ -9,7 +9,7 @@
 # ----------------------- END ---------------------------------
 
 class AdminsController < ApplicationController
-  before_action :is_admin
+  before_action :is_admin?
 
   # 1 - search for products
   # search_products -> list_products -> save_products
@@ -53,8 +53,7 @@ class AdminsController < ApplicationController
     end
   end
 
-  # /mass_subcategory_filling
-  def mass_subcategory_filling
+  def fill_all_subcategories
     @subcategories = Subcategory.all
     @subcategories.each do |subcategory|
       @products = AliexpressScraper.search_for_category_products("", subcategory.id)

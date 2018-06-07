@@ -7,6 +7,6 @@
           .process
             .process-row
               .process-step
-                = link_to search_category_products_path(category.name,1), class: "btn btn-default btn-circle category-listing-link" do
+                = link_to products_category_search_path(category.name,1), class: "btn btn-default btn-circle category-listing-link" do
                   =icon('fa', "#{category.icon} fa-3x")
                 %p= category.name

@@ -10,6 +10,6 @@
             %li= link_to i, "#{search_product_path(params[:name], i)}"
           - else
             - if !params[:subcategory].nil?
-              %li= link_to i, "#{search_subcategory_path(params[:name],params[:subcategory], i)}?price_min=#{params[:price_min]}&price_max=#{params[:price_max]}&sort=#{params[:sort]}"
+              %li= link_to i, "#{subcategory_category_search_path(params[:name],params[:subcategory], i)}?price_min=#{params[:price_min]}&price_max=#{params[:price_max]}&sort=#{params[:sort]}"
             - else
-              %li= link_to i, "#{search_category_products_path(params[:name], i)}?price_min=#{params[:price_min]}&price_max=#{params[:price_max]}&sort=#{params[:sort]}"
+              %li= link_to i, "#{products_category_search_path(params[:name], i)}?price_min=#{params[:price_min]}&price_max=#{params[:price_max]}&sort=#{params[:sort]}"

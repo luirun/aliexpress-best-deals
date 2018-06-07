@@ -30,7 +30,7 @@
       %h1= @review.title
       %p.lead
         =icon('far', 'user')
-        by #{link_to @review.user.nickname, search_author_path(@review.user.nickname)}
+        by #{link_to @review.user.nickname, author_search_path(@review.user.nickname)}
       %hr/
       %p
         =icon('far', 'calendar')
@@ -39,7 +39,7 @@
         =icon('fas', 'tags')
         Tags:
         - @review.keywords.split(",").each do |keyword|
-          = link_to search_keyword_url(keyword) do
+          = link_to keyword_search_path(keyword) do
             %span.badge.badge-info= keyword
       %hr
       = image_tag @review.cover.url, :class => "img-responsive"

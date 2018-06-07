@@ -4,12 +4,19 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
-  include SessionsHelper
   include ApplicationHelper
   include AliexpressHelper
 
   before_action :session_return
   before_action :prepare_meta_tags, if: -> { request.get? }
+  before_action :configure_permitted_parameters, if: :devise_controller?
+
+  before_action do
+    if current_user && current_user.is_admin?
+      require 'rack-mini-profiler'
+      Rack::MiniProfiler.authorize_request
+    end
+  end
   rescue_from ::ActiveRecord::RecordNotFound, with: :record_not_found
 
   def record_not_found
@@ -47,8 +54,7 @@ class ApplicationController < ActionController::Base
   end
 
   # devise settings
-  helper_method :resource_name, :resource, :devise_mapping, :resource_class
-
+  helper_method :resource_name, :resource, :devise_mapping, :resource_class, :current_user
   def resource_name
     :user
   end
@@ -61,11 +67,10 @@ class ApplicationController < ActionController::Base
     @devise_mapping ||= Devise.mappings[:user]
   end
 
-  before_action :configure_permitted_parameters, if: :devise_controller?
-
   protected
 
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:sign_up, keys: [:nickname, :name, :surname, :description])
   end
+
 end

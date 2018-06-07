@@ -1,5 +1,5 @@
 class ReviewsController < ApplicationController
-  before_action :set_review, only: [:show, :destroy]
+  before_action :set_review, except: [:index, :new, :create]
 
   # GET /subsubcategories
   # GET /subsubcategories.json
@@ -60,7 +60,6 @@ class ReviewsController < ApplicationController
 
   # REVIEW: Is it work?
   def update
-    @review = Review.find(params[:id])
     product = Product.where(productTitle: review_params[:productId]).first
     parameters[:productId] = product.productId
     respond_to do |format|

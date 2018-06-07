@@ -7,9 +7,6 @@ gem 'mysql2', '>= 0.3.13', '< 0.5'
 
 # optimization
 gem 'rack-mini-profiler', require: false
-gem 'flamegraph'
-gem 'stackprof' # ruby 2.1+ only
-gem 'memory_profiler'
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'

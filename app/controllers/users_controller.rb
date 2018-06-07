@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
-  before_action :is_admin, only: [:index, :show]
+  before_action :is_admin?, only: [:index, :show]
 
   # GET /users
   # GET /users.json
@@ -8,8 +8,7 @@ class UsersController < ApplicationController
     @users = User.all
   end
 
-  # GET /users/1
-  # GET /users/1.json
+  # GET /profile
   def show; end
 
   # GET /users/new
@@ -49,10 +48,6 @@ class UsersController < ApplicationController
     end
   end
 
-  def profile
-    @user = User.find(current_user.id)
-  end
-
   # DELETE /users/1
   # DELETE /users/1.json
   def destroy
@@ -67,7 +62,7 @@ class UsersController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_user
-    @user = User.find(params[:id])
+    @user = User.find(current_user.id)
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

@@ -2,15 +2,15 @@
 - if url[:action] != "search_category"
   - if !@product.subcategory_id.nil? && @product.subcategory_id != @product.category_id
     = link_to "Home", root_path
-    \-&gt; #{link_to Category.find(@product.category_id).name, search_category_products_path(Category.find(@product.category_id).name,1)}
+    \-&gt; #{link_to Category.find(@product.category_id).name, products_category_search_path(Category.find(@product.category_id).name,1)}
     \ -&gt;
-    \#{link_to @subcategory.name, search_subcategory_path(Category.find(@product.category_id).name,@subcategory.name,1)} 
+    \#{link_to @subcategory.name, subcategory_category_search_path(Category.find(@product.category_id).name,@subcategory.name,1)} 
     \-&gt;
     \#{@product.productTitle.slice(0..40)}...
   - else
     = link_to "Home", root_path
     \-&gt; 
-    \#{link_to Category.find(@product.category_id).name, search_category_products_path(Category.find(@product.category_id).name,1)}
+    \#{link_to Category.find(@product.category_id).name, products_category_search_path(Category.find(@product.category_id).name,1)}
     \ -&gt; #{@product.productTitle.slice(0..40)}...
 - else
   = link_to "Home", root_path

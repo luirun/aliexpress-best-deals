@@ -8,6 +8,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # def new
   #   super
   # end
+
   def create
       build_resource(sign_up_params)
 

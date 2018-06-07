@@ -24,6 +24,7 @@ class CommentsController < ApplicationController
   # POST /comments.json
   def create
     @comment = Comment.new(comment_params)
+    @comment = @comment.select_who_commented(current_user)
     respond_to do |format|
       if @comment.valid?
         if @comment.save

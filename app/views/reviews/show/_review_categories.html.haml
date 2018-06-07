@@ -7,4 +7,4 @@
         %li
           %h4
             = icon('fa', "#{category.icon} fa-1x", style: 'margin-right: 3px;')
-            = link_to category.name, search_category_products_path(category.name,1)
+            = link_to category.name, products_category_search_path(category.name,1)

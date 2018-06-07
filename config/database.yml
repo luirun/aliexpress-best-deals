@@ -18,7 +18,7 @@ default: &default
   host: <%= ENV["db_host"] %>
 production:
   <<: *default
-  database: aliexpress_production
+  database: aliexpress_development
 
 development:
   <<: *default

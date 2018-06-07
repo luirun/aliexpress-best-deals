@@ -1,19 +1,90 @@
-.page-header
-  = link_to users_path, class: 'btn btn-default' do
-    %span.glyphicon.glyphicon-list-alt
-    Back
-  = link_to edit_user_path(@user), class: 'btn btn-primary' do
-    %span.glyphicon.glyphicon-pencil
-    Edit
-  %h1 Show user
-%dl.dl-horizontal
-  %dt Nickname:
-  %dd= @user.nickname
-  %dt Name:
-  %dd= @user.name
-  %dt Surname:
-  %dd= @user.surname
-  %dt Description:
-  %dd= @user.description
-  %dt Email:
-  %dd= @user.email
+.container
+  .row
+    .col-sm-3
+      = link_to new_review_path, class: "btn btn-danger btn-block btn-compose-email" do
+        Write own product review!
+      %ul.nav.nav-pills.nav-stacked.nav-email.shadow.mb-20
+        %li.active
+          %a{:href => "#mail-inbox.html"}
+            = icon('fa', 'inbox')
+            Inbox
+            %span.label.pull-right 7
+        %li
+          %a{:href => "#mail-compose.html"}
+            = icon('fa', 'envelope-o')
+            Send Mail
+        %li
+          %a{:href => "#"}
+            = icon('fa', 'certificate')
+            Important
+        %li
+          %a{:href => "#"}
+            = icon('fa', 'file-text-o')
+            Drafts
+            %span.label.label-info.pull-right.inbox-notification 35
+        %li
+          %a{:href => "#"}
+            = icon('fa', 'trash-o')
+            Trash
+      / /.nav
+      %h5.nav-email-subtitle More
+      %ul.nav.nav-pills.nav-stacked.nav-email.mb-20.rounded.shadow
+        %li
+          %a{:href => "#"}
+            = icon('fa', 'folder-open')
+            Promotions
+            %span.label.label-danger.pull-right 3
+        %li
+          %a{:href => "#"}
+            = icon('fa', 'folder-open')
+            Job list
+        %li
+          %a{:href => "#"}
+            = icon('fa', 'folder-open')
+            Backup
+    .col-sm-9
+      .panel.panel-default
+        .panel-heading.resume-heading
+          .row
+            .col-lg-12
+              .col-xs-12.col-sm-4
+                %figure
+                  %img.img-circle.img-responsive{:alt => "", :src => "http://placehold.it/300x300"}/
+                .row
+                  .col-xs-12.social-btns
+                    .col-xs-3.col-md-1.col-lg-1.social-btn-holder
+                      %a.btn.btn-social.btn-block.btn-google{:href => "#"}
+                        = icon('fa', 'google')
+                    .col-xs-3.col-md-1.col-lg-1.social-btn-holder
+                      %a.btn.btn-social.btn-block.btn-facebook{:href => "#"}
+                        = icon('fa', 'facebook')
+                    .col-xs-3.col-md-1.col-lg-1.social-btn-holder
+                      %a.btn.btn-social.btn-block.btn-twitter{:href => "#"}
+                        = icon('fa', 'twitter')
+                    .col-xs-3.col-md-1.col-lg-1.social-btn-holder
+                      %a.btn.btn-social.btn-block.btn-linkedin{:href => "#"}
+                        = icon('fa', 'linkedin')
+                    .col-xs-3.col-md-1.col-lg-1.social-btn-holder
+                      %a.btn.btn-social.btn-block.btn-github{:href => "#"}
+                        = icon('fa', 'github')
+                    .col-xs-3.col-md-1.col-lg-1.social-btn-holder
+                      %a.btn.btn-social.btn-block.btn-stackoverflow{:href => "#"}
+                        = icon('fa', 'stack-overflow')
+              .col-xs-12.col-sm-8
+                %ul.list-group
+                  %li.list-group-item
+                    = icon('fa', 'user')
+                    = @user.combined_value
+                  %li.list-group-item
+                    = icon('fa', 'flash')
+                    Level:
+                    %b AliNoob
+                  %li.list-group-item
+                    = icon('fa', 'diamond')
+                    User past #{distance_of_time_in_words(@user.created_at, 0.1.minutes.from_now)}
+                  %li.list-group-item
+                    = icon('fa', 'envelope')
+                    = @user.email
+        .bs-callout.bs-callout-danger
+          %h4 About me
+          = @user.description
