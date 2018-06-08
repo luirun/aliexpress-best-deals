@@ -1,14 +1,3 @@
-# ------------------------- NAVIGATION -------------------
-# 1 - Create products section
-#   1.1 - Saving all products found by Aliexpress Api - /admin/form
-#  1.2 - Find details of found product and save their category and subcategory
-#
-# 2 - Add product details
-# 3 - Delete unapproved products found in search products form - /admin/form -> /admin/product_list [POST]
-# 4 - Clear expired products
-# 5 - Various helper methods
-# --------------------------- END -----------------------
-
 class Product < ApplicationRecord
   belongs_to :subcategory
   has_many :productLike
@@ -19,13 +8,8 @@ class Product < ApplicationRecord
   scope :like_title, ->(title) { find_by("productTitle LIKE ?", title) }
   scope :delete_without_category, -> { where('category_id not in (?)', Category.pluck(:id).delete_all) }
   scope :expired_products, -> { where("validTime < '#{Time.zone.now.strftime('%Y-%m-%d')}'") }
-  # scope for not depreciated random method
-  # scope :random, -> { order(Arel::Nodes::NamedFunction.new('RANDOM', [])) }
 
-  #--------------------------------------------------
-  # 1 - CREATE PRODUCTS METHODS
-
-  # 1.1 - Saving all products found by Aliexpress Api - /admins/aliexpress_api/search_for_products
+  # Saving all products
   def self.new_product(products, category_id)
     return if products.size.zero?
     logger.info("We have found #{products.length} products")
@@ -56,7 +40,7 @@ class Product < ApplicationRecord
     Product.all.limit(40).where.not(is_approved: "y").order("id desc").delete_all # Delete unselected products
   end
 
-  # 1.2 - Find details of found product and save their category and subcategory
+  # REVIEW: Consider deleting it and add subcategory argument to #new_product
   # method for mass saving products founded by crawler - works well for saving from file and iterating through the categories
   def self.save_hot_products(products, category_id, subcategory_id)
     fields = %w[productId productTitle productUrl imageUrl
@@ -97,9 +81,7 @@ class Product < ApplicationRecord
     end
   end
 
-  #---------------------------- 1 - END ------------------------
-
-  # 2 - Add product details
+  # Add product details
   def self.save_product_description(product_description, product_id)
     product = Product.find(product_id)
     product.productDescription = product_description
@@ -118,18 +100,13 @@ class Product < ApplicationRecord
       i += 1
     end
   end
-  #------------------------------- 2 - END ------------------------
 
-  # 4 - Clear expired products
+  # Clear expired products
   def self.archive_expired_products
-    Product.expired_products.each do |product|
-      product.archived = "y"
-      product.save
-    end
+    Product.expired_products.update_all(archived: "y")
   end
-  # -------------------------- 4 - END ---------------------------------
 
-  # 5 - Various helper methods
+  # HACK: Should sale price be equal to original price?
   def self.transform_price
     Product.where("salePrice like '%us%'").each do |product|
       product.salePrice = product.salePrice.slice(4..12)
@@ -142,16 +119,5 @@ class Product < ApplicationRecord
   def extract_product_brand
     productTitle.split(" ")[0]
   end
-  # ------------------------ 5 - END -----------------------------------
 
-  # 6 - Logic from controller
-
-  def self.save_from_file(keywords, category)
-    keywords.each do |keyword|
-      AliCrawler.new.search_for_category_products(keyword, category)
-      Product.save_hot_products(@products["result"]["products"], category)
-    end
-  end
-
-  # ------- 6 - END -----------
 end

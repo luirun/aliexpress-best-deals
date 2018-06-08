@@ -88,17 +88,14 @@ Rails.application.routes.draw do
 
     get "delete_empty_reviews", to: "admins#delete_empty_reviews", as: "delete_empty_reviews"
 
-    get "comments_manager", to: "admins#comments_manager", as: "comments_manager"
-    post "comments_manager_update", to: "admins#comments_manager_update", as: "comments_manager_update"
+    match "comments_manager", to: "admins#comments_manager", as: "comments_manager", via: [:get, :post]
 
-    # 6 - fill category from file
-    get "fill_category_from_file", to: "admins#from_file", as: "from_file"
-    post "save_from_file", to: "admins#save_from_file", as: "save_from_file"
+    match "fill_category_from_file", to: "admins#fill_category_from_file", as: "fill_category_from_file", via: [:get, :post]
 
     # UNDONE: Article manager
     get "article_manage", to: "admins#article_manager", as: "article_manager"
   end
 
-  # error 404 path
+  # Error 404 path
   get "*path", to: "visitors#error404", as: "error" # error 404 page
 end

@@ -1,7 +1,8 @@
 class AliReview < ApplicationRecord
   belongs_to :product
 
-  scope :non_empty_reviews, ->(product) { where(productId: product.productId, is_empty: "n") }
+  scope :non_empty_reviews_of_product, ->(product) { where(productId: product.productId, is_empty: "n") }
+  scope :empty_reviews, -> { where(is_empty: "y").where("length(review_content) < ?", 5) }
 
   def self.calculate_product_rating(reviews)
     return if reviews.count.zero?

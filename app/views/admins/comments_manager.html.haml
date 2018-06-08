@@ -1,5 +1,5 @@
 .row
-  = form_tag comments_manager_update_path do |f|
+  = form_tag comments_manager_admins_path, method: :post do |f|
     .form-group
       = label :api_call, "Update Comments"
       = button_tag 'Submit', type: 'submit', :class => "btn btn-small btn-success"

@@ -1,21 +1,3 @@
-# ------------------------------ NAVIGATION ----------------------
-#    1 - Search in Aliexpress Api methods/helper
-#      1.1 - Generate url to search by params from /admin/form
-#      1.2 - Generate url to search by kewrods inputed in file
-#
-#    2 - Search for hot/similar products
-#      2.1 - Find hot products
-#      2.2 - Find similar products
-#
-#    3 - Get product details from Aliexpress Api
-#      3.1 - Find product details using Api
-#      3.2 - Get affilate links for product
-#
-#    4 - Fetch product details
-#
-#    5 - Calling function
-
-
 require "net/http"
 require "json"
 require "open-uri"
@@ -42,43 +24,31 @@ class AliexpressScraper
     call_API(url)
   end
 
-  # --------------------------------- 1 - END ---------------------------------
-  # 2 -  Find hot/similar products
-  # 2.1 - Find hot products
   def self.get_hot_products(currency, category, language)
     url = "http://gw.api.alibaba.com/openapi/param2/2/portals.open/api.listHotProducts/#{AliConfig.new.api_key}?localCurrency=#{currency}&categoryId=#{category}&language=#{language}"
     call_API(url)
   end
 
-  # 2.2 - Find similar products
   def self.get_similar_products(product_id)
     url = "http://gw.api.alibaba.com/openapi/param2/2/portals.open/api.listSimilarProducts/#{AliConfig.new.api_key}?productId=#{product_id}"
     logger.info(url)
     call_API(url)
   end
 
-  # --------------------------- 2 - END --------------------------------------
-  # 3 - Get product details from aliexpress api
-  # 3.1 - Find product details
   def self.get_product_details(fields, product_id)
     fields = fields.join(",")
     url = "http://gw.api.alibaba.com/openapi/param2/2/portals.open/api.getPromotionProductDetail/#{AliConfig.new.api_key}?fields=#{fields}&productId=#{product_id}"
     call_API(url)
   end
 
-  # 3.2 - Get affilate links for product
+  # Get affilate links for product
   def self.get_promotion_links(product_urls)
-    urls = []
-    product_urls.each { |url| urls << url}
-    urls = urls.join(",")
-
+    urls = product_urls.join(",")
     url = "http://gw.api.alibaba.com/openapi/param2/2/portals.open/api.getPromotionLinks/#{AliConfig.new.api_key}?" \
           "fields=totalResults,trackingId,publisherId,url,promotionUrl&trackingId=Luirun&urls=#{urls}"
     call_API(url)
   end
 
-  # -------------------------------- 3 - END -------------------------------
-  # 4 - Fetch product details
   def self.fetch_product_details(browser)
     doc = Nokogiri::HTML.parse(browser.html)
     return if browser.element(class: "info-404").exists?
@@ -124,8 +94,6 @@ class AliexpressScraper
     return [description, feedback]
   end
 
-  # ------------------------------------------------ 4 - END -------------------------------------------------
-  # 5 - Calling method
   def self.call_API(url)
     response = RestClient.get(url)
     if response.code != 200
@@ -133,10 +101,7 @@ class AliexpressScraper
     else
       result = JSON.parse(response)
       Rails.logger.fatal("Error: #{result["errorCode"]}") if result["errorCode"] != 200_100_00
-      # puts result["result"]["products"]
       return result
     end
   end
-
-  # -------------------------------------------------- 5 - END ------------------------------------------------
 end

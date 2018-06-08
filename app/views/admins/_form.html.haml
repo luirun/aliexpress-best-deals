@@ -1,5 +1,4 @@
 = form_tag admins_aliexpress_api_products_list_path do |f|
-  = @config
   .form-group
     = label :category, "Select category/categories:"
     = select :category, "fields", @categories.collect {|p| [ p.name, p.id ] }, {prompt: "Select Fields", }, {:multiple => true, :size => 10}

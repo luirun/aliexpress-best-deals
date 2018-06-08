@@ -20,7 +20,7 @@ class ProductsController < ApplicationController
   end
 
   def show
-    @ali_reviews = AliReview.non_empty_reviews(@product)
+    @ali_reviews = AliReview.non_empty_reviews_of_product(@product)
     @product_reviews = Review.all_by_random
     @recommended_products = Product.recommended_products(@product.category_id)
     @best_products = Product.hot_products.limit(8) # limit must be %4=0!!

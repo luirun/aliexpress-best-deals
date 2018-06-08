@@ -14,4 +14,11 @@ class Category < ApplicationRecord
       Category.create(id: category_id, name: category_name) if Category.find(category_id).nil?
     end
   end
+
+  def self.fill_from_file(keywords, category)
+    keywords.each do |keyword|
+      AliexpressScraper.search_for_category_products(keyword, category)
+      Product.save_hot_products(@products["result"]["products"], category)
+    end
+  end
 end

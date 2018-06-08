@@ -9,6 +9,7 @@ class ApplicationController < ActionController::Base
   before_action :session_return
   before_action :prepare_meta_tags, if: -> { request.get? }
 
+  # REVIEW: It's probably not working
   rescue_from ::ActiveRecord::RecordNotFound, with: :record_not_found
 
   def record_not_found
@@ -22,22 +23,22 @@ class ApplicationController < ActionController::Base
 
   def prepare_meta_tags(options={})
     site_name   = "AliBestDeal"
-    image       = options[:image] || "your-default-image-url"
+    # image       = options[:image] || "your-default-image-url"
     current_url = request.url
     defaults = {
       site: site_name,
-      image: image,
-      keywords: %w[web software development mobile app],
+      # image: image,
+      keywords: %w[aliexpress shopping china sale quality],
       twitter: {
         site_name: site_name,
         site: "@alibestdeal",
         card: "summary",
-        image: image
+        # image: image
         },
       og: {
         url: current_url,
         site_name: site_name,
-        image: image,
+        # image: image,
         type: "website"
       }
     }
