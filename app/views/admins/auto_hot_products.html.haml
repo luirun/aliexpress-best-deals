@@ -1,14 +1,16 @@
 Are you sure you want to do this action? It will take about 20 minutes!
 %input{:onclick => "send()", :type => "submit"}/
-#result WAIT! WE WILL CHANGE THIS TEXT WHEN EVERYTHING WILL BE DONE!
+#result 
+  %marquee Wait! Text will stop moving after all!
+
 :javascript
   function send() {
     $.ajax({
       type: "POST",
-      url: "#{api_auto_save_hot_products_post_path}" ,
+      url: "#{admins_aliexpress_api_save_hot_products_path}" ,
       success: function(data){
        $('#result').text("Done");
-       alert("hehe skonczone!")
+       alert("We have found new products!")
       }
     });
   }

@@ -1,11 +1,11 @@
 = form_tag admins_aliexpress_api_products_list_path do |f|
   = @config
   .form-group
-    = label :category, "Which category do you want to search?"
-    = select :category, "fields", Category.all.collect {|p| [ p.name, p.id ] }, {prompt: "Select Fields"}, {:multiple => true, :size => 10}
+    = label :category, "Select category/categories:"
+    = select :category, "fields", @categories.collect {|p| [ p.name, p.id ] }, {prompt: "Select Fields", }, {:multiple => true, :size => 10}
   .form-group
-    = label :fields, "Keywords to find, spearate by comma:"
-    = text_field_tag :keyword
+    = label :keyword, "Keywords to find, spearate by comma:"
+    = text_field_tag :keyword, '', placeholder: 'eg. Xiaomi MI8'
   .form-group
     = label :sort, "Sort by:"
     = check_box :sort, "commissionRateUp" ""
@@ -23,8 +23,8 @@
     %input#max_seller_rating{:max => "5000", :min => "0", :name => "max_seller_rating", :oninput => "maxsellerRating()", :step => "25", :type => "range", :value => "5000"}/
     %p#max_rating 5000
   .form-group
-    = label :api_call, "Api Call Method"
     = button_tag 'Submit', type: 'submit'
+
 :javascript
   function minsellerRating() {
     a = document.getElementById("min_seller_rating").value

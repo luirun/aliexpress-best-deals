@@ -15,20 +15,21 @@ class AdminsController < ApplicationController
   # search_products -> list_products -> save_products
   # admin/form -> admin/product_list [POST] -> admin/saved_products [POST]
   # 3 methods below are connected with themselves
-  def search_for_products; end
-
-  def list_found_products
-    @products = AliexpressScraper.search_url_generator(params)
-    category_id = params[:category][:fields][1]
-    Product.ali_new(@products["result"]["products"], category_id)
+  def search_for_products
+    @categories = Category.select(:id, :name).all
   end
 
-  def save_found_products
-    Product.clear_unwanted_products(params[:productId]) # delete products that were not checked in form earlier
-    product_urls = Product.where(promotionUrl: nil).select(:productUrl, :id).limit(40).order("id desc")
-    return if product_urls[0].nil?
-    promotion_urls = AliCrawler.new.get_promotion_links(product_urls)
-    Product.add_promotion_links(promotion_urls["result"]["promotionUrls"], product_urls)
+  def list_found_products
+    @products = AliexpressScraper.search_for_category_products(params[:keyword], params[:category][:fields][1], params)
+    Product.new_product(@products["result"]["products"], params[:category][:fields][1])
+  end
+
+  def save_approved_products
+    products = Product.where('productId in (?)', params[:productId])
+    Product.clear_unwanted_products(products) # delete products that were not checked in form earlier
+    return if products.empty?
+    Product.add_promotion_links(products)
+    redirect_to admins_path
   end
 
   #---------------------------- 1 end -----------------------------------
@@ -108,36 +109,9 @@ class AdminsController < ApplicationController
 
   #---------------------------- 6 end -----------------------------------
 
+  # HACK: Method duplicated from AliexpressScraper - delete if not needed
   # 7 - fetch product and category details
   def update_products_details
-    proxies = ["#addproxyhere comma sepparated"]
-    begin
-      proxy = proxies[rand(0..proxies.length)]
-      products = Product.select(:id, :productId, :productUrl).where(with_reviews: nil).order("RAND()")
-      browser = Watir::Browser.new :chrome, switches: ["--proxy-server=#{proxy}"]
-      browser.goto "https://aliexpress.com"
-      browser.element(class: "close-layer").click
-      i = 0
-      products.each do |product|
-        browser.goto product.productUrl
-        # return [0] = Table of product details, [1] = product reviews,
-        # [1][:feedback] - review text, [1][:user_info] - user info in review
-        product_details = Product.fetch_extra_data(browser)
-        if product_details == "end"
-          product.delete
-        else
-          @description_save = Product.save_product_description(product_details[0], product.id)
-          @reviews_save = AliReview.new.save_product_reviews(product_details[1], product.productId)
-        end
-        sleep(rand(7..15))
-        i += 1
-        sleep(rand(15..60)) if (i % 10).zero?
-      end
-      browser.close
-    rescue
-      browser.close
-      retry
-    end
   end
 
   # provide .html of this page in root path - https://www.aliexpress.com/all-wholesale-products.html

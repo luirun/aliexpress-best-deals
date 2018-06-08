@@ -5,7 +5,6 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   include ApplicationHelper
-  include AliexpressHelper
 
   before_action :session_return
   before_action :prepare_meta_tags, if: -> { request.get? }

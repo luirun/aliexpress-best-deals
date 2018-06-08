@@ -18,34 +18,42 @@ class Product < ApplicationRecord
   scope :all_from_brand, ->(product) { where("productTitle like ?", "%#{product.extract_product_brand}%").where(category_id: product.category_id) }
   scope :like_title, ->(title) { find_by("productTitle LIKE ?", title) }
   scope :delete_without_category, -> { where('category_id not in (?)', Category.pluck(:id).delete_all) }
+  scope :expired_products, -> { where("validTime < '#{Time.zone.now.strftime('%Y-%m-%d')}'") }
   # scope for not depreciated random method
   # scope :random, -> { order(Arel::Nodes::NamedFunction.new('RANDOM', [])) }
 
   #--------------------------------------------------
   # 1 - CREATE PRODUCTS METHODS
 
-  # 1.1 - Saving all products found by Aliexpress Api - /admin/form
-  def self.ali_new(products, category_id)
-    return if products.length.zero?
+  # 1.1 - Saving all products found by Aliexpress Api - /admins/aliexpress_api/search_for_products
+  def self.new_product(products, category_id)
+    return if products.size.zero?
     logger.info("We have found #{products.length} products")
-    products.each do |i|
-      id_exist = Product.find_by(productId: i["productId"].to_s)
-      if id_exist.nil?
-        a = i["30daysCommission"]
-        i = i.except("30daysCommission")
-        product = Product.new(i)
-        product.salePrice = i["salePrice"].slice(4..12)
-        product.productTitle = ActionView::Base.full_sanitizer.sanitize(i["productTitle"])
-        product.originalPrice = i["originalPrice"].slice(4..12)
+    products.each do |product_hash|
+      if !Product.exists?(productId: product_hash["productId"].to_s)
+        a = product_hash["30daysCommission"]
+        product_hash = product_hash.except("30daysCommission")
+        product = Product.new(product_hash)
+        product.salePrice = product_hash["salePrice"].slice(4..12)
+        product.productTitle = ActionView::Base.full_sanitizer.sanitize(product_hash["productTitle"])
+        product.originalPrice = product_hash["originalPrice"].slice(4..12)
         product.thirtydaysCommission = a
         product.is_approved = "n"
         product.category_id = category_id
-        product.save
+        product.save!
       else
+        # TODO: When product exists update it's attributes
         logger.info("Product Already Exists")
       end
     end
     logger.info("Products successfully saved!")
+  end
+
+  def self.clear_unwanted_products(products)
+    unless products.nil?
+      products.update_all(is_approved: "y")
+    end
+    Product.all.limit(40).where.not(is_approved: "y").order("id desc").delete_all # Delete unselected products
   end
 
   # 1.2 - Find details of found product and save their category and subcategory
@@ -98,44 +106,23 @@ class Product < ApplicationRecord
     product.save
   end
 
-  def self.add_promotion_links(promotion_urls, products)
-    return if promotion_urls.nil?
+  def self.add_promotion_links(products)
+    return if products.empty?
+    promo_urls = AliexpressScraper.get_promotion_links(products.pluck(:productUrl))["result"]["promotionUrls"]
     i = 0
     products.each do |product|
       product = Product.find(product.id)
-      product.promotionUrl = promotion_urls[i]["promotionUrl"]
-      logger.info("Added to product #{product.id} promotion link: \n #{promotion_urls[i]['promotionUrl']}")
+      product.promotionUrl = promo_urls[i]["promotionUrl"]
+      logger.info("Added to product #{product.id} promotion link: #{promo_urls[i]['promotionUrl']}")
       product.save
       i += 1
     end
   end
   #------------------------------- 2 - END ------------------------
 
-  # 3 - delete unapproved products found in search products form - /admin/form -> /admin/product_list [POST]
-  def self.clear_unwanted_products(products)
-    # approving all checked products
-    if products.nil?
-      logger.info("There is no products to approve")
-    else
-      products.each do |p|
-        product = Product.find_by(productId: p)
-        product.is_approved = "y"
-        product.save
-      end
-    end
-
-    # deleting unselected products
-    a = Product.all.limit(40).order("id desc")
-    a.each do |product|
-      product.delete if product.is_approved != "y"
-    end
-  end
-  #--------------------------- 3 - END -------------------------
-
   # 4 - Clear expired products
   def self.archive_expired_products
-    products = Product.where("validTime < '#{Time.zone.now.strftime('%Y-%m-%d')}'")
-    products.each do |product|
+    Product.expired_products.each do |product|
       product.archived = "y"
       product.save
     end
@@ -144,8 +131,7 @@ class Product < ApplicationRecord
 
   # 5 - Various helper methods
   def self.transform_price
-    products = Product.where("salePrice like '%us%'")
-    products.each do |product|
+    Product.where("salePrice like '%us%'").each do |product|
       product.salePrice = product.salePrice.slice(4..12)
       product.originalPrice = product.salePrice.slice(4.12)
       product.save

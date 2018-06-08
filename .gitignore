@@ -14,6 +14,7 @@
 
 # Ignore application configuration
 /config/secrets.yml
+/config/database.yml
 
 # Ignore environment variables
 ./.env
