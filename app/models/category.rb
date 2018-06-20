@@ -1,6 +1,6 @@
 class Category < ApplicationRecord
   has_many :subcategories
-  has_many :products
+  has_many :products, through: :subcategories
 
   def save_fetched_categories_and_subcategories
     page.css(".item.util-clearfix").each do |category|

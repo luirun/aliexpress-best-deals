@@ -1,31 +1,27 @@
 require 'rails_helper'
 
 describe AliexpressScraper do
-  #set of variables mostly used in this class
-  before(:all) do
-    @url = "https://gw.api.alibaba.com/openapi/param2/2/portals.open"
-    @params = {keyword: "xiaomi", :category => {fields: ['',44]}, :sort => {commissionRateUp: 1}, :hot_products => {yesno: 1},
-                min_seller_rating: 0, max_seller_rating: 99999}
-  end
-  
   # 1 - Search in Aliexpress Api methods/helper
-
-  describe '.search_url_generator' do
+  let!(:params) { { keyword: "xiaomi", :category => {fields: ['',44]}, :sort => {commissionRateUp: 1}, :hot_products => {yesno: 1},
+                min_seller_rating: 0, max_seller_rating: 99999 } }
+  let!(:url) { "https://gw.api.alibaba.com/openapi/param2/2/portals.open" }
+  describe '#search_url_generator' do
     it 'receives valid parameters and return 2001000 error code from make_call method' do
-      expect(@params[:keyword]).to be_a(String)
-      expect(@params[:sort][:commissionRateUp]).to be_between(0,1)
-      expect(@params[:category][:fields][1]).to be_a(Numeric)
-      expect(@params[:min_seller_rating]).to be < @params[:max_seller_rating]
-      expect(described_class.search_url_generator(@params)["errorCode"]).to be == 20010000
+      expect(params[:keyword]).to be_a(String)
+      expect(params[:sort][:commissionRateUp]).to be_between(0,1)
+      expect(params[:category][:fields][1]).to be_a(Numeric)
+      expect(params[:min_seller_rating]).to be < params[:max_seller_rating]
+      expect(described_class.search_for_category_products(params[:keyword], params[:category][:fields][1], params)["errorCode"])
+        .to be == 20010000
     end
   end
 
-  describe '.search_for_category_products' do
+  describe '#search_for_category_products' do
     it 'got valid parameters and return 2001000 error code from make_call method' do
-      expect(@params[:keyword]).to be_a(String)
-      expect(@params[:category][:fields][1]).to be_a(Numeric)
-      expect(@url).to include("https://gw.api.alibaba.com/openapi/param2/2/portals.open")
-      expect(described_class.search_for_category_products(@params[:keyword],@params[:category][:fields][1])["errorCode"]).to be == 20010000
+      expect(params[:keyword]).to be_a(String)
+      expect(params[:category][:fields][1]).to be_a(Numeric)
+      expect(url).to include("https://gw.api.alibaba.com/openapi/param2/2/portals.open")
+      expect(described_class.search_for_category_products(params[:keyword],params[:category][:fields][1])["errorCode"]).to be == 20010000
     end
   end
 
@@ -34,7 +30,7 @@ describe AliexpressScraper do
 
   # 2 -  Find hot/similar products
 
-  describe '.get_hot_products' do
+  describe '#get_hot_products' do
     it "got passed valid arguments and return 2001000 error code from make_call method" do
       currency = "usd"
       category =  5090301
@@ -56,20 +52,15 @@ describe AliexpressScraper do
     #end
 
     #it 'create url to find similar products' do
-    # expect(@url).to include("https://gw.api.alibaba.com/openapi/param2/2/portals.open")
+    # expect(url).to include("https://gw.api.alibaba.com/openapi/param2/2/portals.open")
     #end
 
     #it 'return 2001000 error code from make_call method' do
     # expect(described_class.get_similar_products(productId)["errorCode"]).to be == 20010000
     #end
   #end
-  
 
-  #--------------------------- 2 - END --------------------------------------
-
-  # 3 - Get product details from aliexpress api
-
-  describe '.get_product_details' do
+  describe '#get_product_details' do
 
     productId = 32798037929
     fields = ['productId','productTitle']
@@ -84,7 +75,7 @@ describe AliexpressScraper do
     end
   end
 
-  describe '.get_promotion_links' do
+  describe '#get_promotion_links' do
 
     context 'when only one product passed' do
       it 'has set urls to equal method arguments' do
@@ -106,14 +97,9 @@ describe AliexpressScraper do
     end
   end
 
-  #-------------------------------- 3 - END -------------------------------
-
-  # 4 - Fetch product details
-
-  describe '.fetch_product_details' do
+  describe '#fetch_product_details' do
+    # TODO:
     #this method uses watir to browse aliexpress, came back here later when you will be better with testing
   end
 
-
-  #-------------------------------- 4 - END -------------------------------
 end

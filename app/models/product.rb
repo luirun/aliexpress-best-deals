@@ -1,5 +1,6 @@
 class Product < ApplicationRecord
   belongs_to :subcategory
+  belongs_to :category
   has_many :productLike
 
   scope :hot_products, -> { where(is_hot: "y") }
@@ -58,8 +59,7 @@ class Product < ApplicationRecord
           details = details["result"]
           a = details["30daysCommission"]
           i = details.except("30daysCommission")
-          promotion_link = AliexpressScraper.get_promotion_links(i["productUrl"]) # getting promotion url from aliexpress
-          promotion_link = promotion_link["result"]["promotionUrls"] # shortening our hash a little
+          promotion_link = AliexpressScraper.get_promotion_links(i["productUrl"])["result"]["promotionUrls"] # getting promotion url from aliexpress
           product = Product.new(i) # making new instance in Hot Products table
           product.salePrice = i["salePrice"].slice(4..12)
           product.originalPrice = i["originalPrice"].slice(4..12)
@@ -84,8 +84,7 @@ class Product < ApplicationRecord
   # Add product details
   def self.save_product_description(product_description, product_id)
     product = Product.find(product_id)
-    product.productDescription = product_description
-    product.save
+    product.update(productDescription: product_description)
   end
 
   def self.add_promotion_links(products)
@@ -93,10 +92,8 @@ class Product < ApplicationRecord
     promo_urls = AliexpressScraper.get_promotion_links(products.pluck(:productUrl))["result"]["promotionUrls"]
     i = 0
     products.each do |product|
-      product = Product.find(product.id)
-      product.promotionUrl = promo_urls[i]["promotionUrl"]
+      product.update(promotionUrl: promo_urls[i]["promotionUrl"])
       logger.info("Added to product #{product.id} promotion link: #{promo_urls[i]['promotionUrl']}")
-      product.save
       i += 1
     end
   end

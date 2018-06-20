@@ -43,7 +43,7 @@ class AliexpressScraper
 
   # Get affilate links for product
   def self.get_promotion_links(product_urls)
-    urls = product_urls.join(",")
+    !product_urls.kind_of?(String) ? urls = product_urls.join(",") : urls = product_urls
     url = "http://gw.api.alibaba.com/openapi/param2/2/portals.open/api.getPromotionLinks/#{AliConfig.new.api_key}?" \
           "fields=totalResults,trackingId,publisherId,url,promotionUrl&trackingId=Luirun&urls=#{urls}"
     call_API(url)

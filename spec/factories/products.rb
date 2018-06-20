@@ -19,26 +19,9 @@ FactoryBot.define do
     category_id 7
     subcategory_id 702
     thirtydaysCommission "US $5.16"
-  end
 
-  factory :category do
-    id 7   
-    name "Computer & Office"
-    icon "fa fa-laptop"
-  end
-
-factory :subcategory do
-    id 702
-    category_id 7  
-  end
-
-  factory :product_like do
-    id 1
-    user_id 1
-    user_cookie_id 93510648
-    product_id 11
-    created_at "2018-04-10"
-    updated_at "2018-04-10"
+    association :category, factory: :category
+    association :subcategory, factory: :subcategory
   end
 
 end
