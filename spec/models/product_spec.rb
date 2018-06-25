@@ -11,7 +11,6 @@ describe Product do
     let!(:products) { Hash.new }
     before do
       products["products"] = []
-
     end
 
     it "got numeric category_id" do
@@ -77,8 +76,8 @@ describe Product do
   end
 
   describe "#save_product_description" do
+    let(:product) { FactoryBot.create(:product) }
     it "update given product with given description" do
-      product = FactoryBot.create(:product)
       product_description = "<div class='ui-box product-property-main'>    <div class='ui-box-title'>Item specifics</div>"
       expect { described_class.save_product_description(product_description, product.id)}.to change { Product.find(product.id).productDescription }
     end
@@ -86,9 +85,16 @@ describe Product do
 
   describe "#add_promotion_links" do
     let(:product) { FactoryBot.create(:product, promotionUrl: nil) }
+
+    context "when no products passed" do
+      it "return with guard clausure" do
+        expect(described_class.add_promotion_links("")).to eq nil
+      end
+    end
+
     context "passed not nil hash with promotion urls" do
       it "update given product with given promotion url" do
-        expect {described_class.add_promotion_links([product])}.to change { product.promotionUrl }
+        expect { described_class.add_promotion_links([product]) }.to change { product.promotionUrl }
       end
     end
   end
@@ -99,8 +105,16 @@ describe Product do
 
   describe "#archive_expired_products" do
     let(:product) { FactoryBot.create(:product) }
-    it "mark all products as archived which validTime is older than today" do
+    it "mark all outdated products as archived" do
       expect { described_class.archive_expired_products }.to change { Product.find(product.id).archived }
+    end
+  end
+
+  describe "#transform_price" do
+    let(:product) { FactoryBot.create(:product, salePrice: '2.12 Us', originalPrice: '2.12 us') }
+    it "delete currency name from product price" do
+      described_class.transform_price
+      expect(Product.where("salePrice like '%us%'").empty?).to be true
     end
   end
 

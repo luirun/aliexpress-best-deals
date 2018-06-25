@@ -97,7 +97,7 @@ class AliexpressScraper
   def self.call_API(url)
     response = RestClient.get(url)
     if response.code != 200
-      logger.fatal "Error, response code: #{response.code} for url: #{url}"
+      Rails.logger.fatal("Error, response code: #{response.code} for url: #{url}")
     else
       result = JSON.parse(response)
       Rails.logger.fatal("Error: #{result["errorCode"]}") if result["errorCode"] != 200_100_00

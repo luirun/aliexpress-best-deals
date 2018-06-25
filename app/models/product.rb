@@ -35,9 +35,7 @@ class Product < ApplicationRecord
   end
 
   def self.clear_unwanted_products(products)
-    unless products.nil?
-      products.update_all(is_approved: "y")
-    end
+    products.update_all(is_approved: "y") unless products.nil?
     Product.all.limit(40).where.not(is_approved: "y").order("id desc").delete_all # Delete unselected products
   end
 
@@ -114,7 +112,7 @@ class Product < ApplicationRecord
 
   # TODO
   def extract_product_brand
-    productTitle.split(" ")[0]
+    #productTitle.split(" ")[0]
   end
 
 end
