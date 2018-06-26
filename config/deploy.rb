@@ -10,6 +10,9 @@ set :repo_url, "https://bitbucket.org/luirun/aliexpress-best-deals.git"
 # Default deploy_to directory is /var/www/my_app_name
 set :deploy_to, "/home/deployer/alibestdeal"
 
+set :rvm_type, :auto                # Defaults to: :auto
+set :rvm_ruby_version, '2.5.0'      # Defaults to: 'default'
+
 # Default value for :format is :airbrussh.
 # set :format, :airbrussh
 
