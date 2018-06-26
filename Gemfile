@@ -33,7 +33,11 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # gem 'unicorn'
 
 # Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
+gem 'capistrano'
+gem 'capistrano-rvm'
+gem 'capistrano-rails'
+gem 'capistrano-bundler'
+gem 'capistrano3-puma'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -48,7 +52,6 @@ group :development, :production do
 end
 
 group :production, :development, :test do
-	gem 'dotenv-rails', groups: [:development, :test, :production] # environment variables
 	gem 'devise' # user logigng in
 end
 
@@ -59,8 +62,6 @@ group :test do
 	gem 'factory_bot_rails'
 end
 
-# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'web-console', '~> 2.0', groups: [:development]
 
 gem 'autoprefixer-rails'

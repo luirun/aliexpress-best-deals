@@ -9,8 +9,6 @@ Bundler.require(*Rails.groups)
 
 module Aliexpress
   class Application < Rails::Application
-    # dotenv
-    Dotenv::Railtie.load
     Bundler.require(*Rails.groups)
 
     HOSTNAME = ENV['HOSTNAME']
