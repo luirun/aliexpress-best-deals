@@ -15,6 +15,7 @@
             = link_to $review.title, review_path($review.title)
         .col-md-1= comment.created_at
         .col-md-9= comment.content
+        -# TODO: You can use form partial from comments category
         Approve Comment #{radio_button_tag "commentId[#{$i}]", "#{comment.id}a", false, :class => "approved"}
         Disapprove #{radio_button_tag "commentId[#{$i}]", "#{comment.id}n", true, :class => "disapproved"}
         Delete #{radio_button_tag "commentId[#{$i}]", "#{comment.id}d", false, :class => "deleted"}

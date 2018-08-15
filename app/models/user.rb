@@ -5,8 +5,10 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
-  validates :terms_of_service, acceptance: { accept: "1" }
+
   EMAIL_REGEX = /\A[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]+\z/
+  
+  validates :terms_of_service, acceptance: { accept: "1" }
   validates :nickname, presence: true, uniqueness: true, length: { in: 3..20 }, on: :create
   validates_presence_of :name, :surname, :password, on: :create
 

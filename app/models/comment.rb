@@ -17,6 +17,7 @@ class Comment < ApplicationRecord
     return self
   end
 
+  # TODO: Refactor this ugly code!
   def self.approve_comments(comments)
     params[:commentId].each do |comment|
       if comment[1][(comment[1].length) - 1] == "a"

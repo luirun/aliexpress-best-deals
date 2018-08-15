@@ -25,7 +25,8 @@ class AliexpressScraper
   end
 
   def self.get_hot_products(currency, category, language)
-    url = "http://gw.api.alibaba.com/openapi/param2/2/portals.open/api.listHotProducts/#{AliConfig.new.api_key}?localCurrency=#{currency}&categoryId=#{category}&language=#{language}"
+    url = "http://gw.api.alibaba.com/openapi/param2/2/portals.open/api.listHotProducts/#{AliConfig.new.api_key}?localCurrency=#{currency}"  \
+    "&categoryId=#{category}&language=#{language}"
     call_API(url)
   end
 
@@ -41,9 +42,9 @@ class AliexpressScraper
     call_API(url)
   end
 
-  # Get affilate links for product
+  # Get affilate links for products
   def self.get_promotion_links(product_urls)
-    !product_urls.kind_of?(String) ? urls = product_urls.join(",") : urls = product_urls
+    urls = !product_urls.kind_of?(String) ? product_urls.join(",") : product_urls
     url = "http://gw.api.alibaba.com/openapi/param2/2/portals.open/api.getPromotionLinks/#{AliConfig.new.api_key}?" \
           "fields=totalResults,trackingId,publisherId,url,promotionUrl&trackingId=Luirun&urls=#{urls}"
     call_API(url)
@@ -68,7 +69,7 @@ class AliexpressScraper
       feedback_doc.css(".fb-main").each do |feed| # looping every review of product
         user_order_rate = feed.css(".star-view").children.at("span")["style"].to_s
         user_order_rate = user_order_rate.slice(6..8).to_i # creating % rate from style of span
-        user_order_info = feed.css(".user-order-info").text # color, delivery type etc text
+        user_order_info = feed.css(".user-order-info").text # color, delivery type etc. text
         user_review = feed.css(".buyer-feedback").css("span").text # user reviews
         username = feed.css(".fb-user-info").text
         review_photos = []

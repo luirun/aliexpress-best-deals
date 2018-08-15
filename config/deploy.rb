@@ -8,10 +8,11 @@ set :repo_url, "https://bitbucket.org/luirun/aliexpress-best-deals.git"
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
 
 # Default deploy_to directory is /var/www/my_app_name
-set :deploy_to, "/home/deployer/alibestdeal"
+set :deploy_to, "/var/www/alibestdeal"
 
-set :rvm_type, :auto                # Defaults to: :auto
-set :rvm_ruby_version, '2.5.0'      # Defaults to: 'default'
+set :rvm_ruby_version, '2.5.0'
+set :default_env, { rvm_bin_path: '~/usr/local/rvm/bin' }
+SSHKit.config.command_map[:rake] = "#{fetch(:default_env)[:rvm_bin_path]}/rvm ruby-#{fetch(:rvm_ruby_version)} do bundle exec rake"
 
 # Default value for :format is :airbrussh.
 # set :format, :airbrussh
@@ -24,7 +25,7 @@ set :rvm_ruby_version, '2.5.0'      # Defaults to: 'default'
 # set :pty, true
 
 # Default value for :linked_files is []
-#append :linked_files, "config/database.yml"
+#append :linked_files, "config/secrets.yml"
 
 # Default value for linked_dirs is []
 # append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/system"
@@ -40,4 +41,3 @@ set :rvm_ruby_version, '2.5.0'      # Defaults to: 'default'
 
 # Uncomment the following to require manually verifying the host key before first deploy.
 # set :ssh_options, verify_host_key: :secure
-
