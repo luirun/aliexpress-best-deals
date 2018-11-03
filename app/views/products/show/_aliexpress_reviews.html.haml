@@ -19,20 +19,20 @@
             %b Review:
             = review.review_content
       .col-md-1.user-menu-btns
-        .btn-group-vertical.square{:id => "responsive#{i}"}
-          %a.btn.btn-block.btn-default.active{:href => "#"}
+        .btn-group-vertical.square{id: 'responsive#{i}'}
+          %a.btn.btn-block.btn-default.active{href: '#'}
             =icon('fas', 'camera fa-3x')
-          %a.btn.btn-default{:href => "#"}
+          %a.btn.btn-default{href: '#'}
             =icon('far', 'handshake fa-3x')
-          %a.btn.btn-default{:href => "#"}
+          %a.btn.btn-default{href: '#'}
             =icon('far', 'paper-plane fa-3x')
-          %a.btn.btn-default{:href => "#"}
+          %a.btn.btn-default{href: '#'}
             =icon('far', 'envelope fa-3x')
-      %div{:class => "col-md-5 user-menu user-pad #{i}"}
+      %div{:class => 'col-md-5 user-menu user-pad #{i}'}
         .user-menu-content.active.img
           %ul.user-menu-list
             - if review.review_photos.length > 10
-              = render "/products/show/photo_carousel", photos: review.review_photos, a: i
+              = render '/products/show/photo_carousel', photos: review.review_photos, a: i
             - else
               %h2 Photos:
               %h3
@@ -45,7 +45,7 @@
               %li
                 %h4
                   = link_to product_path(pretty_url_encode(product.productTitle)) do
-                    = image_tag product.imageUrl, style: "width:140px;height:90px;"
+                    = image_tag product.imageUrl, style: 'width:140px;height:90px;'
                     %small.coral
                       %strong ONLY #{product.salePrice} USD!
         .user-menu-content
@@ -56,11 +56,12 @@
                 .view
                   .caption
                     %p= product_review.user_id
-                    = link_to review_path(pretty_url_encode(product_review.title)), rel: "tooltip", title: "View" do
+                    = link_to review_path(pretty_url_encode(product_review.title)), rel: 'tooltip', title: 'View' do
                       %span.fa.fa-search.fa-2x
-                  = image_tag product_review.cover.url, class: "img-responsive"
+                  = image_tag product_review.cover.url, class: 'img-responsive'
                 .info
-                  %p.small{:style => "text-overflow: ellipsis"}= pretty_url_decode(product_review.title)
+                  %p.small{style: 'text-overflow: ellipsis'}
+                    = pretty_url_decode(product_review.title)
                   %p.small.coral.text-right
                     = icon('fa', 'clock-o')
                     = distance_of_time_in_words(product_review.created_at, 0.1.minutes.from_now)
@@ -73,7 +74,7 @@
         .user-menu-content
           .share-links
             %center
-              %button.btn.btn-lg.btn-labeled.btn-warning{:href => "#", :type => "button"}
+              %button.btn.btn-lg.btn-labeled.btn-warning{href: '#', type: 'button'}
                 %span.btn-label>
                   = icon('fa', 'bell-o')
                   WORK IN PROGRESS
@@ -84,16 +85,16 @@
      
         $btnLinks.click(function(e) {
             e.preventDefault();
-            $(this).siblings('a.active').removeClass("active");
-            $(this).addClass("active");
+            $(this).siblings('a.active').removeClass('active');
+            $(this).addClass('active');
             var index = $(this).index();
-            $("div.user-menu.#{i}>div.user-menu-content").removeClass("active");
-            $("div.user-menu.#{i}>div.user-menu-content").eq(index).addClass("active");
+            $('div.user-menu.#{i}>div.user-menu-content').removeClass('active');
+            $('div.user-menu.#{i}>div.user-menu-content').eq(index).addClass('active');
         });
     });
 
     $( document ).ready(function() {
-        $("[rel='tooltip']").tooltip();    
+        $('[rel='tooltip']').tooltip();    
      
         $('.view').hover(
             function(){

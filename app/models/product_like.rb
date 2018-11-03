@@ -1,4 +1,4 @@
-class ProductLike < ActiveRecord::Base
+class ProductLike < ApplicationRecord
   belongs_to :product
   belongs_to :user
 
@@ -9,7 +9,7 @@ class ProductLike < ActiveRecord::Base
     if ProductLike.find_by(product_id: product_id, user_id: current_user_id).nil?
       ProductLike.create(product_id: product_id, user_id: current_user_id, user_cookie_id: cookie_id)
     else
-      logger.fatal("This action shouldn't be allowed from UI!")
+      logger.fatal('This action shouldn\'t be allowed from UI!')
     end
   end
 

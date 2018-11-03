@@ -1,14 +1,14 @@
 = form_tag api_save_hot_products_path do |f|
   = @config
   .form-group
-    = label :fields, "Which language do you want to choose? (EN by default)"
-    = select :language, "fields", ['en','pt','ru','es','fr','id','it','nl','tr','vi','th','de','ko','ja','ar','pl','he'], {prompt: "Select Fields"}
+    = label :fields, 'Which language do you want to choose? (EN by default)'
+    = select :language, 'fields', ['en','pt','ru','es','fr','id','it','nl','tr','vi','th','de','ko','ja','ar','pl','he'], {prompt: 'Select Fields'}
   .form-group
-    = label :fields, "Which currency do you want to use? (USD by default)"
-    = select :currency, "fields", ['USD', 'RUB', 'GBP', 'BRL', 'CAD', 'AUD', 'EUR', 'INR', 'UAH', 'JPY', 'MXN', 'IDR', 'TRY', 'SEK', 'PLN'], {prompt: "Select Fields"}
+    = label :fields, 'Which currency do you want to use? (USD by default)'
+    = select :currency, 'fields', ['USD', 'RUB', 'GBP', 'BRL', 'CAD', 'AUD', 'EUR', 'INR', 'UAH', 'JPY', 'MXN', 'IDR', 'TRY', 'SEK', 'PLN'], {prompt: 'Select Fields'}
   .form-group
-    = label :category, "Which category do you want to search?"
-    = select :category, "fields", Category.all.collect {|p| [ p.name, p.id ] }, {prompt: "Select Fields"}, {:multiple => true, :size => 10}
+    = label :category, 'Which category do you want to search?'
+    = select :category, 'fields', Category.all.collect {|p| [ p.name, p.id ] }, {prompt: 'Select Fields'}, {multiple: true, size: 10}
   .form-group
-    = label :api_call, "Submit"
+    = label :api_call, 'Submit'
     = button_tag 'Submit', type: 'submit'

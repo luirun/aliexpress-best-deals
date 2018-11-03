@@ -63,7 +63,8 @@ class AliConfig
         "packageType",
         "lotNum",
         "validTime",
-        "commissionRate"
+        "commissionRate",
+        'allImageUrls'
       ],
       "details"=> [
         "productId",

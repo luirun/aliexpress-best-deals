@@ -13,33 +13,38 @@ class ApplicationController < ActionController::Base
   rescue_from ::ActiveRecord::RecordNotFound, with: :record_not_found
 
   def record_not_found
-    render json: {error: exception.message}.to_json, status: 404
+    render json: {error: exception.message}.to_json, status: :not_found
   end
 
   def session_return
     session[:return_to] = request.fullpath
-    cookies[:user_id] = {value: rand(1..999_999_999), expires: 2.years.from_now} if cookies[:user_id].nil?
+    return unless cookies[:user_id].nil?
+
+    cookies[:user_id] = {
+      value: rand(1..999_999_999),
+      expires: 2.years.from_now
+    }
   end
 
   def prepare_meta_tags(options={})
-    site_name   = "AliBestDeal"
+    site_name   = 'AliBestDeal'
     # image       = options[:image] || "your-default-image-url"
     current_url = request.url
     defaults = {
-      site: site_name,
+      site:     site_name,
       # image: image,
       keywords: %w[aliexpress shopping china sale quality],
-      twitter: {
+      twitter:  {
         site_name: site_name,
-        site: "@alibestdeal",
-        card: "summary",
+        site:      '@alibestdeal',
+        card:      'summary',
         # image: image
-        },
-      og: {
-        url: current_url,
+      },
+      og:       {
+        url:       current_url,
         site_name: site_name,
         # image: image,
-        type: "website"
+        type:      'website'
       }
     }
     options.reverse_merge!(defaults)
@@ -66,13 +71,10 @@ class ApplicationController < ActionController::Base
   protected
 
   def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:nickname, :name, :surname, :description])
+    devise_parameter_sanitizer.permit(:sign_up, keys: %i[nickname name surname description])
   end
 
-  def enable_rack_mini_profiler_for_admin     
-    if current_user && current_user.is_admin?
-      Rack::MiniProfiler.authorize_request
-    end
+  def enable_rack_mini_profiler_for_admin
+    Rack::MiniProfiler.authorize_request if current_user&.admin?
   end
-
 end

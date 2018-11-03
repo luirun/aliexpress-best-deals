@@ -1,23 +1,23 @@
-= form_for(@subcategory, html: { class: "form-horizontal", role: "form" }) do |f|
+= form_for(@subcategory, html: { class: 'form-horizontal', role: 'form' }) do |f|
   - if @subcategory.errors.any?
-    .alert.alert-danger.alert-dismissable{:role => "alert"}
-      %button.close{"data-dismiss" => "alert", :type => "button"}
-        %span{"aria-hidden" => "true"} ×
+    .alert.alert-danger.alert-dismissable{role: 'alert'}
+      %button.close{'data-dismiss': 'alert', type: 'button'}
+        %span{'aria-hidden': 'true'} ×
         %span.sr-only Close
       %h4
-        = pluralize(@subcategory.errors.count, "error")
+        = pluralize(@subcategory.errors.count, 'error')
         prohibited this subcategory from being saved:
       %ul
         - @subcategory.errors.full_messages.each do |msg|
           %li= msg
   .form-group
-    = f.label :parent, class: "col-sm-2 control-label"
+    = f.label :parent, class: 'col-sm-2 control-label'
     .col-sm-10
-      = f.collection_select(:parent, Category.select(:name, :id), :id, :name, class: "form-control")
+      = f.collection_select(:parent, Category.select(:name, :id), :id, :name, class: 'form-control')
   .form-group
-    = f.label :name, class: "col-sm-2 control-label"
+    = f.label :name, class: 'col-sm-2 control-label'
     .col-sm-10
-      = f.text_area :name, class: "form-control"
+      = f.text_area :name, class: 'form-control'
   .form-group
     .col-sm-offset-2.col-sm-10
-      = f.submit class: "btn btn-primary"
+      = f.submit class: 'btn btn-primary'

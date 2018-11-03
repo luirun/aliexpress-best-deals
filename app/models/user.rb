@@ -7,14 +7,14 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable
 
   EMAIL_REGEX = /\A[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]+\z/
-  
-  validates :terms_of_service, acceptance: { accept: "1" }
-  validates :nickname, presence: true, uniqueness: true, length: { in: 3..20 }, on: :create
-  validates_presence_of :name, :surname, :password, on: :create
 
-  has_attached_file :avatar, styles: { medium: "300x300>", thumb: "100x100>" },
-                             path: ":rails_root/public/system/:attachment/:id/:style/:filename",
-                             url: "/system/:attachment/:id/:style/:filename"
+  validates :terms_of_service, acceptance: { accept: '1' }
+  validates :nickname, presence: true, uniqueness: true, length: { in: 3..20 }, on: :create
+  validates :name, :surname, :password, presence: { on: :create }
+
+  has_attached_file :avatar, styles: { medium: '300x300>', thumb: '100x100>' },
+                             path:   ':rails_root/public/system/:attachment/:id/:style/:filename',
+                             url:    '/system/:attachment/:id/:style/:filename'
   validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\Z/
 
   def combined_value

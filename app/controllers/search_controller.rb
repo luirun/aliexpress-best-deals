@@ -22,9 +22,9 @@ class SearchController < ApplicationController
     params[:max_price] = params[:max_price].to_f
     params[:max_price] = 9999.99 if params[:max_price] == 0.0
 
-    redirect_to request.referer, flash: { alert: 'Prices must be greater than zero!'} && return if params[:min_price] < 0 || params[:max_price] < 0
-    redirect_to request.referer, flash: { alert: 'Minimum price must be lower than maximum price!'} && return if params[:min_price] > params[:max_price]
-    redirect_to request.referer, flash: { alert: 'Maxiumum price must be greaterthan 0.1$!'} && return if params[:max_price] < 0.1
+    redirect_to request.referer, flash: { alert: 'Prices must be greater than zero!' } && return if params[:min_price] < 0 || params[:max_price] < 0
+    redirect_to request.referer, flash: { alert: 'Minimum price must be lower than maximum price!' } && return if params[:min_price] > params[:max_price]
+    redirect_to request.referer, flash: { alert: 'Maxiumum price must be greaterthan 0.1$!' } && return if params[:max_price] < 0.1
 
     @products = if subcategory.nil?
                   @category.products.where(salePrice: params[:min_price]..params[:max_price]).limit(params[:p].to_i * 32)
@@ -35,7 +35,7 @@ class SearchController < ApplicationController
     # META
     set_meta_tags title: "Search in #{params[:name]}"
     set_meta_tags description: "Find the best products from aliexpress in #{params[:name]} category"
-    set_meta_tags keywords: "aliexpress,category,products,deals"
+    set_meta_tags keywords: 'aliexpress,category,products,deals'
   end
 
   #------------------------------------------------ 1 - END -------------------------------------
@@ -48,7 +48,7 @@ class SearchController < ApplicationController
     redirect_to search_product_path(params[:name], 1) if params[:p].nil?
     params[:name] = params[:name].split # we are splitting our keyword into separate words
     if params[:name].length > 1 # whene someone is looking for many words
-      search = "%"
+      search = '%'
       params[:name].each do |param|
         search += "#{param}%"
       end
@@ -57,7 +57,7 @@ class SearchController < ApplicationController
         params[:name] = params[:name].slice(0..params[:name].length - 2)
         @products = search_loop(params[:name])
         # if we found nothing after shortening we say that nothing is found
-        flash[:error] = "Sorry, we found nothing ;(" if @products[0].nil?
+        flash[:error] = 'Sorry, we found nothing ;(' if @products[0].nil?
       end
     else # when someone is looking for only one word
       @products = Product.where("productTitle like '%#{params[:name][0]}%'")
@@ -68,7 +68,7 @@ class SearchController < ApplicationController
   # used to general searching if nothing found earlier
   # there was argument search_phrase for this function earlier - check this if you can
   def search_loop
-    search = "%"
+    search = '%'
     params[:name].each do |param|
       search += "#{param}%"
     end

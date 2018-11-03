@@ -1,9 +1,9 @@
-#login-modal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", "data-backdrop" => "false", :role => "dialog", :style => "display: none;", :tabindex => "3"}
+#login-modal.modal.fade{'aria-hidden': 'true', 'aria-labelledby': 'myModalLabel', 'data-backdrop': 'false', role: 'dialog', style: 'display: none;', tabindex: '3'}
   .modal-dialog
     .modal-content
       .modal-header
-        %button.close{"data-dismiss" => "modal", :type => "button"}
-          %span{"aria-hidden" => "true"} ×
+        %button.close{'data-dismiss': 'modal', type: 'button'}
+          %span{'aria-hidden': 'true'} ×
           %span.sr-only Close
         %h4#myModalLabel.modal-title Login to alibestdeal.com
       .modal-body
@@ -12,12 +12,12 @@
             .well
               = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
                 .form-group
-                  = label :email, "Email:", class: "control-label"
-                  = f.text_field :email, class: "form-control", id: "username", title: "Please enter you email", placeholder: "example@gmail.com"
+                  = label :email, 'Email:', class: 'control-label'
+                  = f.text_field :email, class: 'form-control', id: 'username', title: 'Please enter you email', placeholder: 'example@gmail.com'
                   %span.help-block
                 .form-group
-                  = label :password, "password", class: "control-label"
-                  = f.password_field :password, class: "form-control", title: "Please enter your password"
+                  = label :password, 'password', class: 'control-label'
+                  = f.password_field :password, class: 'form-control', title: 'Please enter your password'
                   %span.help-block
                 #loginErrorMsg.alert.alert-error.hide Wrong username og password
                 .checkbox
@@ -25,13 +25,13 @@
                     = f.check_box :remember_me
                     = f.label :remember_me
                   %p.help-block (if this is a private computer)
-                %button.btn.btn-success.btn-block{:type => "submit"} Login
-                %a.btn.btn-default.btn-block{:href => "/forgot/"} Reset Password
+                %button.btn.btn-success.btn-block{type: 'submit'} Login
+                = link_to 'Reset Password', '/forgot', class: 'btn.btn-default.btn-block'
           .col-xs-6
             %p.lead
               Register now for
               %span.text-success FREE
-            %ul.list-unstyled{:style => "line-height: 2"}
+            %ul.list-unstyled{style: 'line-height: 2'}
               %li
                 %span.fa.fa-check.text-success
                 See all your orders
@@ -48,4 +48,4 @@
                 %span.fa.fa-check.text-success
                 Get a gift
                 %small (only new customers)
-            %p= link_to "Yes please, register now!", new_user_path, class: "btn btn-info btn-block"
+            %p= link_to 'Yes please, register now!', new_user_path, class: 'btn btn-info btn-block'

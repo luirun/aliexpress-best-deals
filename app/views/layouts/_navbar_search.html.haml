@@ -1,6 +1,6 @@
 .col-md-12.navbar-search
-  = form_tag(:redirect_to_products_search, method: "get") do
-    = text_field_tag :name, nil, class: "form-control", placeholder: "Search for products", style: "width:calc(100% - 40px);float:left;display:inline-block;"
+  = form_tag(:redirect_to_products_search, method: 'get') do
+    = text_field_tag :name, nil, class: 'form-control', placeholder: 'Search for products', style: 'width:calc(100% - 40px);float:left;display:inline-block;'
     %span.input-group-addon
-      = button_tag nil, class: "form_submit" do
+      = button_tag nil, class: 'form_submit' do
         %span.glyphicon.glyphicon-search

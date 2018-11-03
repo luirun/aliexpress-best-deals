@@ -1,28 +1,28 @@
-%script{:type => "application/ld+json"}
+%script{type: 'application/ld+json'}
   :cdata
     {
-    "@context": "http://schema.org/",
-    "@type": "Product",
-    "image": "#{@review.cover}",
-    "name": "#{@review.title}",
-    "review": {
-    "@type": "Review",
-    "reviewRating": {
-    "@type": "Rating",
-    "ratingValue": "#{@review.rating}"
-    },
-    "name": "#{@review.title}",
-    "author": {
-    "@type": "Person",
-    "name": "#{@review.user.nickname}"
-    },
-    "datePublished": "#{@review.created_at}",
-    "reviewBody": "#{@review.short_description}",
-    "publisher": {
-    "@type": "Organization",
-    "name": "Aliexpress Best Deals"
-    }
-    }
+      '@context': 'http://schema.org/',
+      '@type': 'Product',
+      'image': '#{@review.cover}',
+      'name': '#{@review.title}',
+      'review': {
+        '@type': 'Review',
+        'reviewRating': {
+          '@type': 'Rating',
+          'ratingValue': "#{@review.rating}""
+        },
+        'name': @review.title,
+        'author': {
+          '@type': 'Person',
+          'name': @review.user.nickname
+        },
+        'datePublished': '#{@review.created_at}',
+        'reviewBody': '#{@review.short_description}',
+        'publisher': {
+          '@type': 'Organization',
+          'name': 'Aliexpress Best Deals'
+        }
+      }
     }
 .container
   .row
@@ -38,28 +38,28 @@
       %p
         =icon('fas', 'tags')
         Tags:
-        - @review.keywords.split(",").each do |keyword|
+        - @review.keywords.split(',').each do |keyword|
           = link_to keyword_search_path(keyword) do
             %span.badge.badge-info= keyword
       %hr
-      = image_tag @review.cover.url, :class => "img-responsive"
+      = image_tag @review.cover.url, class: 'img-responsive'
       %hr
-      = render "/reviews/show/product_rating"
-      %hr{:style => "width:100%;float:left;"}/
-      = render "layouts/ad"
+      = render '/reviews/show/product_rating'
+      %hr{style: 'width:100%;float:left;'}/
+      = render 'layouts/ad'
       %p.lead= simple_format(@review.long_description)
       %hr
-      = render "/reviews/show/product_rating"
-      %hr{:style => "width:100%;float:left;"}/
-      = render "comments/comments"
-      = render "comments/comment_form"
+      = render '/reviews/show/product_rating'
+      %hr{style: 'width:100%;float:left;'}/
+      = render 'comments/comments'
+      = render 'comments/comment_form'
     .col-lg-4
-      = render "searchbox"
-      =# render "/reviews/show/popular_keywords"
-      = render "/reviews/show/social_sharing"
-      = render "/reviews/show/popular_reviews", popular_reviews: @popular_reviews
-      = render "/reviews/show/similar_products", similar_products: @similar_products
+      = render 'searchbox'
+      =# render '/reviews/show/popular_keywords'
+      = render '/reviews/show/social_sharing'
+      = render '/reviews/show/popular_reviews', popular_reviews: @popular_reviews
+      = render '/reviews/show/similar_products', similar_products: @similar_products
     .lg-md-12
-      = render "/reviews/show/review_categories"
+      = render '/reviews/show/review_categories'
     .col-md-12.text-center
       %p Copyright © AliBestDeal.com

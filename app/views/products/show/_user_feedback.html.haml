@@ -17,29 +17,29 @@
             .row.row-no-gutter
               .col-md-9
                 .day
-                  %textarea{:disabled => "disabled", :placeholder => "Leave us your feedback"}
+                  %textarea{disabled: 'disabled', placeholder: 'Leave us your feedback'}
               .col-md-3
                 .submit-button
-                  %input.btn.btn-success{:disabled => "disabled", :type => "button", :value => "Submit"}/
+                  %input.btn.btn-success{disabled: 'disabled', type: 'button', value: 'Submit'}/
 :javascript
   <haml_silent>   $like_url = &quot;\#{request.original_url}/like&quot; 
-  </haml_silent>  $(".info").on('dblclick','.love', function() {
-      $(".fa.fa-heart").css("color", "#ff0000");
+  </haml_silent>  $('.info').on('dblclick','.love', function() {
+      $('.fa.fa-heart').css('color', '#ff0000');
       $(this).removeClass('love').addClass('loved');
       $.ajax({
-        type: "POST",
-        url: "#{$like_url}" ,
+        type: 'POST',
+        url: '#{$like_url}' ,
         success: function(data){
         }
       });
     });
   <haml_silent>   $unlike_url = &quot;\#{request.original_url}/unlike&quot; 
-  </haml_silent>  $(".info").on('dblclick','.loved', function() {
-      $(".fa.fa-heart").css("color", "white");
+  </haml_silent>  $('.info').on('dblclick','.loved', function() {
+      $('.fa.fa-heart').css('color', 'white');
       $(this).removeClass('loved').addClass('love');
       $.ajax({
-        type: "POST",
-        url: "#{$unlike_url}" ,
+        type: 'POST',
+        url: '#{$unlike_url}' ,
         success: function(data){
         }
       });

@@ -4,47 +4,47 @@
   Success, we have found #{@products.size} products!
   = form_tag admins_aliexpress_api_products_save_path  do |f|
     .form-group
-      = label :api_call, "Api Call Method"
+      = label :api_call, 'Api Call Method'
       = button_tag 'Submit', type: 'submit'
     %table
       %tr
         %td productTitle
         %td Image
         %td salePrice
-        = succeed ">" do
+        = succeed '>' do
           %td discount
         %td validTime
         %td Approved?
-        %td= link_to "Approve All", "#", :id => "approve_all", :remote => true
-        %td= link_to "Disapprove All", "#", :id => "disapprove_all", :remote => true
-      - @products["result"]["products"].each do |product|
+        %td= link_to 'Approve All', '#', id: 'approve_all', remote: true
+        %td= link_to 'Disapprove All', '#', id: 'disapprove_all', remote: true
+      - @products.each do |product|
         %tr
-          %td= simple_format(product["productTitle"])
-          %td= image_tag product["imageUrl"], {width: "250px", height: "250px"}
+          %td= simple_format(product[:productTitle])
+          %td= image_tag product[:imageUrl], { width: '250px', height: '250px' }
           %td
-            %b= product["salePrice"]
-          %td= product["discount"]
-          %td= product["validTime"]
+            %b= product[:salePrice]
+          %td= product[:discount]
+          %td= product[:validTime]
           %td
-            = label :approved, "Accept?"
-            = check_box_tag "productId[]", product["productId"], 0, :class => "checkboxes"
+            = label :approved, 'Accept?'
+            = check_box_tag 'productId[]', product[:productId], 0, class: 'checkboxes'
       %tr
-        %td{colspan: 6}
-        %td= link_to "Approve All", "#", id: "approve_all", remote: true
-        %td= link_to "Disapprove All", "#", id: "disapprove_all", remote: true
+        %td{ colspan: 6 }
+        %td= link_to 'Approve All', '#', id: 'approve_all', remote: true
+        %td= link_to 'Disapprove All', '#', id: 'disapprove_all', remote: true
     .form-group
-      = label :api_call, "Api Call Method"
+      = label :api_call, 'Api Call Method'
       = button_tag 'Submit', type: 'submit'
     
 :javascript
   $(document).ready(function () {
     $('#approve_all').click(function (){
-      $(".checkboxes").each( function () {
+      $('.checkboxes').each( function () {
         $(this).prop('checked', true);
         });
     });
     $('#disapprove_all').click(function (){
-      $(".checkboxes").each( function () {
+      $('.checkboxes').each( function () {
         $(this).prop('checked', false);
         });
     });

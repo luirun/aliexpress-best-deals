@@ -7,18 +7,18 @@
         .status-upload
           = form_for [@review, Comment.new] do |f|
             = f.hidden_field :page, value: @review.id
-            = f.text_area :content, placeholder: "Share your opinion!"
+            = f.text_area :content, placeholder: 'Share your opinion!'
             %ul
               %li
-                %label{"data-original-title" => "Picture", "data-placement" => "bottom", "data-toggle" => "tooltip"}
+                %label{'data-original-title': 'Picture', 'data-placement': 'bottom', 'data-toggle': 'tooltip'}
                   = icon('fa', 'picture-o')
-                  %span{:style => "display:none;"}
+                  %span{style: 'display:none;'}
                     = f.file_field :image, name: 'picture'
-            = f.submit class: "btn btn-success green" do
+            = f.submit class: 'btn btn-success green' do
               = icon('fas', 'share')
               Add Comment
 
 :javascript
   $(document).ready(function(){
-    $("[data-toggle=tooltip]").tooltip();
+    $('[data-toggle=tooltip]').tooltip();
   });

@@ -10,24 +10,24 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # end
 
   def create
-      build_resource(sign_up_params)
+    build_resource(sign_up_params)
 
-      if resource.save
-        yield resource if block_given?
-        if resource.active_for_authentication?
-          set_flash_message :notice, :signed_up if is_flashing_format?
-          sign_up(resource_name, resource)
-          respond_with resource, location: after_sign_up_path_for(resource)
-        else
-          set_flash_message :notice, :"signed_up_but_#{resource.inactive_message}" if is_flashing_format?
-          expire_data_after_sign_in!
-          respond_with resource, location: after_inactive_sign_up_path_for(resource)
-        end
+    if resource.save
+      yield resource if block_given?
+      if resource.active_for_authentication?
+        set_flash_message :notice, :signed_up if is_flashing_format?
+        sign_up(resource_name, resource)
+        respond_with resource, location: after_sign_up_path_for(resource)
       else
-        clean_up_passwords resource
-        flash[:alert] = resource.errors.full_messages.join("</br>")
-        redirect_to '/register'
+        set_flash_message :notice, :"signed_up_but_#{resource.inactive_message}" if is_flashing_format?
+        expire_data_after_sign_in!
+        respond_with resource, location: after_inactive_sign_up_path_for(resource)
       end
+    else
+      clean_up_passwords resource
+      flash[:alert] = resource.errors.full_messages.join('</br>')
+      redirect_to '/register'
+    end
   end
 
   # GET /resource/edit
@@ -54,18 +54,18 @@ class Users::RegistrationsController < Devise::RegistrationsController
   #   super
   # end
 
- protected
+  protected
 
   # If you have extra params to permit, append them to the sanitizer.
   def configure_sign_up_params
     devise_parameter_sanitizer.permit(:sign_up, keys: [:nickname, :name, :surname, :description, :terms_of_service])
   end
 
-  def after_sign_up_path_for(resource)
+  def after_sign_up_path_for(_resource)
     '/profile' # Or :prefix_to_your_route
   end
 
-  def after_inactive_sign_up_path_for(resource)
+  def after_inactive_sign_up_path_for(_resource)
     '/register' # Or :prefix_to_your_route
   end
 

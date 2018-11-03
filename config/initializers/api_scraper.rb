@@ -1,2 +1,3 @@
-require "./lib/config"
-require "./lib/crawler"
+# frozen_string_literal: true
+
+require './lib/config'

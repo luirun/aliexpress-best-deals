@@ -3,37 +3,39 @@
     .col-md-4
       .product-item
         .pi-img-wrapper
-          %img.img-responsive{:alt => "Berry Lace Dress", :src => "http://keenthemes.com/assets/bootsnipp/k1.jpg"}/
+          %img.img-responsive{alt: 'Berry Lace Dress', src: 'http://keenthemes.com/assets/bootsnipp/k1.jpg'}/
           %div
-            %a.btn{:href => "#"} Zoom
-            %a.btn{:href => "#"} View
+            %a.btn{href: '#'} Zoom
+            %a.btn{href: '#'} View
         %h3
-          %a{:href => "shop-item.html"} Berry Lace Dress
+          %a{href: 'shop-item.html'} Berry Lace Dress
         .pi-price $29.00
-        %a.btn.add2cart{:href => "javascript:;"} Add to cart
+        %a.btn.add2cart{href: '#'} Add to cart
         .sticker.sticker-new
     .col-md-4
       .product-item
         .pi-img-wrapper
-          %img.img-responsive{:alt => "Berry Lace Dress", :src => "http://keenthemes.com/assets/bootsnipp/k2.jpg"}/
+          %img.img-responsive{alt: 'Berry Lace Dress', src: 'http://keenthemes.com/assets/bootsnipp/k1.jpg'}/
           %div
-            %a.btn{:href => "#"} Zoom
-            %a.btn{:href => "#"} View
+            %a.btn{href: '#'} Zoom
+            %a.btn{href: '#'} View
         %h3
-          %a{:href => "shop-item.html"} Berry Lace Dress
+          %a{href: 'shop-item.html'} Berry Lace Dress
         .pi-price $29.00
-        %a.btn.add2cart{:href => "javascript:;"} Add to cart
+        %a.btn.add2cart{href: '#'} Add to cart
+        .sticker.sticker-new
     .col-md-4
       .product-item
         .pi-img-wrapper
-          %img.img-responsive{:alt => "Berry Lace Dress", :src => "http://keenthemes.com/assets/bootsnipp/k3.jpg"}/
+          %img.img-responsive{alt: 'Berry Lace Dress', src: 'http://keenthemes.com/assets/bootsnipp/k1.jpg'}/
           %div
-            %a.btn{:href => "#"} Zoom
-            %a.btn{:href => "#"} View
+            %a.btn{href: '#'} Zoom
+            %a.btn{href: '#'} View
         %h3
-          %a{:href => "shop-item.html"} Berry Lace Dress
+          %a{href: 'shop-item.html'} Berry Lace Dress
         .pi-price $29.00
-        %a.btn.add2cart{:href => "javascript:;"} Add to cart
+        %a.btn.add2cart{href: '#'} Add to cart
+        .sticker.sticker-new
 :css
   .product-item {
       padding: 15px;
@@ -45,7 +47,7 @@
       box-shadow: 5px 5px rgba(234, 234, 234, 0.9);
   }
   .product-item:after {
-      content: ".";
+      content: '.';
       display: block;
       height: 0;
       clear: both;
@@ -136,13 +138,13 @@
 
 
     - if @categories.nil?
-      %h2{:style => "text-transform:uppercase;"}
-        There is no more categories to show  - #{link_to "More products", products_path, style: "color:blue;"}
+      %h2{style: 'text-transform:uppercase;'}
+        There is no more categories to show  - #{link_to 'More products', products_path, style: 'color:blue;'}
     - else
       - @categories.each do |category|
         - session[:excluded_categories] << category.id
         %h1
-          %i{:class => "#{category.icon}"}
+          %i{class: category.icon}
           = link_to category.name, search_category_products_path(category.name,1)
         - $category = Category.find(category.id).products
         - $rand = rand(0..$category.length-8)
@@ -152,16 +154,16 @@
               - if $i%4 == 0
                 .one-item.col-md-3.col-sm-3.col-xs-12
                   .item-sp.item-lg
-                    %span{:itemscope => "", :itemtype => "http://schema.org/Product"}
-                      = link_to product_path(pretty_url_encode(product.productTitle)), itemprop: "url" do
+                    %span{itemscope: '', itemtype: 'http://schema.org/Product'}
+                      = link_to product_path(pretty_url_encode(product.productTitle)), itemprop: 'url' do
                         .thumb.vertical-alignment-helper
                           .vertical-align-center.vertical-align-top
-                            = image_tag "#{product.imageUrl}_350x350.jpg", class: "img-responsive"
-                        %h4{:itemprop => "name"}
+                            = image_tag '#{product.imageUrl}_350x350.jpg', class: 'img-responsive'
+                        %h4{itemprop: 'name'}
                           = simple_format(pretty_url_decode(product.productTitle))
-                        .price{:itemprop => "offers", :itemscope => "", :itemtype => "http://schema.org/Offer"}
-                          %meta{:content => "#{product.salePrice}", :itemprop => "price"}/
-                          %meta{:content => "USD", :itemprop => "priceCurrency"}/
+                        .price{itemprop: 'offers', itemscope: '', itemtype: 'http://schema.org/Offer'}
+                          %meta{content: product.salePrice, itemprop: 'price'}/
+                          %meta{content: 'USD', itemprop: 'priceCurrency'}/
                           %span.small NOW ONLY:
                           %span.big
                             US #{product.salePrice}$
@@ -171,18 +173,18 @@
                 - if $start%6 == 0
                   .three-item.col-md-3.col-sm-3.col-xs-12
                     .item-sp.item-sm
-                      %span{:itemscope => "", :itemtype => "http://schema.org/Product"}
-                        = link_to product_path(pretty_url_encode(product.productTitle)), itemprop: "url" do
+                      %span{itemscope: '', itemtype: 'http://schema.org/Product'}
+                        = link_to product_path(pretty_url_encode(product.productTitle)), itemprop: 'url' do
                           .thumb.vertical-alignment-helper
                             .vertical-align-center.vertical-align-top
-                              = image_tag "#{product.imageUrl}_200x200.jpg", class: "img-responsive"
-                          %h4{:itemprop => "name"}
+                              = image_tag '#{product.imageUrl}_200x200.jpg', class: 'img-responsive'
+                          %h4{itemprop: 'name'}
                             = simple_format(pretty_url_decode(product.productTitle))
-                          %meta{:content => "4.8", :itemtype => "http://schema.org/AggregateRating/ratingValue"}/
-                          %meta{:content => "5.0", :itemtype => "http://schema.org/AggregateRating/reviewCount"}/
-                          .price{:itemprop => "offers", :itemscope => "", :itemtype => "http://schema.org/Offer"}
-                            %meta{:content => "#{product.salePrice}", :itemprop => "price"}/
-                            %meta{:content => "USD", :itemprop => "priceCurrency"}/
+                          %meta{content: '4.8', itemtype: 'http://schema.org/AggregateRating/ratingValue'}/
+                          %meta{content: '5.0', itemtype: 'http://schema.org/AggregateRating/reviewCount'}/
+                          .price{itemprop: 'offers', itemscope: '', itemtype: 'http://schema.org/Offer'}
+                            %meta{content: '#{product.salePrice}', itemprop: 'price'}/
+                            %meta{content: 'USD', itemprop: 'priceCurrency'}/
                             %span.small NOW ONLY:
                             %span.big
                               = product.salePrice
@@ -191,9 +193,9 @@
                     - if $start%12 == 0
               - $i = $i + 1
               - if $i%8==0
-        %hr{:style => "background-color:#{random_colors};height:5px;border-radius:5px 5px 5px 5px;"}/
+        %hr{style: 'background-color:#{random_colors};height:5px;border-radius:5px 5px 5px 5px;'}/
   .rounded-plus-container
-    = link_to new_products_append_path, remote: true, style: "width:180px;height:180px;", class: "add-categories" do
+    = link_to new_products_append_path, remote: true, style: 'width:180px;height:180px;', class: 'add-categories' do
       .rounded-plus
         = icon('fa', 'plus fa-5x')
 
