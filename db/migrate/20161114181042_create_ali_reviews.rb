@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateAliReviews < ActiveRecord::Migration
   def change
     create_table :ali_reviews do |t|

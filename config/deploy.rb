@@ -1,17 +1,19 @@
-# config valid for current version and patch releases of Capistrano
-lock "~> 3.11.0"
+# frozen_string_literal: true
 
-set :application, "alibestdeal"
-set :repo_url, "https://bitbucket.org/luirun/aliexpress-best-deals.git"
+# config valid for current version and patch releases of Capistrano
+lock '~> 3.11.0'
+
+set :application, 'alibestdeal'
+set :repo_url, 'https://bitbucket.org/luirun/aliexpress-best-deals.git'
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
 
 # Default deploy_to directory is /var/www/my_app_name
-set :deploy_to, "/var/www/alibestdeal"
+set :deploy_to, '/var/www/alibestdeal'
 
 set :rvm_ruby_version, '2.5.0'
-set :default_env, { rvm_bin_path: '~/usr/local/rvm/bin' }
+set :default_env, rvm_bin_path: '~/usr/local/rvm/bin'
 SSHKit.config.command_map[:rake] = "#{fetch(:default_env)[:rvm_bin_path]}/rvm ruby-#{fetch(:rvm_ruby_version)} do bundle exec rake"
 
 # Default value for :format is :airbrussh.
@@ -25,7 +27,7 @@ SSHKit.config.command_map[:rake] = "#{fetch(:default_env)[:rvm_bin_path]}/rvm ru
 # set :pty, true
 
 # Default value for :linked_files is []
-#append :linked_files, "config/secrets.yml"
+# append :linked_files, "config/secrets.yml"
 
 # Default value for linked_dirs is []
 # append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/system"

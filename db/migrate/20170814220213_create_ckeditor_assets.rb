@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateCkeditorAssets < ActiveRecord::Migration
   def self.up
     create_table :ckeditor_assets do |t|
@@ -9,7 +11,7 @@ class CreateCkeditorAssets < ActiveRecord::Migration
       t.string  :assetable_type, limit: 30
       t.string  :type, limit: 30
 
-      # Uncomment	it to save images dimensions, if your need it
+      # Uncomment  it to save images dimensions, if your need it
       t.integer :width
       t.integer :height
 

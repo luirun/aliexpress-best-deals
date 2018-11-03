@@ -1,7 +1,7 @@
-= render "slider"
-= render "recent_reviews"
-= render "/layouts/ad"
-= render "/products/best_products", products: @best_products
-%hr{:style => "height:5px;background-color:#2ecc71;border-radius:5px 5px 5px 5px;"}/
-%h2{:style => "text-transform:uppercase;"} Find awesome products between many categories:
-= render "all_products"
+= render 'slider'
+= render 'recent_reviews'
+= render '/layouts/ad'
+= render '/products/best_products', products: @best_products
+%hr{style: 'height: 5px; background-color: #2ecc71; border-radius:5px 5px 5px 5px;'}/
+%h2{style: 'text-transform:uppercase;'} Find awesome products between many categories:
+= render 'all_products'

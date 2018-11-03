@@ -2,53 +2,53 @@
 #all-items
   .container
     - if @categories.nil?
-      %h2{:style => "text-transform:uppercase;"}
-        There is no more categories to show  - #{link_to "More products", products_path, style: "color:blue;"}
+      %h2{style: 'text-transform:uppercase;'}
+        There is no more categories to show  - #{link_to 'More products', products_path, style: 'color:blue;'}
     - else
       - @categories.each do |category|
         - session[:excluded_categories] << category.id
         - next if category.products.count < 4
         %h1
-          %i{:class => "#{category.icon}"}
+          %i{class: '#{category.icon}'}
           = link_to category.name, products_category_search_path(category.name, 1)
         - category.products.limit(64).sample(8).in_groups_of(8, false).each do |big_product_group|
           .row
             - big_product_group.each_slice(4).to_a.each do |small_product_group|
               .one-item.col-md-3.col-sm-3.col-xs-12
                 .item-sp.item-lg
-                  %span{:itemscope => "", :itemtype => "http://schema.org/Product"}
-                    = link_to product_path(pretty_url_encode(small_product_group[0].productTitle)), itemprop: "url" do
+                  %span{itemscope:'', :itemtype => 'http://schema.org/Product'}
+                    = link_to product_path(pretty_url_encode(small_product_group[0].productTitle)), itemprop: 'url' do
                       .thumb.vertical-alignment-helper
                         .vertical-align-center.vertical-align-top
-                          = image_tag "#{small_product_group[0].imageUrl}_350x350.jpg", class: "img-responsive"
-                      %h4{:itemprop => "name"}
+                          = image_tag "#{small_product_group[0].imageUrl}_350x350.jpg", class: 'img-responsive'
+                      %h4{itemprop:'name'}
                         = simple_format(pretty_url_decode(small_product_group[0].productTitle))
-                      .price{:itemprop => "offers", :itemscope => "", :itemtype => "http://schema.org/Offer"}
-                        %meta{:content => "#{small_product_group[0].salePrice}", :itemprop => "price"}/
-                        %meta{:content => "USD", :itemprop => "priceCurrency"}/
+                      .price{itemprop: 'offers', itemscope: '', itemtype: 'http://schema.org/Offer'}
+                        %meta{content: "#{small_product_group[0].salePrice}", itemprop:'price'}/
+                        %meta{content: 'USD', itemprop:'priceCurrency'}/
                         %span.small NOW ONLY:
                         %span.big
                           US #{small_product_group[0].salePrice}$
               .three-item.col-md-3.col-sm-3.col-xs-12
                 - small_product_group[1..3].each do |product|
                   .item-sp.item-sm
-                    %span{:itemscope => "", :itemtype => "http://schema.org/Product"}
-                      = link_to product_path(pretty_url_encode(product.productTitle)), itemprop: "url" do
+                    %span{itemscope:'', :itemtype => 'http://schema.org/Product'}
+                      = link_to product_path(pretty_url_encode(product.productTitle)), itemprop: 'url' do
                         .thumb.vertical-alignment-helper
                           .vertical-align-center.vertical-align-top
-                            = image_tag "#{product.imageUrl}_350x350.jpg", class: "img-responsive"
-                        %h4{:itemprop => "name"}
+                            = image_tag "#{product.imageUrl}_350x350.jpg", class: 'img-responsive'
+                        %h4{itemprop:'name'}
                           = simple_format(pretty_url_decode(product.productTitle))
-                        .price{:itemprop => "offers", :itemscope => "", :itemtype => "http://schema.org/Offer"}
-                          %meta{:content => "#{product.salePrice}", :itemprop => "price"}/
-                          %meta{:content => "USD", :itemprop => "priceCurrency"}/
+                        .price{itemprop:'offers', itemscope:'', itemtype: 'http://schema.org/Offer'}
+                          %meta{content:"#{product.salePrice}", itemprop:'price'}/
+                          %meta{content:'USD', itemprop:'priceCurrency'}/
                           %span.small NOW ONLY:
                           %span.big
                             US #{product.salePrice}$
-        %hr{:style => "background-color:#{random_colors};height:5px;border-radius:5px 5px 5px 5px;"}
+        %hr{style: "background-color: #{random_colors}; height:5px; border-radius:5px 5px 5px 5px;"}
   - if !@categories.nil?
     .rounded-plus-container
-      = link_to new_products_append_path, remote: true, style: "width:180px;height:180px;", class: "add-categories" do
+      = link_to new_products_append_path, remote: true, style: 'width:180px; height:180px;', class: 'add-categories' do
         .rounded-plus
           = icon('fa', 'plus fa-5x')
 

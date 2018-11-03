@@ -4,19 +4,19 @@
 # ------------------------------------ END ---------------------------------
 
 class ProductsController < ApplicationController
-  before_action :set_product, only: [:show, :edit, :destroy, :product_like, :product_unlike]
-  before_action :is_admin, only: [:create]
+  before_action :set_product, only: %i[show edit destroy product_like product_unlike]
+  before_action :is_admin, only: :create
 
   # 1 - Basic CRUD Actions
 
   def index
     @categories = Category.all
-    @categories ||= ["Sorry, actually no categories ;("]
+    @categories ||= ['Sorry, actually no categories ;(']
 
     # META
-    set_meta_tags title: "Find Cheapests Products"
-    set_meta_tags description: "Are you looking for the cheapests aliexpress products? Here you can find products and also reviews of them!"
-    set_meta_tags keywords: "aliexpress,category,products,deals,find,review,test"
+    set_meta_tags title: 'Find Cheapests Products'
+    set_meta_tags description: 'Are you looking for the cheapests aliexpress products? Here you can find products and also reviews of them!'
+    set_meta_tags keywords: 'aliexpress,category,products,deals,find,review,test'
   end
 
   def show
@@ -30,13 +30,13 @@ class ProductsController < ApplicationController
     # META
     set_meta_tags title: @product.productTitle.html_safe
     set_meta_tags description: @product.productDescription
-    set_meta_tags keywords: @product.productTitle.split.join(",")
+    set_meta_tags keywords: @product.productTitle.split.join(',')
     set_meta_tags og: {
       image: @product.imageUrl
     }
     set_meta_tags twitter: {
-      image: @product.imageUrl,
-      title: @product.productTitle,
+      image:       @product.imageUrl,
+      title:       @product.productTitle,
       description: "Only #{@product.salePrice}$ for this new product - check this out!"
     }
   end
@@ -52,7 +52,7 @@ class ProductsController < ApplicationController
 
     respond_to do |format|
       if @product.save
-        format.html { redirect_to @product, notice: "Product was successfully created." }
+        format.html { redirect_to @product, notice: 'Product was successfully created.' }
         format.json { render :show, status: :created, location: @product }
       else
         format.html { render :new }
@@ -64,7 +64,7 @@ class ProductsController < ApplicationController
   def destroy
     @product.destroy
     respond_to do |format|
-      format.html { redirect_to products_url, notice: "Product was successfully destroyed." }
+      format.html { redirect_to products_url, notice: 'Product was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -90,7 +90,7 @@ class ProductsController < ApplicationController
 
   def import
     Product.import(params[:file])
-    redirect_to root_url, notice: "Poducts imported."
+    redirect_to root_url, notice: 'Poducts imported.'
   end
 
   def find_subcategory
@@ -109,7 +109,7 @@ class ProductsController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_product
     @product = Product.like_title(pretty_url_decode(params[:productTitle]))
-    redirect_to error_path("product-not-found") if @product.nil?
+    redirect_to error_path('product-not-found') if @product.nil?
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
@@ -133,7 +133,7 @@ def similar_product
     fields = AliConfig.new.alibaba_api_fields[:list]
     category_id = Category.where(name: params[:category]).first.id
     @product = AliCrawler.new.get_product_details(fields, params[:productId])
-    @product = Product.ali_new(@product["result"], category_id)
+    @product = Product.ali_new(@product['result'], category_id)
     @product = Product.where(productId: params[:productId]).first
   end
   redirect_to product_path(pretty_url_encode(@product.productTitle))
@@ -143,7 +143,7 @@ end
 def update
   respond_to do |format|
     if @product.update(product_params)
-      format.html { redirect_to @product, notice: "Product was successfully updated." }
+      format.html { redirect_to @product, notice: 'Product was successfully updated.' }
       format.json { render :show, status: :ok, location: @product }
     else
       format.html { render :edit }

@@ -58,12 +58,9 @@ GEM
       rack (>= 0.9.0)
     binding_of_caller (0.8.0)
       debug_inspector (>= 0.0.1)
-    bootstrap (4.1.1)
-      autoprefixer-rails (>= 6.0.3)
-      popper_js (>= 1.12.9, < 2)
-      sass (>= 3.5.2)
-    bootstrap-generators (3.3.4)
-      railties (>= 3.1.0)
+    bootstrap-sass (3.3.7)
+      autoprefixer-rails (>= 5.2.1)
+      sass (>= 3.3.4)
     builder (3.2.3)
     byebug (10.0.2)
     capistrano (3.11.0)
@@ -131,6 +128,8 @@ GEM
       railties (>= 3.0.0)
     ffi (1.9.25)
     ffi (1.9.25-x86-mingw32)
+    font-awesome-rails (4.7.0.4)
+      railties (>= 3.2, < 6.0)
     font-awesome-sass (5.0.13)
       sassc (>= 1.11)
     gaffe (1.2.0)
@@ -169,8 +168,6 @@ GEM
     mini_portile2 (2.3.0)
     minitest (5.11.3)
     multi_json (1.13.1)
-    mysql2 (0.4.10)
-    mysql2 (0.4.10-x86-mingw32)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (5.0.2)
@@ -190,8 +187,12 @@ GEM
     parallel (1.12.1)
     parser (2.5.1.0)
       ast (~> 2.4.0)
-    popper_js (1.12.9)
+    pg (1.1.3)
+    pg (1.1.3-x86-mingw32)
     powerpack (0.1.2)
+    pry (0.11.3)
+      coderay (~> 1.1.0)
+      method_source (~> 0.9.0)
     public_suffix (3.0.2)
     puma (3.11.4)
     rack (2.0.5)
@@ -232,15 +233,15 @@ GEM
     responders (2.4.0)
       actionpack (>= 4.2.0, < 5.3)
       railties (>= 4.2.0, < 5.3)
-    rest-client (1.8.0)
+    rest-client (2.0.2)
       http-cookie (>= 1.0.2, < 2.0)
-      mime-types (>= 1.16, < 3.0)
-      netrc (~> 0.7)
-    rest-client (1.8.0-x86-mingw32)
+      mime-types (>= 1.16, < 4.0)
+      netrc (~> 0.8)
+    rest-client (2.0.2-x86-mingw32)
       ffi (~> 1.9)
       http-cookie (>= 1.0.2, < 2.0)
-      mime-types (>= 1.16, < 3.0)
-      netrc (~> 0.7)
+      mime-types (>= 1.16, < 4.0)
+      netrc (~> 0.8)
     roo (2.7.1)
       nokogiri (~> 1)
       rubyzip (~> 1.1, < 2.0.0)
@@ -348,8 +349,7 @@ DEPENDENCIES
   autoprefixer-rails
   bcrypt
   better_errors (~> 2.1, >= 2.1.1)
-  bootstrap
-  bootstrap-generators
+  bootstrap-sass (~> 3.3.7)
   byebug
   capistrano
   capistrano-bundler
@@ -362,21 +362,23 @@ DEPENDENCIES
   devise
   easy_translate
   factory_bot_rails
+  font-awesome-rails
   font-awesome-sass (~> 5.0.13)
   gaffe
   haml
   jbuilder (~> 2.0)
   jquery-rails
   meta-tags
-  mysql2 (>= 0.3.13, < 0.5)
   paperclip
+  pg
+  pry
   rack-mini-profiler
   rails (~> 5.2.0.rc1)
-  rest-client (~> 1.8)
+  rest-client (~> 2.0.1)
   roo
   rspec-rails
   rubocop
-  sass-rails (~> 5.0)
+  sass-rails (>= 3.2)
   sdoc (~> 0.4.0)
   spring-commands-rspec
   turbolinks
@@ -384,5 +386,8 @@ DEPENDENCIES
   watir
   web-console (~> 2.0)
 
+RUBY VERSION
+   ruby 2.5.1p57
+
 BUNDLED WITH
-   1.16.1
+   1.16.5

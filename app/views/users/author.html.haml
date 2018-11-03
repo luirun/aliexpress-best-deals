@@ -1,13 +1,11 @@
 #inpost-ad-container
-  %script{:async => "", :src => "//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"}
-  / pokemongo-top
-  %ins.adsbygoogle{"data-ad-client" => "ca-pub-6222054838117933", "data-ad-format" => "auto", "data-ad-slot" => "2820503107", :style => "display:block"}
+  %script{async: '', src: '//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js'}
+  %ins.adsbygoogle{'data-ad-client': 'ca-pub-6222054838117933', 'data-ad-format': 'auto', 'data-ad-slot': '2820503107', style: 'display:block'}
   :javascript
     (adsbygoogle = window.adsbygoogle || []).push({});
-= render :partial => "posts/articlebox"
+= render partial: 'posts/articlebox'
 #inpost-ad-container
-  %script{:async => "", :src => "//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"}
-  / pokemongo-bottom
-  %ins.adsbygoogle{"data-ad-client" => "ca-pub-6222054838117933", "data-ad-format" => "auto", "data-ad-slot" => "4297236306", :style => "display:block"}
+  %script{async: '', src: '//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js'}
+  %ins.adsbygoogle{'data-ad-client': 'ca-pub-6222054838117933', 'data-ad-format': 'auto', 'data-ad-slot': '4297236306', style: 'display:block'}
   :javascript
     (adsbygoogle = window.adsbygoogle || []).push({});

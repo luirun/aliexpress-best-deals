@@ -4,7 +4,7 @@
       - (params[:p].to_i - 4 .. params[:p].to_i + 4).each do |i|
         - next if i < 1 
         - if i == params[:p].to_i
-          %li.disabled= link_to i, "", style: "background-color:#3498db;", disabled: "disabled"
+          %li.disabled= link_to i, '', style: 'background-color:#3498db;', disabled: 'disabled'
         - else
           - if params[:action] == "search_product"
             %li= link_to i, "#{search_product_path(params[:name], i)}"

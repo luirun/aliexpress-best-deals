@@ -1,13 +1,13 @@
 .col-md-12
   %b Sort by:
   .form-group
-    = form_tag(request.original_url, method: "get") do
+    = form_tag(request.original_url, method: 'get') do
       .input-group
         .input-group-addon
           = icon('fa', 'dollar fa-2x')
-        = text_field_tag :min_price, nil, placeholder: "Minimal Price", value: params[:min_price] != 0.0 ? params[:min_price] : nil, class: "form-control"
-        = text_field_tag :max_price, nil, placeholder: "Maximum Price", value: params[:max_price] != 9999.99 ? params[:max_price] : nil, class: "form-control"
-      .subcategory-container{style: "height:20px;overflow:hidden;margin-bottom:5px;"}
+        = text_field_tag :min_price, nil, placeholder: 'Minimal Price', value: params[:min_price] != 0.0 ? params[:min_price] : nil, class: 'form-control'
+        = text_field_tag :max_price, nil, placeholder: 'Maximum Price', value: params[:max_price] != 9999.99 ? params[:max_price] : nil, class: 'form-control'
+      .subcategory-container{style: 'height:20px;overflow:hidden;margin-bottom:5px;'}
         %b Related subcategories:
         - if params[:subcategory] != nil
           = link_to products_category_search_path(@category.name,1) do
@@ -24,18 +24,18 @@
         %i.more
           more subcategories
           = icon('fa', 'level-down-alt')
-      = submit_tag "Filter", class: "btn btn-primary btn-sm"
+      = submit_tag 'Filter', class: 'btn btn-primary btn-sm'
 
 :javascript
-  $( ".more" ).click(function() {
+  $( '.more' ).click(function() {
     if($(this).text()=='more subcategories '){
-      var curHeight = $(".subcategory-container").height();
-      $(".subcategory-container").css('height', 'auto');
-      var autoHeight = $(".subcategory-container").height();
-        $(".subcategory-container").height(curHeight).animate({height: autoHeight}, 800);
-      $(this).html("Less Categories <i class='fas fa-level-up-alt' aria-hidden='true'>");
+      var curHeight = $('.subcategory-container').height();
+      $('.subcategory-container').css('height', 'auto');
+      var autoHeight = $('.subcategory-container').height();
+        $('.subcategory-container').height(curHeight).animate({height: autoHeight}, 800);
+      $(this).html('Less Categories <i class='fas fa-level-up-alt' aria-hidden='true'>');
       }else{
-        $(".subcategory-container").animate({height: '20px'}, 800);
-          $(this).html("more subcategories <i class='fas fa-level-down-alt' aria-hidden='true'></i>");
+        $('.subcategory-container').animate({height: '20px'}, 800);
+          $(this).html('more subcategories <i class='fas fa-level-down-alt' aria-hidden='true'></i>');
       }
   });

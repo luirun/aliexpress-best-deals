@@ -1,6 +1,8 @@
-require File.expand_path('../boot', __FILE__)
+# frozen_string_literal: true
 
-#rspec
+require File.expand_path('boot', __dir__)
+
+# rspec
 require 'rails/all'
 
 # Require the gems listed in Gemfile, including any gems
@@ -27,7 +29,7 @@ module Aliexpress
     # Do not swallow errors in after_commit/after_rollback callbacks.
     # config.active_record.raise_in_transactional_callbacks = true
     config.middleware.use Rack::Deflater
-    config.autoload_paths += %w(#{config.root}/app/models/ckeditor)
-    config.autoload_paths += %W(#{config.root}/lib)
+    config.autoload_paths += %w[#{config.root}/app/models/ckeditor]
+    config.autoload_paths += %W[#{config.root}/lib]
   end
 end

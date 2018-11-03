@@ -5,19 +5,18 @@
     / /col-sm-12
   / /row
   - if @comments[0] == nil
-    %h4{:style => "padding-left:15px;"} No comments found!
+    %h4{style: 'padding-left:15px;'} No comments found!
   - else
     - @comments.each do |comment|
       .row
         .col-sm-1
           .thumbnail
             - $user = User.find(comment.author)
+            -# TODO: Author with ID 4 was a Guest author. I think we should handle it in other way.
             - if comment.author == 4
-              %img.img-responsive.user-photo{:src => "https://ssl.gstatic.com/accounts/ui/avatar_2x.png"}/
+              %img.img-responsive.user-photo{src: 'https://ssl.gstatic.com/accounts/ui/avatar_2x.png'}/
             - else
               = image_tag $user.avatar.url
-          / /thumbnail
-        / /col-sm-1
         .col-sm-11
           .panel.panel-default
             .panel-heading
@@ -26,8 +25,3 @@
                 commented #{distance_of_time_in_words(comment.created_at, 0.1.minutes.from_now)} ago
             .panel-body
               = comment.content
-            / /panel-body
-          / /panel panel-default
-        / /col-sm-10
-      / /row
-/ /container

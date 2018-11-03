@@ -1,68 +1,68 @@
 - url = Rails.application.routes.recognize_path(request.referrer)
-- if url[:action] != "search_category"
+- if url[:action] != 'search_category'
   - if !@product.subcategory_id.nil? && @product.subcategory_id != @product.category_id
-    = link_to "Home", root_path
+    = link_to 'Home', root_path
     \-&gt; #{link_to Category.find(@product.category_id).name, products_category_search_path(Category.find(@product.category_id).name,1)}
     \ -&gt;
     \#{link_to @subcategory.name, subcategory_category_search_path(Category.find(@product.category_id).name,@subcategory.name,1)} 
     \-&gt;
     \#{@product.productTitle.slice(0..40)}...
   - else
-    = link_to "Home", root_path
+    = link_to 'Home', root_path
     \-&gt; 
     \#{link_to Category.find(@product.category_id).name, products_category_search_path(Category.find(@product.category_id).name,1)}
     \ -&gt; #{@product.productTitle.slice(0..40)}...
 - else
-  = link_to "Home", root_path
-  \-&gt; #{link_to "Back", request.referrer} -&gt; #{@product.productTitle.slice(0..40)}...
+  = link_to 'Home', root_path
+  \-&gt; #{link_to 'Back', request.referrer} -&gt; #{@product.productTitle.slice(0..40)}...
 .container-fluid
   .content-wrapper
     .item-container
       .container
         .col-md-12
-          .product.col-md-5.col-xs-12.service-image-left{:style => "height:100%;"}
+          .product.col-md-5.col-xs-12.service-image-left{style: 'height:100%;'}
             %center
-              = image_tag @product.imageUrl, class: "product-display"
+              = image_tag @product.imageUrl, class: 'product-display'
           .col-md-7
             .product-title
               = simple_format(@product.productTitle)
             .product-rating
-              = render "/products/show/rating", reviews: @ali_reviews, rating: AliReview.calculate_product_rating(@ali_reviews)
+              = render '/products/show/rating', reviews: @ali_reviews, rating: AliReview.calculate_product_rating(@ali_reviews)
             %hr/
             .product-price
               = @product.salePrice
               $ / #{@product.packageType}
-              - if @product.archived == "y"
-                =icon('fas', 'exclamation-triangle', style: "color:red")
+              - if @product.archived == 'y'
+                =icon('fas', 'exclamation-triangle', style: 'color:red')
                 Price may be outdated
               - else
-                =icon('fas', 'exclamation-triangle', style: "color:green")
+                =icon('fas', 'exclamation-triangle', style: 'color:green')
                 Price up to date
             .product-stock In Stock
             %hr
             = link_to @product.promotionUrl do
               .btn-group.cart
-                = link_to aliexpress_pretty_url_path(@product.productId), target: "_blank" do
-                  %button.btn.btn-success{:type => "button"}
+                = link_to aliexpress_pretty_url_path(@product.productId), target: '_blank' do
+                  %button.btn.btn-success{type: 'button'}
                     Buy Now
             .btn-group.wishlist
-              %button.btn.btn-danger{:type => "button"}
+              %button.btn.btn-danger{type: 'button'}
                 Add To Cart
-        = render "/layouts/ad"
-        = render "/products/show/user_feedback"
+        = render '/layouts/ad'
+        = render '/products/show/user_feedback'
     .container-fluid
       .col-md-12.product-info
         %ul#myTab.nav.nav-tabs.nav_tabs
           - if @ali_reviews.length > 0
             %li.active
-              %a{"data-toggle" => "tab", :href => "#reviews"} REVIEWS
+              = link_to 'REVIEWS', '#reviews', 'data-toggle': 'tab'
             %li
-              %a{"data-toggle" => "tab", :href => "#product-info"} PRODUCT INFO
+              = link_to 'PRODUCT INFO', '#product-info', 'data-toggle': 'tab'
           - else
             %li.active
-              %a{"data-toggle" => "tab", :href => "#product-info"} PRODUCT INFO
+              = link_to 'PRODUCT INFO', '#product-info', 'data-toggle': 'tab'
             %li
-              %a{"data-toggle" => "tab", :href => "#reviews"} REVIEWS
+              = link_to 'REVIEWS', '#reviews', 'data-toggle': 'tab'
         #myTabContent.tab-content
           %div{ id: 'product-info', class: [ ('tab-pane fade in' if @ali_reviews.length > 0), ('tabe-pane  fade in active' if @ali_reviews.length <= 0) ] }
             %section.col-xs-12.container.product-info.text-center
@@ -70,44 +70,44 @@
               - if @product.productDescription.nil?
                 We are working on gathering details of this product!
 
-          %div{ id: "reviews", class: [ ("tab-pane fade in" if @ali_reviews.length == 0), ("tab-pane fade in active" if @ali_reviews.length > 0) ] }
+          %div{ id: 'reviews', class: [ ('tab-pane fade in' if @ali_reviews.length == 0), ('tab-pane fade in active' if @ali_reviews.length > 0) ] }
             %container
-              = render "/products/show/call_to_action"
+              = render '/products/show/call_to_action'
               - i = 0
               - if @ali_reviews.length > 0
                 - @ali_reviews.each do |review|
-                  = render "/products/show/aliexpress_reviews", review: review, i: i
+                  = render '/products/show/aliexpress_reviews', review: review, i: i
                   - i = i + 1
                   
         %hr
-    = render "best_products", products: @branded_products[0..-((@branded_products.length % 4) + 1)]
-    - $brand = ActionView::Base.full_sanitizer.sanitize("AliBestDeal - No Description").split(" ")
+    = render 'best_products', products: @branded_products[0..-((@branded_products.length % 4) + 1)]
+    - $brand = ActionView::Base.full_sanitizer.sanitize('AliBestDeal - No Description').split(' ')
     - $description = $brand
-    - $index = $brand.index("Name:")
-    %script{:type => "application/ld+json"}
+    - $index = $brand.index('Name:')
+    %script{type: 'application/ld+json'}
       :cdata
         {
-        "@context": "http://schema.org/",
-        "@type": "Product",
-        "name": "#{@product.productTitle}",
-        "brand": "#{if $index != nil then $brand[$index+1] else $brand = "Unknow" end}",
-        "image": "#{@product.imageUrl}",
-        "description": "#{$description.join(" ")[0..117]}...",
-        "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "#{@rate}",
-        "ratingCount": "#{@rate_count}"
+        '@context': 'http://schema.org/',
+        '@type': 'Product',
+        'name': '#{@product.productTitle}',
+        'brand': '#{if $index != nil then $brand[$index+1] else $brand = 'Unknow' end}',
+        'image': '#{@product.imageUrl}',
+        'description': '#{$description.join(' ')[0..117]}...',
+        'aggregateRating': {
+        '@type': 'AggregateRating',
+        'ratingValue': '#{@rate}',
+        'ratingCount': '#{@rate_count}'
         },
-        "offers": {
-        "@type": "Offer",
-        "priceCurrency": "USD",
-        "price": "#{@product.salePrice}",
-        "priceValidUntil": "#{@product.validTime}",
-        "itemCondition": "http://schema.org/NewCondition",
-        "availability": "http://schema.org/InStock",
-        "seller": {
-        "@type": "Organization",
-        "name": "Aliexpress"
+        'offers': {
+        '@type': 'Offer',
+        'priceCurrency': 'USD',
+        'price': '#{@product.salePrice}',
+        'priceValidUntil': '#{@product.validTime}',
+        'itemCondition': 'http://schema.org/NewCondition',
+        'availability': 'http://schema.org/InStock',
+        'seller': {
+        '@type': 'Organization',
+        'name': 'Aliexpress'
         }
         }
         }

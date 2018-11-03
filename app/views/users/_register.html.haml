@@ -1,10 +1,10 @@
 .container
   .row
-    = form_for(@user, html: { class: "form-horizontal", role: "form" }) do |f|
+    = form_for(@user, html: { class: 'form-horizontal', role: 'form' }) do |f|
       - if @user.errors.any?
-        .alert.alert-danger.alert-dismissable{:role => "alert"}
-          %button.close{"data-dismiss" => "alert", :type => "button"}
-            %span{"aria-hidden" => "true"}
+        .alert.alert-danger.alert-dismissable{role: 'alert'}
+          %button.close{'data-dismiss': 'alert', type: 'button'}
+            %span{'aria-hidden': 'true'}
             %span.sr-only Close
           %h4
             = pluralize(@user.errors.count, error)
@@ -13,7 +13,7 @@
             - @user.errors.full_messages.each do |msg|
               %li= msg
       .col-xs-12.col-sm-8.col-md-6.col-sm-offset-2.col-md-offset-3
-        %form{:role => "form"}
+        %form{role: 'form'}
           %h2
             Please Sign Up
             %small It's free and always will be.
@@ -39,32 +39,29 @@
             .row
               .col-xs-4.col-sm-3.col-md-3
                 %span.button-checkbox
-                  %button.btn{"data-color" => "info", :tabindex => "7", :type => "button"} I Agree
+                  %button.btn{'data-color': 'info', tabindex: '7', type: 'button'} I Agree
                   = f.check_box :terms_of_service, id: t_and_c, class: hidden
               .col-xs-8.col-sm-9.col-md-9
                 By clicking
-                = succeed "," do
+                = succeed ',' do
                   %strong.label.label-primary Register
-                %a{"data-target" => "#t_and_c_m", "data-toggle" => "modal", :href => "#"} Terms and Conditions
+                %a{'data-target': '#t_and_c_m', 'data-toggle': 'modal', href: '#'} Terms and Conditions
                 set out by this site, including our Cookie Use.
             %hr.colorgraph
               .row
-                .col-xs-12.col-md-6= f.submit Register, class: btn btn-primary btn-block btn-lg, tabindex: 7
-                .col-xs-12.col-md-6= link_to Sign In, login_path, class: btn btn-success btn-block btn-lg
+                .col-xs-12.col-md-6= f.submit Register, class: 'btn btn-primary btn-block btn-lg', tabindex: 7
+                .col-xs-12.col-md-6= link_to Sign In, login_path, class: 'btn btn-success btn-block btn-lg'
       / Modal
-      #t_and_c_m.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
+      #t_and_c_m.modal.fade{'aria-hidden': 'true', 'aria-labelledby': 'myModalLabel', role: 'dialog', tabindex: '-1'}
         .modal-dialog.modal-lg
           .modal-content
             .modal-header
-              %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &#xD7;
-              %h4#myModalLabel.modal-title Terms  Conditions
+              %button.close{'aria-hidden': 'true', 'data-dismiss': 'modal', type: 'button'} &#xD7;
+              %h4#myModalLabel.modal-title Terms & Conditions
             .modal-body
               %p Will be avivable soon!
             .modal-footer
-              %button.btn.btn-primary{"data-dismiss" => "modal", :type => "button"} I Agree
-          / /.modal-content
-        / /.modal-dialog
-      / /.modal
+              %button.btn.btn-primary{'data-dismiss': 'modal', type: 'button'} I Agree
     :javascript
       $(function () {
           $('.button-checkbox').each(function () {
@@ -98,7 +95,7 @@
                   var isChecked = $checkbox.is(':checked');
       
                   // Set the button's state
-                  $button.data('state', (isChecked) ? "on" : "off");
+                  $button.data('state', (isChecked) ? 'on' : 'off');
       
                   // Set the button's icon
                   $button.find('.state-icon')

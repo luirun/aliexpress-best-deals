@@ -2,30 +2,30 @@
   .row
     .col-md-12.text-center.fade-in-b.recent-reviews
       %h1 Recent AliExpress reviews:
-  .row.recent-reviews-container{:style => "background-color:#f8f8f8;"}
+  .row.recent-reviews-container{style: 'background-color:#f8f8f8;'}
     - $js = 1
     - @recent_reviews.each do |review|
       .col-md-4
         .card
           .card-image
             = link_to review_url(pretty_url_encode(review.title)) do
-              = image_tag review.cover.url, :class => "img-responsive"
+              = image_tag review.cover.url, class: 'img-responsive'
           .card-content
             %span.card-title= pretty_url_decode(review.title)
-            %button.btn.btn-custom.pull-right{"aria-label" => "Left Align", :id => "show#{$js}", :type => "button"}
+            %button.btn.btn-custom.pull-right{'aria-label': 'Left Align', id: 'show#{$js}', type: 'button'}
               = icon('fa','ellipsis-v')
           .card-action
-            - review.keywords.split(",").each do |keyword|
+            - review.keywords.split(',').each do |keyword|
               = link_to keyword, keyword_search_path(keyword)
-          %div{:class => "card-reveal #{$js}"}
+          %div{class: "card-reveal #{$js}"}
             %span.card-title= pretty_url_decode(review.title)
-            %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
-              %span{"aria-hidden" => "true"} ×
+            %button.close{'aria-label': 'Close', 'data-dismiss': 'modal', type: 'button'}
+              %span{'aria-hidden': 'true'} ×
             %p= review.short_description
-            = link_to "Read More", review_url(pretty_url_encode(review.title)), class: "btn btn-success"
+            = link_to 'Read More', review_url(pretty_url_encode(review.title)), class: 'btn btn-success'
       - $js +=  1
   .row.more-reviews
-    = link_to "Read other products reviews", reviews_path
+    = link_to 'Read other products reviews', reviews_path
     
 :javascript
   $(function(){

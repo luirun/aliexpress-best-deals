@@ -1,77 +1,16 @@
+-# Move these partials to DB records.
 .row
   .col-md-12.text-center
     %h2
       Welcome to AliBestDeal.com Admin Panel v0.1
-  .col-md-12
-    .col-lg-2.col-md-4.col-sm-6.col-xs-12
-      .process
-        .process-row
-          .process-step
-            = link_to admins_aliexpress_api_products_search_path, class: "btn btn-default btn-circle category-listing-link" do
-              =icon('fa', 'underline fa-3x')
-            %p Search by Keywords
-    .col-lg-2.col-md-4.col-sm-6.col-xs-12
-      .process
-        .process-row
-          .process-step
-            = link_to admins_aliexpress_api_search_hot_products_by_category_path, class: "btn btn-default btn-circle category-listing-link" do
-              = icon('fa', 'fire fa-3x')
-            %p Hot Products by Category
-    .col-lg-2.col-md-4.col-sm-6.col-xs-12
-      .process
-        .process-row
-          .process-step
-            = link_to admins_aliexpress_api_save_hot_products_view_path, class: "btn btn-default btn-circle category-listing-link" do
-              = icon('fa', 'fire-extinguisher fa-3x')
-            %p
-              Add Products from Hot List
-              %b 20 MINUTES OR MORE
-    .col-lg-2.col-md-4.col-sm-6.col-xs-12
-      .process
-        .process-row
-          .process-step
-            = link_to admins_aliexpress_api_archive_expired_products_path, class: "btn btn-default btn-circle category-listing-link" do
-              = icon('fa', 'calendar-times-o fa-3x')
-            %p Check for outdated products
-    .col-lg-2.col-md-4.col-sm-6.col-xs-12
-      .process
-        .process-row
-          .process-step
-            = link_to article_manager_admins_path, class: "btn btn-default btn-circle category-listing-link" do
-              = icon('fa', 'list-alt fa-3x')
-            %p Manage articles
-    .col-lg-2.col-md-4.col-sm-6.col-xs-12
-      .process
-        .process-row
-          .process-step
-            = link_to comments_manager_admins_path, class: "btn btn-default btn-circle category-listing-link" do
-              = icon('fa', 'comment fa-3x')
-            %p Comments managre
-  .col-lg-2.col-md-4.col-sm-6.col-xs-12
-    .process
-      .process-row
-        .process-step
-          = link_to fill_category_from_file_admins_path, class: "btn btn-default btn-circle category-listing-link" do
-            = icon('fa', 'file fa-3x')
-          %p Fill Category From File
-  .col-lg-2.col-md-4.col-sm-6.col-xs-12
-    .process
-      .process-row
-        .process-step
-          = link_to admins_aliexpress_api_fill_all_subcategories_path, class: "btn btn-default btn-circle category-listing-link" do
-            = icon('fa', 'bomb fa-3x')
-          %p Mass Subcategory Filling
-  .col-lg-2.col-md-4.col-sm-6.col-xs-12
-    .process
-      .process-row
-        .process-step
-          = link_to admins_scraping_update_products_details_path, class: "btn btn-default btn-circle category-listing-link" do
-            = icon('fa', 'chrome fa-3x')
-          %p Update Products Details
-  .col-lg-2.col-md-4.col-sm-6.col-xs-12
-    .process
-      .process-row
-        .process-step
-          = link_to delete_empty_reviews_admins_path, class: "btn btn-default btn-circle category-listing-link" do
-            = icon('fa', 'trash fa-3x')
-          %p Delete empty reviews
+      
+  = render 'index_element', icon: 'underline', link: admins_aliexpress_api_products_search_path, text: 'Search by Keywords'
+  = render 'index_element', icon: 'fire', link: admins_aliexpress_api_search_hot_products_by_category_path, text: 'Hot Products by Category'
+  = render 'index_element', icon: 'fire-extinguisher', link: admins_aliexpress_api_save_hot_products_view_path, text: 'Add Products from Hot List(Long Task)'
+  = render 'index_element', icon: 'calendar-times-o', link: admins_aliexpress_api_archive_expired_products_path, text: 'Check for outdated products'
+  = render 'index_element', icon: 'list-alt', link: article_manager_admins_path, text: 'Article Manager'
+  = render 'index_element', icon: 'comment', link: comments_manager_admins_path, text: 'Comments Manager'
+  = render 'index_element', icon: 'file', link: fill_category_from_file_admins_path, text: 'Fill Category From File'
+  = render 'index_element', icon: 'bomb', link: admins_aliexpress_api_fill_all_subcategories_path, text: 'Mass Subcategory Filling'
+  = render 'index_element', icon: 'chrome', link: admins_scraping_update_products_details_path, text: 'Update Products Details'
+  = render 'index_element', icon: 'trash', link: delete_empty_reviews_admins_path, text: 'Delete empty reviews'

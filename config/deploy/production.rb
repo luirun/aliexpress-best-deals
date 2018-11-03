@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 set :stage, :production
 set :rails_env, :production
-set :branch, "master"
+set :branch, 'master'
 
-server "193.70.114.252", user: "deployer", roles: %w{app db web}
+server '193.70.114.252', user: 'deployer', roles: %w[app db web]

@@ -1,6 +1,6 @@
 .col-lg-12.text-center
   %h3 Categories:
-  .col-lg-push-4.col-lg-5.text-left{:style => "margin:auto;"}
+  .col-lg-push-4.col-lg-5.text-left{style: 'margin:auto;'}
     %ul.text-left
       - categories = Category.all.limit(7)
       - categories.each do |category|

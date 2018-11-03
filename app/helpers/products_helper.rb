@@ -1,16 +1,18 @@
+# frozen_string_literal: true
+
 module ProductsHelper
   def select_progress_bar_class(index)
     case index
     when 1
-      "progress-bar-danger"
+      'progress-bar-danger'
     when 2
-      "progress-bar-warning"
+      'progress-bar-warning'
     when 3
-      "progress-bar-info"
+      'progress-bar-info'
     when 4
-      "progress-bar-primary"
+      'progress-bar-primary'
     when 5
-      "progress-bar-success"
+      'progress-bar-success'
     end
   end
 end

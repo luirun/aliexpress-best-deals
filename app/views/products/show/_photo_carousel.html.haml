@@ -1,23 +1,23 @@
-.carousel.slide{"data-ride" => "carousel", :id => "myCarousel#{a}", :style => "width:100%;height:100%;"}
-  - photos = photos.split(",")
+.carousel.slide{'data-ride': 'carousel', id: 'myCarousel#{a}', style: 'width:100%;height:100%;'}
+  - photos = photos.split(',')
   - if photos.length-1 == 0
     - photos.each do |photo|
       .item.active
-        = image_tag photo, style: "width:100%;height:300px;"
+        = image_tag photo, style: 'width:100%; height:300px;'
   - else
     %ol.carousel-indicators
       - for i in 0..(photos.length-1) do
         - if i==0
-          %li.active{"data-slide-to" => i, "data-target" => "#myCarousel#{a}"}
+          %li.active{'data-slide-to': i, 'data-target': "#myCarousel#{a}"}
         - else
-          %li{"data-slide-to" => i, "data-target" => "#myCarousel#{a}"}
-    .carousel-inner{:role => "listbox"}
+          %li{'data-slide-to': i, 'data-target': "#myCarousel#{a}"}
+    .carousel-inner{role: 'listbox'}
       - i = 0
       - photos.each do |photo|
-        %div{ class: [ ( "item active" if photos.first == photo ), ( "item" if photos.first != photo ) ] }
-          = image_tag photo, style: "width:100%;height:300px;"
+        %div{ class: [ ( 'item active' if photos.first == photo ), ( 'item' if photos.first != photo ) ] }
+          = image_tag photo, style: 'width:100%;height:300px;'
           - i = i + 1
-          %a.left.carousel-control{"data-slide" => "prev", :href => "#myCarousel#{a}", :role => "button"}
-            %span.glyphicon.glyphicon-chevron-left{"aria-hidden" => "true", :style => ""}
-          %a.right.carousel-control{"data-slide" => "next", :href => "#myCarousel#{a}", :role => "button"}
-            %span.glyphicon.glyphicon-chevron-right{"aria-hidden" => "true", :style => ""}
+          %a.left.carousel-control{'data-slide': 'prev', href: '#myCarousel#{a}', role: 'button'}
+            %span.glyphicon.glyphicon-chevron-left{'aria-hidden': 'true', style: ''}
+          %a.right.carousel-control{'data-slide': 'next', href: '#myCarousel#{a}', role: 'button'}
+            %span.glyphicon.glyphicon-chevron-right{'aria-hidden': 'true', style: ''}

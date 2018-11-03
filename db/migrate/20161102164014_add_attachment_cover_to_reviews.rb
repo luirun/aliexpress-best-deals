@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddAttachmentCoverToReviews < ActiveRecord::Migration
   def self.up
     change_table :reviews do |t|

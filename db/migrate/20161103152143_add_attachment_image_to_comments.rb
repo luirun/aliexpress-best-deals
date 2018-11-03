@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddAttachmentImageToComments < ActiveRecord::Migration
   def self.up
     change_table :comments do |t|

@@ -1,19 +1,19 @@
-= form_for(@category, html: { class: "form-horizontal", role: "form" }) do |f|
+= form_for(@category, html: { class: 'form-horizontal', role: 'form' }) do |f|
   - if @category.errors.any?
-    .alert.alert-danger.alert-dismissable{:role => "alert"}
-      %button.close{"data-dismiss" => "alert", :type => "button"}
-        %span{"aria-hidden" => "true"} ×
+    .alert.alert-danger.alert-dismissable{role: 'alert'}
+      %button.close{'data-dismiss': 'alert', type: 'button'}
+        %span{'aria-hidden': 'true'} ×
         %span.sr-only Close
       %h4
-        = pluralize(@category.errors.count, "error")
+        = pluralize(@category.errors.count, 'error')
         prohibited this category from being saved:
       %ul
         - @category.errors.full_messages.each do |msg|
           %li= msg
   .form-group
-    = f.label :name, class: "col-sm-2 control-label"
+    = f.label :name, class: 'col-sm-2 control-label'
     .col-sm-10
-      = f.text_area :name, class: "form-control"
+      = f.text_area :name, class: 'form-control'
   .form-group
     .col-sm-offset-2.col-sm-10
-      = f.submit class: "btn btn-primary"
+      = f.submit class: 'btn btn-primary'

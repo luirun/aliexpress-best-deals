@@ -1,35 +1,35 @@
 = form_tag admins_aliexpress_api_products_list_path do |f|
   .form-group
-    = label :category, "Select category/categories:"
-    = select :category, "fields", @categories.collect {|p| [ p.name, p.id ] }, {prompt: "Select Fields", }, {:multiple => true, :size => 10}
+    = label :category, 'Select category/categories:'
+    = select :category, 'fields', @categories.collect {|p| [ p.name, p.id ] }, {prompt: 'Select Fields', }, {multiple: true, size: 10}
   .form-group
-    = label :keyword, "Keywords to find, spearate by comma:"
+    = label :keyword, 'Keywords to find, spearate by comma:'
     = text_field_tag :keyword, '', placeholder: 'eg. Xiaomi MI8'
   .form-group
-    = label :sort, "Sort by:"
-    = check_box :sort, "commissionRateUp" ""
-    %label{:for => "sort_commissionRateUp"} Commision Rate Up
+    = label :sort, 'Sort by:'
+    = check_box :sort, 'commissionRateUp' ''
+    %label{for: 'sort_commissionRateUp'} Commision Rate Up
   .form-group
-    = label :hot_products, "Only hot products?"
-    = check_box :hot_products, "yes" "no"
-    %label{:for => "hot_products_yesno"} Hot
+    = label :hot_products, 'Only hot products?'
+    = check_box :hot_products, 'yes' 'no'
+    %label{for: 'hot_products_yesno'} Hot
   .form-group
-    = label :min_seller_rating, "Min seller rating:"
-    %input#min_seller_rating{:max => "5000", :min => "0", :name => "min_seller_rating", :oninput => "minsellerRating()", :step => "25", :type => "range", :value => "0"}/
+    = label :min_seller_rating, 'Min seller rating:'
+    %input#min_seller_rating{max: '5000', min: '0', name: 'min_seller_rating', oninput: 'minsellerRating()', step: '25', type: 'range', value: '0'}/
     %p#min_rating 0
   .form-group
-    = label :min_seller_rating, "Max seller rating:"
-    %input#max_seller_rating{:max => "5000", :min => "0", :name => "max_seller_rating", :oninput => "maxsellerRating()", :step => "25", :type => "range", :value => "5000"}/
+    = label :min_seller_rating, 'Max seller rating:'
+    %input#max_seller_rating{max: '5000', min: '0', name: 'max_seller_rating', oninput: 'maxsellerRating()', step: '25', type: 'range', value: '5000'}/
     %p#max_rating 5000
   .form-group
     = button_tag 'Submit', type: 'submit'
 
 :javascript
   function minsellerRating() {
-    a = document.getElementById("min_seller_rating").value
-    document.getElementById("min_rating").innerHTML = a
+    a = document.getElementById('min_seller_rating').value
+    document.getElementById('min_rating').innerHTML = a
   }
   function maxsellerRating() {
-    a = document.getElementById("max_seller_rating").value
-    document.getElementById("max_rating").innerHTML = a
+    a = document.getElementById('max_seller_rating').value
+    document.getElementById('max_rating').innerHTML = a
   }
